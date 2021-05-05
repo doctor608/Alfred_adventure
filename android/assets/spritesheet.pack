@@ -1,0 +1,18 @@
+spritesheet.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+alfred
+    rotate: false
+    xy: 1, 32
+    size: 96, 32
+    orig: 96, 32
+    offset: 0, 0
+    index: -1
+knight
+    rotate: false
+    xy: 16, 36
+    size: 64, 32
+    orig: 64, 32
+    offset: 0, 0
+    index: -1
