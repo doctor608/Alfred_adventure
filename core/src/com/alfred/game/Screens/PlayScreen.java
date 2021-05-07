@@ -2,6 +2,7 @@ package com.alfred.game.Screens;
 
 import com.alfred.game.Sprites.Alfred;
 import com.alfred.game.Tools.B2WorldCreator;
+import com.alfred.game.Tools.WorldContactListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
@@ -49,7 +50,7 @@ public class PlayScreen implements Screen {
     private Box2DDebugRenderer b2dr;
 
     public PlayScreen(AlfredMain game) {
-        atlas = new TextureAtlas("spritesheet.pack");
+        atlas = new TextureAtlas("global.pack");
 
         this.game = game;
 
@@ -71,6 +72,7 @@ public class PlayScreen implements Screen {
 
         player = new Alfred(world, this);
 
+        world.setContactListener(new WorldContactListener());
     }
 
     public TextureAtlas getAtlas() {
@@ -97,6 +99,7 @@ public class PlayScreen implements Screen {
         world.step(1/60f, 6, 2);
 
         player.update(dt);
+        hud.update(dt);
 
         gamecam.position.x = player.b2body.getPosition().x;
 

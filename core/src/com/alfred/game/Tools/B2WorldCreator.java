@@ -3,6 +3,7 @@ package com.alfred.game.Tools;
 import com.alfred.game.AlfredMain;
 import com.alfred.game.Sprites.Coin;
 import com.alfred.game.Sprites.Ground;
+import com.alfred.game.Sprites.Scaffold;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
@@ -31,6 +32,12 @@ public class B2WorldCreator {
             Rectangle rect = ((RectangleMapObject) object).getRectangle();
 
             new Ground(world, map, rect);
+        }
+
+        for (MapObject object: map.getLayers().get(4).getObjects().getByType(RectangleMapObject.class)) {
+            Rectangle rect = ((RectangleMapObject) object).getRectangle();
+
+            new Scaffold(world, map, rect);
         }
     }
 }

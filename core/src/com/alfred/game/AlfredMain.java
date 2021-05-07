@@ -11,9 +11,15 @@ import com.alfred.game.Screens.PlayScreen;
 public class AlfredMain extends Game {
 	public SpriteBatch batch;
 
-	public static final int vir_width = 400;
-	public static final int vir_height = 200;
+	public static final int vir_width = 620;
+	public static final int vir_height = 320;
 	public static final float PPM = 100;
+
+	public static final short DEFAULT_BIT = 1;
+	public static final short ALFRED_BIT = 2;
+	public static final short SCAFFOLD_BIT = 4;
+	public static final short COIN_BIT = 8;
+	public static final short DESTROYED_BIT = 16;
 
 	@Override
 	public void create () {

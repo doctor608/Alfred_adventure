@@ -2,10 +2,14 @@ package com.alfred.game.Sprites;
 
 import com.alfred.game.AlfredMain;
 import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TiledMapImageLayer;
 import com.badlogic.gdx.maps.tiled.TiledMapTile;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.Filter;
+import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
@@ -18,6 +22,8 @@ public abstract class InteractiveTileObject {
     protected TiledMapTile tile;
     protected Rectangle bounds;
     protected Body body;
+
+    protected Fixture fixture;
 
     public InteractiveTileObject(World world, TiledMap map, Rectangle bounds) {
         this.world = world;
@@ -34,6 +40,42 @@ public abstract class InteractiveTileObject {
 
         shape.setAsBox((bounds.getWidth() / 2) / AlfredMain.PPM, (bounds.getHeight() / 2) / AlfredMain.PPM);
         fdef.shape = shape;
-        body.createFixture(fdef);
+        fixture = body.createFixture(fdef);
     }
+
+    public abstract void onHeadHit();
+    public abstract void onLegsHit();
+
+    public void setCategoryFilter(short filterBit) {
+        Filter filter = new Filter();
+        filter.categoryBits = filterBit;
+
+        fixture.setFilterData(filter);
+    }
+
+    public TiledMapTileLayer.Cell getCell() {
+        TiledMapTileLayer layer = (TiledMapTileLayer) map.getLayers().get(1);
+        return layer.getCell((int) (body.getPosition().x * AlfredMain.PPM / 32), (int) (body.getPosition().y * AlfredMain.PPM / 32));
+    }
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
