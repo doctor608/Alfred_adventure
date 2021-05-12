@@ -1,6 +1,7 @@
 package com.alfred.game.Screens;
 
 import com.alfred.game.Sprites.Alfred;
+import com.alfred.game.Sprites.Enemy;
 import com.alfred.game.Sprites.Knight;
 import com.alfred.game.Tools.B2WorldCreator;
 import com.alfred.game.Tools.WorldContactListener;
@@ -39,8 +40,6 @@ public class PlayScreen implements Screen {
 
     private Alfred player;
 
-    private Knight knight;
-
     private OrthographicCamera gamecam;
     private Viewport gamePort;
     private Hud hud;
@@ -51,6 +50,7 @@ public class PlayScreen implements Screen {
 
     private World world;
     private Box2DDebugRenderer b2dr;
+    private B2WorldCreator creator;
 
     public PlayScreen(AlfredMain game) {
         atlas = new TextureAtlas("global.pack");
@@ -71,11 +71,9 @@ public class PlayScreen implements Screen {
         world = new World(new Vector2(0, -10), true);
         b2dr = new Box2DDebugRenderer();
 
-        new B2WorldCreator(this);
+        creator = new B2WorldCreator(this);
 
         player = new Alfred(this);
-
-        knight = new Knight(this, .32f, .32f);
 
         world.setContactListener(new WorldContactListener());
     }
@@ -104,7 +102,9 @@ public class PlayScreen implements Screen {
         world.step(1/60f, 6, 2);
 
         player.update(dt);
-        knight.update(dt);
+        for (Enemy enemy: creator.getKnights()) {
+            enemy.update(dt);
+        }
         hud.update(dt);
 
         gamecam.position.x = player.b2body.getPosition().x;
@@ -128,7 +128,9 @@ public class PlayScreen implements Screen {
         game.batch.begin();
 
         player.draw(game.batch);
-        knight.draw(game.batch);
+        for (Enemy enemy: creator.getKnights()) {
+            enemy.draw(game.batch);
+        }
         game.batch.end();
 
         game.batch.setProjectionMatrix(hud.stage.getCamera().combined);

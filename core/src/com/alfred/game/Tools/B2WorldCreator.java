@@ -5,6 +5,7 @@ import com.alfred.game.Screens.PlayScreen;
 import com.alfred.game.Sprites.BadGround;
 import com.alfred.game.Sprites.BrokenGround;
 import com.alfred.game.Sprites.Coin;
+import com.alfred.game.Sprites.Knight;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
@@ -14,8 +15,13 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.Array;
+
+import org.graalvm.compiler.debug.CSVUtil;
 
 public class B2WorldCreator {
+
+    private Array<Knight> knights;
 
     public B2WorldCreator(PlayScreen screen) {
 
@@ -58,5 +64,16 @@ public class B2WorldCreator {
 
             new BrokenGround(screen, rect);
         }
+
+        knights = new Array<Knight>();
+        for (MapObject object: map.getLayers().get(6).getObjects().getByType(RectangleMapObject.class)) {
+            Rectangle rect = ((RectangleMapObject) object).getRectangle();
+
+            knights.add(new Knight(screen, rect.getX() / AlfredMain.PPM, rect.getY() / AlfredMain.PPM));
+        }
+    }
+
+    public Array<Knight> getKnights() {
+        return knights;
     }
 }

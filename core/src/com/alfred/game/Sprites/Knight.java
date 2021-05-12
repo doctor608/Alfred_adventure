@@ -3,10 +3,13 @@ package com.alfred.game.Sprites;
 import com.alfred.game.AlfredMain;
 import com.alfred.game.Screens.PlayScreen;
 import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.utils.Array;
 
 public class Knight extends Enemy {
@@ -14,6 +17,11 @@ public class Knight extends Enemy {
     private float stateTime;
     private Animation<TextureRegion> walkAnimation;
     private Array<TextureRegion> frames;
+
+    private boolean setToDestroy;
+    private boolean destroyed;
+
+    private boolean runningRight;
 
     public Knight(PlayScreen screen, float x, float y) {
         super(screen, x, y);
@@ -25,17 +33,41 @@ public class Knight extends Enemy {
         walkAnimation = new Animation(0.4f, frames);
         stateTime = 0;
         setBounds(getX(), getY(), 32 / AlfredMain.PPM, 32 / AlfredMain.PPM);
+
+        setToDestroy = false;
+        destroyed = false;
+        runningRight = false;
     }
 
     public void update(float dt) {
-        stateTime = stateTime + dt;
-        setPosition(b2body.getPosition().x - getWidth() / 2, b2body.getPosition().y - getHeight() / 2);
-        setRegion(walkAnimation.getKeyFrame(stateTime, true));
+        stateTime += dt;
+        if(setToDestroy && !destroyed){
+            world.destroyBody(b2body);
+            destroyed = true;
+            setRegion(new TextureRegion(screen.getAtlas().findRegion("knight"), 70, 0, 34, 32));
+            stateTime = 0;
+        }
+        else if(!destroyed) {
+            b2body.setLinearVelocity(velocity);
+            setPosition(b2body.getPosition().x - getWidth() / 2, b2body.getPosition().y - getHeight() / 2);
+            setRegion(walkAnimation.getKeyFrame(stateTime, true));
+        }
+
+        TextureRegion region = (TextureRegion) walkAnimation.getKeyFrame(stateTime, true);
+
+        if ((b2body.getLinearVelocity().x < 0 || !runningRight) && region.isFlipX()) {
+            region.flip(true, false);
+            runningRight = false;
+        } else if ((b2body.getLinearVelocity().x > 0 || runningRight) && !region.isFlipX()) {
+            region.flip(true, false);
+            runningRight = true;
+        }
     }
+
     @Override
     protected void defineEnemy() {
         BodyDef bdef = new BodyDef();
-        bdef.position.set(32 / AlfredMain.PPM, 32 / AlfredMain.PPM);
+        bdef.position.set(getX(), getY());
         bdef.type = BodyDef.BodyType.DynamicBody;
         b2body = world.createBody(bdef);
 
@@ -49,8 +81,29 @@ public class Knight extends Enemy {
                 | AlfredMain.COIN_BIT | AlfredMain.OBJECT_BIT |AlfredMain.ENEMY_BIT;
 
         fdef.shape = shape;
-        b2body.createFixture(fdef);
+        b2body.createFixture(fdef).setUserData(this);
 
+        PolygonShape head = new PolygonShape();
+        Vector2[] vertice = new Vector2[4];
+        vertice[0] = new Vector2(-10, 16).scl(1 / AlfredMain.PPM);
+        vertice[1] = new Vector2(10, 16).scl(1 / AlfredMain.PPM);
+        vertice[2] = new Vector2(-3, 3).scl(1 / AlfredMain.PPM);
+        vertice[3] = new Vector2(3, 3).scl(1 / AlfredMain.PPM);
+        head.set(vertice);
+
+        fdef.shape = head;
+        fdef.restitution = 0.5f;
+        fdef.filter.categoryBits = AlfredMain.ENEMYHEAD_BIT;
+        b2body.createFixture(fdef).setUserData(this);
+    }
+
+    public void draw(Batch batch) {
+        if (!destroyed || stateTime < 5) super.draw(batch);
+    }
+
+    @Override
+    public void hitOnHead() {
+        setToDestroy = true;
     }
 }
 
