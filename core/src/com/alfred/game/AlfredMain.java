@@ -15,11 +15,14 @@ public class AlfredMain extends Game {
 	public static final int vir_height = 320;
 	public static final float PPM = 100;
 
-	public static final short DEFAULT_BIT = 1;
+	public static final short GROUND_BIT = 1;
 	public static final short ALFRED_BIT = 2;
-	public static final short SCAFFOLD_BIT = 4;
-	public static final short COIN_BIT = 8;
-	public static final short DESTROYED_BIT = 16;
+	public static final short BADGROUND_BIT = 4;
+	public static final short BROKENGROUND_BIT = 8;
+	public static final short COIN_BIT = 16;
+	public static final short DESTROYED_BIT = 32;
+	public static final short ENEMY_BIT = 64;
+	public static final short OBJECT_BIT = 128;
 
 	@Override
 	public void create () {

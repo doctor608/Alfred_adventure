@@ -32,9 +32,9 @@ public class Alfred extends Sprite {
     private boolean runningRight;
 
 
-    public Alfred(World world, PlayScreen screen) {
+    public Alfred(PlayScreen screen) {
         super(screen.getAtlas().findRegion("alfred"));
-        this.world = world;
+        this.world = screen.getWorld();
 
         currentState = State.STAYING;
         previousState = State.STAYING;
@@ -73,7 +73,9 @@ public class Alfred extends Sprite {
         shape.setRadius(15 / AlfredMain.PPM);
 
         fdef.filter.categoryBits = AlfredMain.ALFRED_BIT;
-        fdef.filter.maskBits = AlfredMain.DEFAULT_BIT | AlfredMain.SCAFFOLD_BIT | AlfredMain.COIN_BIT;
+        fdef.filter.maskBits = AlfredMain.GROUND_BIT | AlfredMain.BADGROUND_BIT
+                | AlfredMain.BROKENGROUND_BIT | AlfredMain.COIN_BIT
+                | AlfredMain.OBJECT_BIT | AlfredMain.ENEMY_BIT;
 
         fdef.shape = shape;
         b2body.createFixture(fdef);

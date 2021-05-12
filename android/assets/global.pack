@@ -4,15 +4,15 @@ filter: Nearest,Nearest
 repeat: none
 alfred
     rotate: false
-    xy: 1, 48
-    size: 168, 36
-    orig: 168, 36
+    xy: 1, 0
+    size: 138, 32
+    orig: 138, 32
     offset: 0, 0
     index: -1
 knight
     rotate: false
-    xy: 16, 36
-    size: 84, 36
-    orig: 84, 36
+    xy: 136, 0
+    size: 138, 32
+    orig: 138, 32
     offset: 0, 0
     index: -1

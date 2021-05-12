@@ -1,6 +1,7 @@
 package com.alfred.game.Screens;
 
 import com.alfred.game.Sprites.Alfred;
+import com.alfred.game.Sprites.Knight;
 import com.alfred.game.Tools.B2WorldCreator;
 import com.alfred.game.Tools.WorldContactListener;
 import com.badlogic.gdx.Gdx;
@@ -38,6 +39,8 @@ public class PlayScreen implements Screen {
 
     private Alfred player;
 
+    private Knight knight;
+
     private OrthographicCamera gamecam;
     private Viewport gamePort;
     private Hud hud;
@@ -68,9 +71,11 @@ public class PlayScreen implements Screen {
         world = new World(new Vector2(0, -10), true);
         b2dr = new Box2DDebugRenderer();
 
-        new B2WorldCreator(world, map);
+        new B2WorldCreator(this);
 
-        player = new Alfred(world, this);
+        player = new Alfred(this);
+
+        knight = new Knight(this, .32f, .32f);
 
         world.setContactListener(new WorldContactListener());
     }
@@ -99,6 +104,7 @@ public class PlayScreen implements Screen {
         world.step(1/60f, 6, 2);
 
         player.update(dt);
+        knight.update(dt);
         hud.update(dt);
 
         gamecam.position.x = player.b2body.getPosition().x;
@@ -120,7 +126,9 @@ public class PlayScreen implements Screen {
 
         game.batch.setProjectionMatrix(gamecam.combined);
         game.batch.begin();
+
         player.draw(game.batch);
+        knight.draw(game.batch);
         game.batch.end();
 
         game.batch.setProjectionMatrix(hud.stage.getCamera().combined);
@@ -140,6 +148,14 @@ public class PlayScreen implements Screen {
     @Override
     public void resume() {
 
+    }
+
+    public TiledMap getMap() {
+        return map;
+    }
+
+    public World getWorld() {
+        return world;
     }
 
     @Override
