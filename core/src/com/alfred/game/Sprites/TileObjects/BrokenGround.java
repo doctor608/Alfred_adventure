@@ -1,13 +1,11 @@
-package com.alfred.game.Sprites;
+package com.alfred.game.Sprites.TileObjects;
 
 import com.alfred.game.AlfredMain;
 import com.alfred.game.Screens.PlayScreen;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.physics.box2d.World;
 
-public class BrokenGround extends InteractiveTileObject{
+public class BrokenGround extends InteractiveTileObject {
 
     public BrokenGround(PlayScreen screen, Rectangle bounds) {
         super(screen, bounds);

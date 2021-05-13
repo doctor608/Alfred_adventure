@@ -1,4 +1,4 @@
-package com.alfred.game.Sprites;
+package com.alfred.game.Sprites.Enemies;
 
 import com.alfred.game.Screens.PlayScreen;
 import com.badlogic.gdx.Screen;
@@ -22,10 +22,12 @@ public abstract class Enemy extends Sprite {
         setPosition(x, y);
         defineEnemy();
         velocity = new Vector2(1, 0);
+        b2body.setActive(false);
     }
 
     protected abstract void defineEnemy();
     public abstract void hitOnHead();
+    public abstract void killAlfred();
     public abstract void update(float dt);
 
     public void reverseVelocity(boolean x, boolean y) {
@@ -36,6 +38,7 @@ public abstract class Enemy extends Sprite {
             velocity.y = -velocity.y;
         }
     }
+
 }
 
 

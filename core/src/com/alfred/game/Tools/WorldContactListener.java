@@ -1,9 +1,9 @@
 package com.alfred.game.Tools;
 
 import com.alfred.game.AlfredMain;
-import com.alfred.game.Sprites.Alfred;
-import com.alfred.game.Sprites.Enemy;
-import com.alfred.game.Sprites.InteractiveTileObject;
+import com.alfred.game.Sprites.Enemies.Enemy;
+import com.alfred.game.Sprites.Enemies.Knight;
+import com.alfred.game.Sprites.TileObjects.InteractiveTileObject;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.ContactImpulse;
@@ -65,7 +65,12 @@ public class WorldContactListener implements ContactListener {
                 }
                 break;
             case AlfredMain.ALFRED_BIT | AlfredMain.ENEMY_BIT:
-                Gdx.app.log("ALFRED", "DIED");
+                //Gdx.app.log("ALFRED", "DIED");
+                if (fixA.getFilterData().categoryBits == AlfredMain.ENEMY_BIT) {
+                    ((Enemy)fixA.getUserData()).killAlfred();
+                } else {
+                    ((Enemy)fixB.getUserData()).killAlfred();
+                }
                 break;
             case AlfredMain.ENEMY_BIT | AlfredMain.ENEMY_BIT:
                 ((Enemy)fixA.getUserData()).reverseVelocity(true, false);

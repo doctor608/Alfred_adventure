@@ -16,3 +16,17 @@ knight
     orig: 138, 32
     offset: 0, 0
     index: -1
+redrose
+    rotate: false
+    xy: 310, 0
+    size: 36, 32
+    orig: 36, 32
+    offset: 0, 0
+    index: -1
+blackrose
+    rotate: false
+    xy: 346, 0
+    size: 36, 32
+    orig: 36, 32
+    offset: 0, 0
+    index: -1

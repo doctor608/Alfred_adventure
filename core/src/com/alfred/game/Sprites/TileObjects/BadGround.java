@@ -1,20 +1,12 @@
-package com.alfred.game.Sprites;
+package com.alfred.game.Sprites.TileObjects;
 
 import com.alfred.game.AlfredMain;
 import com.alfred.game.Screens.PlayScreen;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.maps.MapObject;
-import com.badlogic.gdx.maps.objects.RectangleMapObject;
-import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileSet;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
-import com.badlogic.gdx.physics.box2d.World;
 
-public class BadGround extends InteractiveTileObject{
+public class BadGround extends InteractiveTileObject {
 
     private static TiledMapTileSet tileSet;
     private final int BLANK_BROKENGROUND = 8;
@@ -36,7 +28,10 @@ public class BadGround extends InteractiveTileObject{
 
     @Override
     public void onLegsHit(){
-        Gdx.app.log("BadGround", "Collision");
-        getCell().setTile(tileSet.getTile(BLANK_BROKENGROUND));
+        if (getCell().getTile().getId() == BLANK_BROKENGROUND) {
+            getCell().setTile(null);
+        } else {
+            getCell().setTile(tileSet.getTile(BLANK_BROKENGROUND));
+        }
     }
 }

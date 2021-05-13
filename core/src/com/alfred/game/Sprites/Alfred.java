@@ -75,7 +75,7 @@ public class Alfred extends Sprite {
         fdef.filter.categoryBits = AlfredMain.ALFRED_BIT;
         fdef.filter.maskBits = AlfredMain.GROUND_BIT | AlfredMain.BADGROUND_BIT
                 | AlfredMain.BROKENGROUND_BIT | AlfredMain.COIN_BIT
-                | AlfredMain.OBJECT_BIT | AlfredMain.ENEMY_BIT | AlfredMain.ENEMYHEAD_BIT;
+                | AlfredMain.OBJECT_BIT | AlfredMain.ENEMY_BIT | AlfredMain.ENEMYHEAD_BIT | AlfredMain.DEMONICGROUND_BIT;
 
         fdef.shape = shape;
         b2body.createFixture(fdef);

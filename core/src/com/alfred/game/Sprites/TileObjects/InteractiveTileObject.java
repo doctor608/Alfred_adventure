@@ -1,4 +1,4 @@
-package com.alfred.game.Sprites;
+package com.alfred.game.Sprites.TileObjects;
 
 import com.alfred.game.AlfredMain;
 import com.alfred.game.Screens.PlayScreen;
@@ -23,10 +23,12 @@ public abstract class InteractiveTileObject {
     protected TiledMapTile tile;
     protected Rectangle bounds;
     protected Body body;
+    protected PlayScreen screen;
 
     protected Fixture fixture;
 
     public InteractiveTileObject(PlayScreen screen, Rectangle bounds) {
+        this.screen = screen;
         this.world = screen.getWorld();
         this.map = screen.getMap();
         this.bounds = bounds;

@@ -1,37 +1,32 @@
 package com.alfred.game.Screens;
 
 import com.alfred.game.Sprites.Alfred;
-import com.alfred.game.Sprites.Enemy;
-import com.alfred.game.Sprites.Knight;
+import com.alfred.game.Sprites.Enemies.Enemy;
+import com.alfred.game.Sprites.Items.BlackRose;
+import com.alfred.game.Sprites.Items.Item;
+import com.alfred.game.Sprites.Items.ItemDef;
 import com.alfred.game.Tools.B2WorldCreator;
 import com.alfred.game.Tools.WorldContactListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.maps.MapObject;
-import com.badlogic.gdx.maps.objects.EllipseMapObject;
-import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import com.badlogic.gdx.math.Ellipse;
-import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
-import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.alfred.game.AlfredMain;
 import com.alfred.game.Scenes.Hud;
+
+import java.util.PriorityQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 
 public class PlayScreen implements Screen {
 
@@ -51,6 +46,9 @@ public class PlayScreen implements Screen {
     private World world;
     private Box2DDebugRenderer b2dr;
     private B2WorldCreator creator;
+
+    private Array<Item> items;
+    private LinkedBlockingQueue<ItemDef> itemsToSpawn;
 
     public PlayScreen(AlfredMain game) {
         atlas = new TextureAtlas("global.pack");
@@ -76,6 +74,22 @@ public class PlayScreen implements Screen {
         player = new Alfred(this);
 
         world.setContactListener(new WorldContactListener());
+
+        items = new Array<Item>();
+        itemsToSpawn = new LinkedBlockingQueue<ItemDef>();
+    }
+
+    public void spawnItem(ItemDef idef) {
+        itemsToSpawn.add(idef);
+    }
+
+    public void handleSpawningItems() {
+        if (!itemsToSpawn.isEmpty()) {
+            ItemDef idef = itemsToSpawn.poll();
+            if (idef.type == BlackRose.class) {
+                items.add(new BlackRose(this, idef.position.x, idef.position.y));
+            }
+        }
     }
 
     public TextureAtlas getAtlas() {
@@ -98,13 +112,22 @@ public class PlayScreen implements Screen {
 
     public void update(float dt) {
         handleInput(dt);
+        handleSpawningItems();
 
         world.step(1/60f, 6, 2);
 
         player.update(dt);
         for (Enemy enemy: creator.getKnights()) {
             enemy.update(dt);
+            if (enemy.getX() < player.getX() + 352 / AlfredMain.PPM) {
+                enemy.b2body.setActive(true);
+            }
         }
+
+        for (Item item: items) {
+            item.update(dt);
+        }
+
         hud.update(dt);
 
         gamecam.position.x = player.b2body.getPosition().x;
@@ -131,6 +154,10 @@ public class PlayScreen implements Screen {
         for (Enemy enemy: creator.getKnights()) {
             enemy.draw(game.batch);
         }
+        for (Item item: items) {
+            item.draw(game.batch);
+        }
+
         game.batch.end();
 
         game.batch.setProjectionMatrix(hud.stage.getCamera().combined);
