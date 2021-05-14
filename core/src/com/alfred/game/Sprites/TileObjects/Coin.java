@@ -4,12 +4,13 @@ import com.alfred.game.AlfredMain;
 import com.alfred.game.Scenes.Hud;
 import com.alfred.game.Screens.PlayScreen;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.math.Rectangle;
 
 public class Coin extends InteractiveTileObject {
 
-    public Coin(PlayScreen screen, Rectangle bounds) {
-        super(screen, bounds);
+    public Coin(PlayScreen screen, MapObject object) {
+        super(screen, object);
 
         fixture.setUserData(this);
 

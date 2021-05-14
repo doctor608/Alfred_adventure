@@ -30,3 +30,10 @@ blackrose
     orig: 36, 32
     offset: 0, 0
     index: -1
+blackalfred
+    rotate: false
+    xy: 382, 0
+    size: 252, 32
+    orig: 252, 32
+    offset: 0, 0
+    index: -1

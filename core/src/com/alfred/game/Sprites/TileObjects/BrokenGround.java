@@ -3,12 +3,13 @@ package com.alfred.game.Sprites.TileObjects;
 import com.alfred.game.AlfredMain;
 import com.alfred.game.Screens.PlayScreen;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.math.Rectangle;
 
 public class BrokenGround extends InteractiveTileObject {
 
-    public BrokenGround(PlayScreen screen, Rectangle bounds) {
-        super(screen, bounds);
+    public BrokenGround(PlayScreen screen, MapObject object) {
+        super(screen, object);
         fixture.setUserData(this);
 
         setCategoryFilter(AlfredMain.BROKENGROUND_BIT);

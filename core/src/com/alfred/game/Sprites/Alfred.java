@@ -16,7 +16,7 @@ import com.badlogic.gdx.utils.Array;
 
 public class Alfred extends Sprite {
 
-    public enum State{ FALLING, JUMPING, STAYING, RUNNING };
+    public enum State{ FALLING, JUMPING, STAYING, RUNNING, TRANSFORMING };
     public State currentState;
     public State previousState;
 
@@ -24,16 +24,22 @@ public class Alfred extends Sprite {
 
     public World world;
     public Body b2body;
-    private TextureRegion alfredStay;
 
+    private TextureRegion alfredStay;
     private Animation alfredRun;
-    private Animation alfredJump;
+    private TextureRegion alfredJump;
+
+    private TextureRegion blackAlfredStay;
+    private TextureRegion blackAlfredJump;
+    private Animation blackAlfredRun;
+    private Animation transformingToBlack;
 
     private boolean runningRight;
-
+    private boolean alfredIsBlack;
+    private boolean runTransformingAnimation;
 
     public Alfred(PlayScreen screen) {
-        super(screen.getAtlas().findRegion("alfred"));
+        //super(screen.getAtlas().findRegion("alfred"));
         this.world = screen.getWorld();
 
         currentState = State.STAYING;
@@ -44,17 +50,27 @@ public class Alfred extends Sprite {
         Array<TextureRegion> frames = new Array<TextureRegion>();
 
         for (int i = 1; i < 3; ++i) {
-            frames.add(new TextureRegion(getTexture(), i * 32, 0, 32, 32));
+            frames.add(new TextureRegion(screen.getAtlas().findRegion("alfred"), i * 32, 0, 34, 32));
         }
         alfredRun = new Animation(0.1f, frames);
         frames.clear();
 
-        for (int i = 3; i < 4; ++i) {
-            frames.add(new TextureRegion(getTexture(), i * 32, 0, 32, 32));
+        for (int i = 1; i < 3; ++i) {
+            frames.add(new TextureRegion(screen.getAtlas().findRegion("blackalfred"), i * 32, 0, 34, 32));
         }
-        alfredJump = new Animation(0.1f, frames);
+        blackAlfredRun = new Animation(0.1f, frames);
+        frames.clear();
 
-        alfredStay = new TextureRegion(getTexture(), 0, 0, 32, 32);
+        frames.add(new TextureRegion(screen.getAtlas().findRegion("blackalfred"), 130, 0, 34, 32));
+        frames.add(new TextureRegion(screen.getAtlas().findRegion("blackalfred"), 166, 0, 34, 32));
+        frames.add(new TextureRegion(screen.getAtlas().findRegion("blackalfred"), 204, 0, 34, 32));
+        transformingToBlack = new Animation(0.2f, frames);
+
+        alfredJump = new TextureRegion(screen.getAtlas().findRegion("alfred"), 102, 0, 34, 32);
+        blackAlfredJump = new TextureRegion(screen.getAtlas().findRegion("blackalfred"), 102, 0, 34, 32);
+
+        alfredStay = new TextureRegion(screen.getAtlas().findRegion("alfred"), 0, 0, 32, 32);
+        blackAlfredStay = new TextureRegion(screen.getAtlas().findRegion("blackalfred"), 0, 0, 34, 32);
 
         defineAlfred();
 
@@ -75,10 +91,10 @@ public class Alfred extends Sprite {
         fdef.filter.categoryBits = AlfredMain.ALFRED_BIT;
         fdef.filter.maskBits = AlfredMain.GROUND_BIT | AlfredMain.BADGROUND_BIT
                 | AlfredMain.BROKENGROUND_BIT | AlfredMain.COIN_BIT
-                | AlfredMain.OBJECT_BIT | AlfredMain.ENEMY_BIT | AlfredMain.ENEMYHEAD_BIT | AlfredMain.DEMONICGROUND_BIT;
+                | AlfredMain.OBJECT_BIT | AlfredMain.ENEMY_BIT | AlfredMain.ENEMYHEAD_BIT | AlfredMain.DEMONICGROUND_BIT | AlfredMain.ITEM_BIT;
 
         fdef.shape = shape;
-        b2body.createFixture(fdef);
+        b2body.createFixture(fdef).setUserData(this);
 
         EdgeShape head = new EdgeShape();
         head.set(new Vector2(-2 / AlfredMain.PPM, 15 / AlfredMain.PPM), new Vector2(2 / AlfredMain.PPM, 15 / AlfredMain.PPM));
@@ -109,15 +125,24 @@ public class Alfred extends Sprite {
 
         TextureRegion region;
         switch (currentState) {
+            case TRANSFORMING:
+                region = (TextureRegion) transformingToBlack.getKeyFrame(stateTimer);
+                if (runningRight == true) {
+                    region.flip(true, false);
+                }
+                if (transformingToBlack.isAnimationFinished(stateTimer)) {
+                    runTransformingAnimation = false;
+                }
+                break;
             case JUMPING:
-                region = (TextureRegion) alfredJump.getKeyFrame(stateTimer);
+                region = alfredIsBlack ? blackAlfredJump : alfredJump;
                 break;
             case RUNNING:
-                region = (TextureRegion) alfredRun.getKeyFrame(stateTimer, true);
+                region = alfredIsBlack ? (TextureRegion) blackAlfredRun.getKeyFrame(stateTimer, true) : (TextureRegion) alfredRun.getKeyFrame(stateTimer, true);
                 break;
             case STAYING:
             default:
-                region = alfredStay;
+                region = alfredIsBlack ? blackAlfredStay : alfredStay;
                 break;
         }
 
@@ -141,13 +166,21 @@ public class Alfred extends Sprite {
     }
 
     public State getState(){
-        if (b2body.getLinearVelocity().y != 0 ) {
+        if (runTransformingAnimation) {
+            return State.TRANSFORMING;
+        } else if (b2body.getLinearVelocity().y != 0 ) {
             return State.JUMPING;
         } else if (b2body.getLinearVelocity().x != 0) {
             return State.RUNNING;
         } else {
             return State.STAYING;
         }
+    }
+
+    public void transform() {
+        runTransformingAnimation = true;
+        alfredIsBlack = true;
+        setBounds(getX(), getY(), getWidth(), getHeight());
     }
 
 }

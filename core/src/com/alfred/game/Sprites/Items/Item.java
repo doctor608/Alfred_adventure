@@ -2,6 +2,7 @@ package com.alfred.game.Sprites.Items;
 
 import com.alfred.game.AlfredMain;
 import com.alfred.game.Screens.PlayScreen;
+import com.alfred.game.Sprites.Alfred;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -30,7 +31,7 @@ public abstract class Item extends Sprite {
     }
 
     public abstract void defineItem();
-    public abstract void use();
+    public abstract void use(Alfred alfred);
 
     public void update(float dt) {
         if (toDestroy && !destroyed) {
@@ -47,6 +48,15 @@ public abstract class Item extends Sprite {
 
     public void destroy() {
         toDestroy = true;
+    }
+
+    public void reverseVelocity(boolean x, boolean y) {
+        if (x) {
+            velocity.x = -velocity.x;
+        }
+        if (y) {
+            velocity.y = -velocity.y;
+        }
     }
 }
 

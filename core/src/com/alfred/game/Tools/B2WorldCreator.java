@@ -47,27 +47,19 @@ public class B2WorldCreator {
         }
 
         for (MapObject object: map.getLayers().get(2).getObjects().getByType(RectangleMapObject.class)) {
-            Rectangle rect = ((RectangleMapObject) object).getRectangle();
-
-            new Coin(screen, rect);
+            new Coin(screen, object);
         }
 
         for (MapObject object: map.getLayers().get(4).getObjects().getByType(RectangleMapObject.class)) {
-            Rectangle rect = ((RectangleMapObject) object).getRectangle();
-
-            new BadGround(screen, rect);
+            new BadGround(screen, object);
         }
 
         for (MapObject object: map.getLayers().get(5).getObjects().getByType(RectangleMapObject.class)) {
-            Rectangle rect = ((RectangleMapObject) object).getRectangle();
-
-            new BrokenGround(screen, rect);
+            new BrokenGround(screen, object);
         }
 
         for (MapObject object: map.getLayers().get(7).getObjects().getByType(RectangleMapObject.class)) {
-            Rectangle rect = ((RectangleMapObject) object).getRectangle();
-
-            new DemonicGround(screen, rect);
+            new DemonicGround(screen, object);
         }
 
         knights = new Array<Knight>();

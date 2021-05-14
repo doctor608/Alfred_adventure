@@ -25,6 +25,7 @@ public class AlfredMain extends Game {
 	public static final short OBJECT_BIT = 128;
 	public static final short ENEMYHEAD_BIT = 256;
 	public static final short DEMONICGROUND_BIT = 512;
+	public static final short ITEM_BIT = 1024;
 
 	@Override
 	public void create () {

@@ -158,7 +158,7 @@ public class Knight extends Enemy {
     }
 
     public void draw(Batch batch) {
-        if (!destroyed || stateTime < 5 || !alfredKilled) super.draw(batch);
+        if (!destroyed || stateTime < 5) super.draw(batch);
     }
 
     @Override
