@@ -100,7 +100,14 @@ public class Knight extends Enemy {
         if (setToKill && !alfredKilled) {
             world.destroyBody(b2body);
             alfredKilled = true;
-            setRegion(new TextureRegion(screen.getAtlas().findRegion("knight"), 142, 0, 34, 32));
+            region = new TextureRegion(screen.getAtlas().findRegion("knight"), 142, 0, 34, 32);
+            if (runningRight == true) {
+                region.flip(true, false);
+                setRegion(region);
+            } else {
+                setRegion(region);
+            }
+            //setRegion(new TextureRegion(screen.getAtlas().findRegion("knight"), 142, 0, 34, 32));
             stateTime = 0;
         }
 

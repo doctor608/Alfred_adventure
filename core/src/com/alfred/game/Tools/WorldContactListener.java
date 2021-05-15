@@ -22,36 +22,115 @@ public class WorldContactListener implements ContactListener {
 
         int cDef = fixA.getFilterData().categoryBits | fixB.getFilterData().categoryBits;
 
-        if (fixA.getUserData() == "head") {
-            Fixture head = fixA;
-            Fixture object = fixB;
-            if (object.getUserData() != null && InteractiveTileObject.class.isAssignableFrom(object.getUserData().getClass())) {
-                ((InteractiveTileObject) object.getUserData()).onHeadHit();
-            }
-        } else if (fixB.getUserData() == "head") {
-            Fixture head = fixB;
-            Fixture object = fixA;
-            if (object.getUserData() != null && InteractiveTileObject.class.isAssignableFrom(object.getUserData().getClass())) {
-                ((InteractiveTileObject) object.getUserData()).onHeadHit();
-            }
-        }
-
-
-        if (fixA.getUserData() == "legs") {
-            Fixture legs = fixA;
-            Fixture object = fixB;
-            if (object.getUserData() != null && InteractiveTileObject.class.isAssignableFrom(object.getUserData().getClass())) {
-                ((InteractiveTileObject) object.getUserData()).onLegsHit();;
-            }
-        } else if (fixB.getUserData() == "legs") {
-            Fixture legs = fixB;
-            Fixture object = fixA;
-            if (object.getUserData() != null && InteractiveTileObject.class.isAssignableFrom(object.getUserData().getClass())) {
-                ((InteractiveTileObject) object.getUserData()).onLegsHit();
-            }
-        }
-
         switch (cDef) {
+            case AlfredMain.ALFRED_HEAD_BIT | AlfredMain.BADGROUND_BIT:
+                if (fixA.getFilterData().categoryBits == AlfredMain.BADGROUND_BIT) {
+                    ((InteractiveTileObject)fixA.getUserData()).onHeadHit((Alfred)fixB.getUserData());
+                } else {
+                    ((InteractiveTileObject)fixB.getUserData()).onHeadHit((Alfred)fixA.getUserData());
+                }
+                break;
+            case AlfredMain.ALFRED_HEAD_BIT | AlfredMain.BROKENGROUND_BIT:
+                if (fixA.getFilterData().categoryBits == AlfredMain.BROKENGROUND_BIT) {
+                    ((InteractiveTileObject)fixA.getUserData()).onHeadHit((Alfred)fixB.getUserData());
+                } else {
+                    ((InteractiveTileObject)fixB.getUserData()).onHeadHit((Alfred)fixA.getUserData());
+                }
+                break;
+            case AlfredMain.ALFRED_HEAD_BIT | AlfredMain.COIN_BIT:
+                if (fixA.getFilterData().categoryBits == AlfredMain.COIN_BIT) {
+                    ((InteractiveTileObject)fixA.getUserData()).onHeadHit((Alfred)fixB.getUserData());
+                } else {
+                    ((InteractiveTileObject)fixB.getUserData()).onHeadHit((Alfred)fixA.getUserData());
+                }
+                break;
+            case AlfredMain.ALFRED_HEAD_BIT | AlfredMain.DEMONICGROUND_BIT:
+                if (fixA.getFilterData().categoryBits == AlfredMain.DEMONICGROUND_BIT) {
+                    ((InteractiveTileObject)fixA.getUserData()).onHeadHit((Alfred)fixB.getUserData());
+                } else {
+                    ((InteractiveTileObject)fixB.getUserData()).onHeadHit((Alfred)fixA.getUserData());
+                }
+                break;
+            case AlfredMain.ALFRED_HEAD_BIT | AlfredMain.REDGROUND_BIT:
+                if (fixA.getFilterData().categoryBits == AlfredMain.REDGROUND_BIT) {
+                    ((InteractiveTileObject)fixA.getUserData()).onHeadHit((Alfred)fixB.getUserData());
+                } else {
+                    ((InteractiveTileObject)fixB.getUserData()).onHeadHit((Alfred)fixA.getUserData());
+                }
+                break;
+
+            case AlfredMain.ALFRED_LEGS_BIT | AlfredMain.BADGROUND_BIT:
+                if (fixA.getFilterData().categoryBits == AlfredMain.BADGROUND_BIT) {
+                    ((InteractiveTileObject)fixA.getUserData()).onLegsHit((Alfred)fixB.getUserData());
+                } else {
+                    ((InteractiveTileObject)fixB.getUserData()).onLegsHit((Alfred)fixA.getUserData());
+                }
+                break;
+            case AlfredMain.ALFRED_LEGS_BIT | AlfredMain.BROKENGROUND_BIT:
+                if (fixA.getFilterData().categoryBits == AlfredMain.BROKENGROUND_BIT) {
+                    ((InteractiveTileObject)fixA.getUserData()).onLegsHit((Alfred)fixB.getUserData());
+                } else {
+                    ((InteractiveTileObject)fixB.getUserData()).onLegsHit((Alfred)fixA.getUserData());
+                }
+                break;
+            case AlfredMain.ALFRED_LEGS_BIT| AlfredMain.COIN_BIT:
+                if (fixA.getFilterData().categoryBits == AlfredMain.COIN_BIT) {
+                    ((InteractiveTileObject)fixA.getUserData()).onLegsHit((Alfred)fixB.getUserData());
+                } else {
+                    ((InteractiveTileObject)fixB.getUserData()).onLegsHit((Alfred)fixA.getUserData());
+                }
+                break;
+            case AlfredMain.ALFRED_LEGS_BIT | AlfredMain.DEMONICGROUND_BIT:
+                if (fixA.getFilterData().categoryBits == AlfredMain.DEMONICGROUND_BIT) {
+                    ((InteractiveTileObject)fixA.getUserData()).onLegsHit((Alfred)fixB.getUserData());
+                } else {
+                    ((InteractiveTileObject)fixB.getUserData()).onLegsHit((Alfred)fixA.getUserData());
+                }
+                break;
+            case AlfredMain.ALFRED_LEGS_BIT | AlfredMain.REDGROUND_BIT:
+                if (fixA.getFilterData().categoryBits == AlfredMain.REDGROUND_BIT) {
+                    ((InteractiveTileObject)fixA.getUserData()).onLegsHit((Alfred)fixB.getUserData());
+                } else {
+                    ((InteractiveTileObject)fixB.getUserData()).onLegsHit((Alfred)fixA.getUserData());
+                }
+                break;
+
+            case AlfredMain.ALFRED_BODY_BIT | AlfredMain.BADGROUND_BIT:
+                if (fixA.getFilterData().categoryBits == AlfredMain.BADGROUND_BIT) {
+                    ((InteractiveTileObject)fixA.getUserData()).onBodyHit((Alfred)fixB.getUserData());
+                } else {
+                    ((InteractiveTileObject)fixB.getUserData()).onBodyHit((Alfred)fixA.getUserData());
+                }
+                break;
+            case AlfredMain.ALFRED_BODY_BIT| AlfredMain.BROKENGROUND_BIT:
+                if (fixA.getFilterData().categoryBits == AlfredMain.BROKENGROUND_BIT) {
+                    ((InteractiveTileObject)fixA.getUserData()).onBodyHit((Alfred)fixB.getUserData());
+                } else {
+                    ((InteractiveTileObject)fixB.getUserData()).onBodyHit((Alfred)fixA.getUserData());
+                }
+                break;
+            case AlfredMain.ALFRED_BODY_BIT | AlfredMain.COIN_BIT:
+                if (fixA.getFilterData().categoryBits == AlfredMain.COIN_BIT) {
+                    ((InteractiveTileObject)fixA.getUserData()).onBodyHit((Alfred)fixB.getUserData());
+                } else {
+                    ((InteractiveTileObject)fixB.getUserData()).onBodyHit((Alfred)fixA.getUserData());
+                }
+                break;
+            case AlfredMain.ALFRED_BODY_BIT | AlfredMain.DEMONICGROUND_BIT:
+                if (fixA.getFilterData().categoryBits == AlfredMain.DEMONICGROUND_BIT) {
+                    ((InteractiveTileObject)fixA.getUserData()).onBodyHit((Alfred)fixB.getUserData());
+                } else {
+                    ((InteractiveTileObject)fixB.getUserData()).onBodyHit((Alfred)fixA.getUserData());
+                }
+                break;
+            case AlfredMain.ALFRED_BODY_BIT | AlfredMain.REDGROUND_BIT:
+                if (fixA.getFilterData().categoryBits == AlfredMain.REDGROUND_BIT) {
+                    ((InteractiveTileObject)fixA.getUserData()).onBodyHit((Alfred)fixB.getUserData());
+                } else {
+                    ((InteractiveTileObject)fixB.getUserData()).onBodyHit((Alfred)fixA.getUserData());
+                }
+                break;
+
             case AlfredMain.ENEMYHEAD_BIT | AlfredMain.ALFRED_BIT:
                 if (fixA.getFilterData().categoryBits == AlfredMain.ENEMYHEAD_BIT) {
                     ((Enemy)fixA.getUserData()).hitOnHead();

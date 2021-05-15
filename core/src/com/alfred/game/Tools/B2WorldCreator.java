@@ -7,6 +7,7 @@ import com.alfred.game.Sprites.TileObjects.BrokenGround;
 import com.alfred.game.Sprites.TileObjects.Coin;
 import com.alfred.game.Sprites.Enemies.Knight;
 import com.alfred.game.Sprites.TileObjects.DemonicGround;
+import com.alfred.game.Sprites.TileObjects.RedGround;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
@@ -31,6 +32,7 @@ public class B2WorldCreator {
         PolygonShape shape = new PolygonShape();
         FixtureDef fdef = new FixtureDef();
         Body body;
+
 
         for(MapObject object : map.getLayers().get(3).getObjects().getByType(RectangleMapObject.class)){
             Rectangle rect = ((RectangleMapObject) object).getRectangle();
@@ -60,6 +62,10 @@ public class B2WorldCreator {
 
         for (MapObject object: map.getLayers().get(7).getObjects().getByType(RectangleMapObject.class)) {
             new DemonicGround(screen, object);
+        }
+
+        for (MapObject object: map.getLayers().get(8).getObjects().getByType(RectangleMapObject.class)) {
+            new RedGround(screen, object);
         }
 
         knights = new Array<Knight>();

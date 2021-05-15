@@ -2,6 +2,7 @@ package com.alfred.game.Sprites.TileObjects;
 
 import com.alfred.game.AlfredMain;
 import com.alfred.game.Screens.PlayScreen;
+import com.alfred.game.Sprites.Alfred;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.tiled.TiledMapTileSet;
@@ -22,14 +23,14 @@ public class BadGround extends InteractiveTileObject {
     }
 
     @Override
-    public void onHeadHit() {
+    public void onHeadHit(Alfred alfred) {
         Gdx.app.log("BadGround", "Collision");
         //setCategoryFilter(AlfredMain.DESTROYED_BIT);
         //getCell().setTile(null);
     }
 
     @Override
-    public void onLegsHit(){
+    public void onLegsHit(Alfred alfred){
         if (getCell().getTile().getId() == BLANK_BROKENGROUND) {
             setCategoryFilter(AlfredMain.DESTROYED_BIT);
             getCell().setTile(null);
@@ -37,4 +38,11 @@ public class BadGround extends InteractiveTileObject {
             getCell().setTile(tileSet.getTile(BLANK_BROKENGROUND));
         }
     }
+
+    @Override
+    public void onBodyHit(Alfred alfred) {
+        Gdx.app.log("BadGround", "Collision");
+    }
+
+
 }

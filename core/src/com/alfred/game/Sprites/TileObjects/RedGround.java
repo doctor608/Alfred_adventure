@@ -5,33 +5,40 @@ import com.alfred.game.Screens.PlayScreen;
 import com.alfred.game.Sprites.Alfred;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.maps.MapObject;
-import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.maps.tiled.TiledMapTileSet;
 
-public class BrokenGround extends InteractiveTileObject {
+public class RedGround extends InteractiveTileObject {
 
-    public BrokenGround(PlayScreen screen, MapObject object) {
+    private static TiledMapTileSet tileSet;
+    private final int BLANK_DEMONICGROUND = 9;
+    private final int BLANK_REDGROUND = 10;
+    public RedGround(PlayScreen screen, MapObject object) {
         super(screen, object);
+
+        tileSet = map.getTileSets().getTileSet("set");
         fixture.setUserData(this);
 
-        setCategoryFilter(AlfredMain.BROKENGROUND_BIT);
+        setCategoryFilter(AlfredMain.REDGROUND_BIT);
     }
 
     @Override
     public void onHeadHit(Alfred alfred) {
-        Gdx.app.log("BrokenGround", "Collision");
+        //Gdx.app.log("BadGround", "Collision");
         //setCategoryFilter(AlfredMain.DESTROYED_BIT);
         //getCell().setTile(null);
     }
 
     @Override
     public void onLegsHit(Alfred alfred){
-        Gdx.app.log("BrokenGround", "Collision");
-        setCategoryFilter(AlfredMain.DESTROYED_BIT);
-        getCell().setTile(null);
+        if (alfred.isBlack()) {
+            getCell().setTile(tileSet.getTile(BLANK_DEMONICGROUND));
+        }
     }
 
     @Override
     public void onBodyHit(Alfred alfred) {
-        Gdx.app.log("BrokenGround", "Collision");
+
     }
+
+
 }

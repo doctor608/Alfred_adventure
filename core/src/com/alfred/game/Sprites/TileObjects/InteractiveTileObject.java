@@ -2,6 +2,7 @@ package com.alfred.game.Sprites.TileObjects;
 
 import com.alfred.game.AlfredMain;
 import com.alfred.game.Screens.PlayScreen;
+import com.alfred.game.Sprites.Alfred;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
@@ -50,8 +51,9 @@ public abstract class InteractiveTileObject {
         fixture = body.createFixture(fdef);
     }
 
-    public abstract void onHeadHit();
-    public abstract void onLegsHit();
+    public abstract void onHeadHit(Alfred alfred);
+    public abstract void onLegsHit(Alfred alfred);
+    public abstract void onBodyHit(Alfred alfred);
 
     public void setCategoryFilter(short filterBit) {
         Filter filter = new Filter();

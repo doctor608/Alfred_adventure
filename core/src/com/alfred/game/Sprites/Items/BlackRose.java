@@ -3,6 +3,7 @@ package com.alfred.game.Sprites.Items;
 import com.alfred.game.AlfredMain;
 import com.alfred.game.Screens.PlayScreen;
 import com.alfred.game.Sprites.Alfred;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
@@ -49,7 +50,6 @@ public class BlackRose extends Item{
         body.setLinearVelocity(velocity);
     }
 }
-
 
 
 

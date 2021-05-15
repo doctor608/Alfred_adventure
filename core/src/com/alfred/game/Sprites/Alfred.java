@@ -2,6 +2,7 @@ package com.alfred.game.Sprites;
 
 import com.alfred.game.AlfredMain;
 import com.alfred.game.Screens.PlayScreen;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -11,6 +12,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.EdgeShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.Transform;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 
@@ -37,6 +39,7 @@ public class Alfred extends Sprite {
     private boolean runningRight;
     private boolean alfredIsBlack;
     private boolean runTransformingAnimation;
+    private boolean timeToDefineBlackAlfred;
 
     public Alfred(PlayScreen screen) {
         //super(screen.getAtlas().findRegion("alfred"));
@@ -70,7 +73,7 @@ public class Alfred extends Sprite {
         blackAlfredJump = new TextureRegion(screen.getAtlas().findRegion("blackalfred"), 102, 0, 34, 32);
 
         alfredStay = new TextureRegion(screen.getAtlas().findRegion("alfred"), 0, 0, 32, 32);
-        blackAlfredStay = new TextureRegion(screen.getAtlas().findRegion("blackalfred"), 0, 0, 34, 32);
+        blackAlfredStay = new TextureRegion(screen.getAtlas().findRegion("blackalfred"), 0, 0, 32, 32);
 
         defineAlfred();
 
@@ -97,27 +100,82 @@ public class Alfred extends Sprite {
         b2body.createFixture(fdef).setUserData(this);
 
         EdgeShape head = new EdgeShape();
-        head.set(new Vector2(-2 / AlfredMain.PPM, 15 / AlfredMain.PPM), new Vector2(2 / AlfredMain.PPM, 15 / AlfredMain.PPM));
-
+        head.set(new Vector2(-8 / AlfredMain.PPM, 16 / AlfredMain.PPM), new Vector2(8 / AlfredMain.PPM, 16 / AlfredMain.PPM));
+        fdef.filter.categoryBits = AlfredMain.ALFRED_HEAD_BIT;
         fdef.shape = head;
         fdef.isSensor = true;
-
-        b2body.createFixture(fdef).setUserData("head");
-
+        b2body.createFixture(fdef).setUserData(this);
 
         EdgeShape legs = new EdgeShape();
-        legs.set(new Vector2(-2 / AlfredMain.PPM, -16 / AlfredMain.PPM), new Vector2(2 / AlfredMain.PPM, -16 / AlfredMain.PPM));
-
+        legs.set(new Vector2(-8 / AlfredMain.PPM, -16 / AlfredMain.PPM), new Vector2(8 / AlfredMain.PPM, -16 / AlfredMain.PPM));
+        fdef.filter.categoryBits = AlfredMain.ALFRED_LEGS_BIT;
         fdef.shape = legs;
         fdef.isSensor = true;
+        b2body.createFixture(fdef).setUserData(this);
 
-        b2body.createFixture(fdef).setUserData("legs");
+        EdgeShape body = new EdgeShape();
+        body.set(new Vector2(0 / AlfredMain.PPM, 0 / AlfredMain.PPM), new Vector2(0 / AlfredMain.PPM, 0 / AlfredMain.PPM));
+        fdef.filter.categoryBits = AlfredMain.ALFRED_BODY_BIT;
+        fdef.shape = body;
+        fdef.isSensor = true;
+        b2body.createFixture(fdef).setUserData(this);
 
     }
 
+    public void defineBlackAlfred() {
+        Vector2 currentPosition = b2body.getPosition();
+        world.destroyBody(b2body);
+
+        BodyDef bdef = new BodyDef();
+        bdef.position.set(currentPosition.add(0, 0));
+        bdef.type = BodyDef.BodyType.DynamicBody;
+        b2body = world.createBody(bdef);
+
+        FixtureDef fdef = new FixtureDef();
+        CircleShape shape = new CircleShape();
+        shape.setRadius(15 / AlfredMain.PPM);
+        fdef.filter.categoryBits = AlfredMain.ALFRED_BIT;
+        fdef.filter.maskBits = AlfredMain.GROUND_BIT | AlfredMain.BADGROUND_BIT
+                | AlfredMain.BROKENGROUND_BIT | AlfredMain.COIN_BIT
+                | AlfredMain.OBJECT_BIT | AlfredMain.ENEMY_BIT
+                | AlfredMain.ENEMYHEAD_BIT | AlfredMain.DEMONICGROUND_BIT
+                | AlfredMain.ITEM_BIT | AlfredMain.REDGROUND_BIT;
+
+        fdef.shape = shape;
+        shape.setPosition(new Vector2(0, 0));
+        b2body.createFixture(fdef).setUserData(this);
+
+        EdgeShape head = new EdgeShape();
+        head.set(new Vector2(-8 / AlfredMain.PPM, 16 / AlfredMain.PPM), new Vector2(8 / AlfredMain.PPM, 16 / AlfredMain.PPM));
+        fdef.filter.categoryBits = AlfredMain.ALFRED_HEAD_BIT;
+        fdef.shape = head;
+        fdef.isSensor = true;
+        b2body.createFixture(fdef).setUserData(this);
+
+        EdgeShape legs = new EdgeShape();
+        legs.set(new Vector2(-8 / AlfredMain.PPM, -16 / AlfredMain.PPM), new Vector2(8 / AlfredMain.PPM, -16 / AlfredMain.PPM));
+        fdef.filter.categoryBits = AlfredMain.ALFRED_LEGS_BIT;
+        fdef.shape = legs;
+        fdef.isSensor = true;
+        b2body.createFixture(fdef).setUserData(this);
+
+        EdgeShape body = new EdgeShape();
+        body.set(new Vector2(0 / AlfredMain.PPM, 0 / AlfredMain.PPM), new Vector2(0 / AlfredMain.PPM, 0 / AlfredMain.PPM));
+        fdef.filter.categoryBits = AlfredMain.ALFRED_BODY_BIT;
+        fdef.shape = body;
+        fdef.isSensor = true;
+        b2body.createFixture(fdef).setUserData(this);
+        Gdx.app.log("BLACKALFRED", "DEFINED");
+        timeToDefineBlackAlfred = false;
+    }
+
     public void update(float dt) {
+        // if (IsBlack)
         setPosition(b2body.getPosition().x - getWidth() / 2, b2body.getPosition().y - getHeight() / 2);
         setRegion(getFrame(dt));
+        if (timeToDefineBlackAlfred) {
+            defineBlackAlfred();
+        }
     }
 
     public TextureRegion getFrame(float dt) {
@@ -127,6 +185,7 @@ public class Alfred extends Sprite {
         switch (currentState) {
             case TRANSFORMING:
                 region = (TextureRegion) transformingToBlack.getKeyFrame(stateTimer);
+                Gdx.app.log("TRANSFORMING","BLACK");
                 if (runningRight == true) {
                     region.flip(true, false);
                 }
@@ -180,7 +239,12 @@ public class Alfred extends Sprite {
     public void transform() {
         runTransformingAnimation = true;
         alfredIsBlack = true;
+        timeToDefineBlackAlfred = true;
         setBounds(getX(), getY(), getWidth(), getHeight());
+    }
+
+    public boolean isBlack() {
+        return alfredIsBlack;
     }
 
 }
