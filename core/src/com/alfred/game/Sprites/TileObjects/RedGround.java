@@ -9,8 +9,9 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileSet;
 public class RedGround extends InteractiveTileObject {
 
     private static TiledMapTileSet tileSet;
-    private final int BLANK_DEMONICGROUND = 9;
     private final int BLANK_REDGROUND = 10;
+    private final int BLANK_DEMONICGROUND = 9;
+
     public RedGround(PlayScreen screen, MapObject object) {
         super(screen, object);
 
@@ -30,7 +31,7 @@ public class RedGround extends InteractiveTileObject {
     @Override
     public void onLegsHit(Alfred alfred){
         if (alfred.isBlack()) {
-            getCell().setTile(tileSet.getTile(BLANK_DEMONICGROUND));
+            getCell().setTile(tileSet.getTile(9));
         }
     }
 

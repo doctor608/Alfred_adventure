@@ -13,6 +13,7 @@ public class BadGround extends InteractiveTileObject {
     private static TiledMapTileSet tileSet;
     private final int BLANK_BADGROUND = 7;
     private final int BLANK_BROKENGROUND = 8;
+
     public BadGround(PlayScreen screen, MapObject object) {
         super(screen, object);
 

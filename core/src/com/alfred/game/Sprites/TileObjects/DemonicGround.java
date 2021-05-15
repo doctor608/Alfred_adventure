@@ -11,7 +11,11 @@ import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
+import static com.badlogic.gdx.math.MathUtils.random;
+
 public class DemonicGround extends InteractiveTileObject{
+
+    boolean notUsed = true;
 
     public DemonicGround(PlayScreen screen, MapObject object) {
         super(screen, object);
@@ -22,15 +26,22 @@ public class DemonicGround extends InteractiveTileObject{
     }
     @Override
     public void onHeadHit(Alfred alfred) {
-        if (object.getProperties().containsKey("blackrose")) {
+        int rand = random.nextInt(8) + 1;
+        if (rand == 1) {
             screen.spawnItem(new ItemDef(new Vector2(body.getPosition().x, body.getPosition().y + 32 / AlfredMain.PPM), BlackRose.class));
+            setCategoryFilter(AlfredMain.DESTROYED_BIT);
+            getCell().setTile(null);
         }
+
     }
 
     @Override
     public void onLegsHit(Alfred alfred) {
-        if (object.getProperties().containsKey("blackrose")) {
+        int rand = random.nextInt(8) + 1;
+        if (rand == 1) {
             screen.spawnItem(new ItemDef(new Vector2(body.getPosition().x, body.getPosition().y + 32 / AlfredMain.PPM), BlackRose.class));
+            setCategoryFilter(AlfredMain.DESTROYED_BIT);
+            getCell().setTile(null);
         }
     }
 
@@ -39,5 +50,7 @@ public class DemonicGround extends InteractiveTileObject{
         if (object.getProperties().containsKey("blackrose")) {
             screen.spawnItem(new ItemDef(new Vector2(body.getPosition().x, body.getPosition().y + 32 / AlfredMain.PPM), BlackRose.class));
         }
+        setCategoryFilter(AlfredMain.DESTROYED_BIT);
+        getCell().setTile(null);
     }
 }

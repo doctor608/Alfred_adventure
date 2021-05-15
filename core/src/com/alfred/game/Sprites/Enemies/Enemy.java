@@ -1,6 +1,7 @@
 package com.alfred.game.Sprites.Enemies;
 
 import com.alfred.game.Screens.PlayScreen;
+import com.alfred.game.Sprites.Alfred;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
@@ -27,7 +28,7 @@ public abstract class Enemy extends Sprite {
 
     protected abstract void defineEnemy();
     public abstract void hitOnHead();
-    public abstract void killAlfred();
+    public abstract void killAlfred(Alfred alfred);
     public abstract void update(float dt);
 
     public void reverseVelocity(boolean x, boolean y) {

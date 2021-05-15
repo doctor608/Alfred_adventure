@@ -144,13 +144,20 @@ public class WorldContactListener implements ContactListener {
                 }
                 break;
             case AlfredMain.ALFRED_BIT | AlfredMain.ENEMY_BIT:
-                //Gdx.app.log("ALFRED", "DIED");
+                if (fixA.getFilterData().categoryBits == AlfredMain.ALFRED_BIT) {
+                    ((Enemy)fixB.getUserData()).killAlfred((Alfred) fixA.getUserData());
+                } else {
+                    ((Enemy)fixA.getUserData()).killAlfred((Alfred) fixB.getUserData());
+                }
+                break;
+                /*
                 if (fixA.getFilterData().categoryBits == AlfredMain.ENEMY_BIT) {
                     ((Enemy)fixA.getUserData()).killAlfred();
                 } else {
                     ((Enemy)fixB.getUserData()).killAlfred();
                 }
                 break;
+                 */
             case AlfredMain.ENEMY_BIT | AlfredMain.ENEMY_BIT:
                 ((Enemy)fixA.getUserData()).reverseVelocity(true, false);
                 ((Enemy)fixB.getUserData()).reverseVelocity(true, false);

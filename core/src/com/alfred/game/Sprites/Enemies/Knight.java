@@ -3,6 +3,7 @@ package com.alfred.game.Sprites.Enemies;
 import com.alfred.game.AlfredMain;
 import com.alfred.game.Scenes.Hud;
 import com.alfred.game.Screens.PlayScreen;
+import com.alfred.game.Sprites.Alfred;
 import com.alfred.game.Sprites.Enemies.Enemy;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Animation;
@@ -46,44 +47,6 @@ public class Knight extends Enemy {
         runningRight = false;
     }
 
-    /*
-    public TextureRegion getFrame(float dt) {
-        currentState = getState();
-
-        TextureRegion region;
-        switch (currentState) {
-            case JUMPING:
-                region = (TextureRegion) alfredJump.getKeyFrame(stateTimer);
-                break;
-            case RUNNING:
-                region = (TextureRegion) alfredRun.getKeyFrame(stateTimer, true);
-                break;
-            case STAYING:
-            default:
-                region = alfredStay;
-                break;
-        }
-
-        if ((b2body.getLinearVelocity().x < 0 || !runningRight) && !region.isFlipX()) {
-            region.flip(true, false);
-            runningRight = false;
-        } else if ((b2body.getLinearVelocity().x > 0 || runningRight) && region.isFlipX()) {
-            region.flip(true, false);
-            runningRight = true;
-        }
-
-        if (currentState == previousState) {
-            stateTimer = stateTimer + dt;
-        } else {
-            stateTimer = 0;
-        }
-
-        previousState = currentState;
-
-        return region;
-    }
-     */
-
     public void update(float dt) {
         stateTime += dt;
 
@@ -100,6 +63,7 @@ public class Knight extends Enemy {
         if (setToKill && !alfredKilled) {
             world.destroyBody(b2body);
             alfredKilled = true;
+            destroyed = true;
             region = new TextureRegion(screen.getAtlas().findRegion("knight"), 142, 0, 34, 32);
             if (runningRight == true) {
                 region.flip(true, false);
@@ -107,18 +71,14 @@ public class Knight extends Enemy {
             } else {
                 setRegion(region);
             }
-            //setRegion(new TextureRegion(screen.getAtlas().findRegion("knight"), 142, 0, 34, 32));
             stateTime = 0;
-        }
-
-        if(setToDestroy && !destroyed){
+        } else if(setToDestroy && !destroyed){
             world.destroyBody(b2body);
             destroyed = true;
             setRegion(new TextureRegion(screen.getAtlas().findRegion("knight"), 70, 0, 34, 32));
             stateTime = 0;
             Hud.addScore(5);
-        }
-        else if(!destroyed && !alfredKilled) {
+        } else if(!destroyed) {
             b2body.setLinearVelocity(velocity);
             setPosition(b2body.getPosition().x - getWidth() / 2, b2body.getPosition().y - getHeight() / 2);
             setRegion(walkAnimation.getKeyFrame(stateTime, true));
@@ -126,9 +86,9 @@ public class Knight extends Enemy {
 
     }
 
-    public void killAlfred() {
+    public void killAlfred(Alfred alfred) {
         setToKill = true;
-        Gdx.app.log("ALFRED", "DIED");
+        alfred.hit(25);
     }
 
     @Override
@@ -165,7 +125,8 @@ public class Knight extends Enemy {
     }
 
     public void draw(Batch batch) {
-        if (!destroyed || stateTime < 5) super.draw(batch);
+        if ((!destroyed || stateTime < 5) && (!alfredKilled || stateTime < 0.1)) super.draw(batch);
+
     }
 
     @Override

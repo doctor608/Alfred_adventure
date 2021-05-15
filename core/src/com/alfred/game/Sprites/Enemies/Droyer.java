@@ -3,6 +3,7 @@ package com.alfred.game.Sprites.Enemies;
 import com.alfred.game.AlfredMain;
 import com.alfred.game.Scenes.Hud;
 import com.alfred.game.Screens.PlayScreen;
+import com.alfred.game.Sprites.Alfred;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -45,7 +46,7 @@ public class Droyer extends Enemy{
     }
 
     @Override
-    public void killAlfred() {
+    public void killAlfred(Alfred alfred) {
 
     }
 
@@ -71,7 +72,7 @@ public class Droyer extends Enemy{
             Hud.addScore(10);
         }
         else if(!destroyed && !alfredKilled) {
-            bulletsUpdate(dt);
+            //bulletsUpdate(dt);
         }
 
     }
