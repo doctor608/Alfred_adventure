@@ -3,7 +3,6 @@ package com.alfred.game.Sprites.TileObjects;
 import com.alfred.game.AlfredMain;
 import com.alfred.game.Screens.PlayScreen;
 import com.alfred.game.Sprites.Alfred;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.tiled.TiledMapTileSet;
 
