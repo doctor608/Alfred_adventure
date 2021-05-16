@@ -162,6 +162,18 @@ public class PlayScreen implements Screen {
 
         game.batch.setProjectionMatrix(hud.stage.getCamera().combined);
         hud.stage.draw();
+
+        if(gameOver()){
+            game.setScreen(new GameOverScreen(game, Alfred.judgment));
+            dispose();
+        }
+    }
+
+    public boolean gameOver(){
+        if(player.currentState == Alfred.State.DEAD && player.getStateTimer() > 3){
+            return true;
+        }
+        return false;
     }
 
     @Override

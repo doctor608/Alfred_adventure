@@ -3,6 +3,7 @@ package com.alfred.game.Tools;
 import com.alfred.game.AlfredMain;
 import com.alfred.game.Sprites.Alfred;
 import com.alfred.game.Sprites.Enemies.Enemy;
+import com.alfred.game.Sprites.Items.DroyerBullet;
 import com.alfred.game.Sprites.Items.Item;
 import com.alfred.game.Sprites.TileObjects.InteractiveTileObject;
 import com.badlogic.gdx.physics.box2d.Contact;
@@ -174,6 +175,21 @@ public class WorldContactListener implements ContactListener {
                     ((Item)fixA.getUserData()).use((Alfred)fixB.getUserData());
                 } else {
                     ((Item)fixB.getUserData()).use((Alfred)fixA.getUserData());
+                }
+                break;
+            case AlfredMain.DROYERBULLET_BIT | AlfredMain.ALFRED_BIT:
+                if (fixA.getFilterData().categoryBits == AlfredMain.DROYERBULLET_BIT) {
+                    ((DroyerBullet)fixA.getUserData()).use((Alfred)fixB.getUserData());
+                } else {
+                    ((DroyerBullet)fixB.getUserData()).use((Alfred)fixA.getUserData());
+                }
+                break;
+            case AlfredMain.DROYERBULLET_BIT | AlfredMain.OBJECT_BIT | AlfredMain.DROYERBULLET_BIT | AlfredMain.ENEMYHEAD_BIT
+                    | AlfredMain.ENEMY_BIT | AlfredMain.ITEM_BIT:
+                if (fixA.getFilterData().categoryBits == AlfredMain.DROYERBULLET_BIT) {
+                    ((DroyerBullet)fixA.getUserData()).destroy();
+                } else {
+                    ((DroyerBullet)fixB.getUserData()).destroy();
                 }
                 break;
         }

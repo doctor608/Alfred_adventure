@@ -3,20 +3,19 @@ package com.alfred.game.Sprites.Items;
 import com.alfred.game.AlfredMain;
 import com.alfred.game.Screens.PlayScreen;
 import com.alfred.game.Sprites.Alfred;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 
-public class BlackRose extends Item{
+public class DroyerBullet extends Item{
 
-
-    public BlackRose(PlayScreen screen, float x, float y) {
+    public DroyerBullet(PlayScreen screen, float x, float y) {
         super(screen, x, y);
-        setRegion(screen.getAtlas().findRegion("blackrose"), 0, 0, 36, 32);
-        velocity = new Vector2(1.7f, 0);
+        setRegion(screen.getAtlas().findRegion("droyerbullets"), 0, 0, 32, 32);
+        velocity = new Vector2(0, 1f);
     }
+
 
     @Override
     public void defineItem() {
@@ -27,20 +26,18 @@ public class BlackRose extends Item{
 
         FixtureDef fdef = new FixtureDef();
         CircleShape shape = new CircleShape();
-        shape.setRadius(15 / AlfredMain.PPM);
-        fdef.filter.categoryBits = AlfredMain.ITEM_BIT;
+        shape.setRadius(3 / AlfredMain.PPM);
+        fdef.filter.categoryBits = (short) AlfredMain.DROYERBULLET_BIT;
         fdef.filter.maskBits = AlfredMain.ALFRED_BIT | AlfredMain.OBJECT_BIT | AlfredMain.GROUND_BIT | AlfredMain.DEMONICGROUND_BIT;
 
         fdef.shape = shape;
         body.createFixture(fdef).setUserData(this);
-
     }
 
     @Override
     public void use(Alfred alfred) {
         destroy();
-        alfred.transform();
-        alfred.hit(25, "Alfred was poisoned by a black rose");
+        alfred.hit(20, "Alfred was destructed by a Droyer bullet kinetic energy");
     }
 
     @Override
@@ -51,6 +48,3 @@ public class BlackRose extends Item{
         body.setLinearVelocity(velocity);
     }
 }
-
-
-

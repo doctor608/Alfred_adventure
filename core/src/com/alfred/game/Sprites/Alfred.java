@@ -11,13 +11,15 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.EdgeShape;
+import com.badlogic.gdx.physics.box2d.Filter;
+import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 
 public class Alfred extends Sprite {
 
-    public enum State{ FALLING, JUMPING, STAYING, RUNNING, TRANSFORMING };
+    public enum State{ FALLING, JUMPING, STAYING, RUNNING, TRANSFORMING, DEAD };
     public State currentState;
     public State previousState;
 
@@ -38,8 +40,11 @@ public class Alfred extends Sprite {
     private boolean runningRight;
     private boolean alfredIsBlack;
     private boolean runTransformingAnimation;
-    private boolean timeToDefineBlackAlfred;
-    private boolean timeToRedefineAlfred;
+    private boolean alfredIsDead;
+
+    public static String judgment;
+    //private boolean timeToDefineBlackAlfred;
+    //private boolean timeToRedefineAlfred;
 
     public int hp;
 
@@ -127,6 +132,134 @@ public class Alfred extends Sprite {
 
     }
 
+    public void update(float dt) {
+
+
+        setPosition(b2body.getPosition().x - getWidth() / 2, b2body.getPosition().y - getHeight() / 2);
+        setRegion(getFrame(dt));
+        // if (IsBlack)
+        /*if (timeToDefineBlackAlfred) {
+            defineBlackAlfred();
+        }*/
+    }
+
+    public TextureRegion getFrame(float dt) {
+        currentState = getState();
+
+        TextureRegion region;
+        switch (currentState) {
+            case TRANSFORMING:
+                region = (TextureRegion) transformingToBlack.getKeyFrame(stateTimer);
+                Gdx.app.log("TRANSFORMING","BLACK");
+                if (runningRight == true) {
+                    region.flip(true, false);
+                }
+                if (transformingToBlack.isAnimationFinished(stateTimer)) {
+                    runTransformingAnimation = false;
+                }
+                break;
+            case JUMPING:
+                region = alfredIsBlack ? blackAlfredJump : alfredJump;
+                break;
+            case RUNNING:
+                region = alfredIsBlack ? (TextureRegion) blackAlfredRun.getKeyFrame(stateTimer, true) : (TextureRegion) alfredRun.getKeyFrame(stateTimer, true);
+                break;
+            case STAYING:
+            default:
+                region = alfredIsBlack ? blackAlfredStay : alfredStay;
+                break;
+        }
+
+        if ((b2body.getLinearVelocity().x < 0 || !runningRight) && !region.isFlipX()) {
+            region.flip(true, false);
+            runningRight = false;
+        } else if ((b2body.getLinearVelocity().x > 0 || runningRight) && region.isFlipX()) {
+            region.flip(true, false);
+            runningRight = true;
+        }
+
+        if (currentState == previousState) {
+            stateTimer = stateTimer + dt;
+        } else {
+            stateTimer = 0;
+        }
+
+        previousState = currentState;
+
+        return region;
+    }
+
+    public State getState(){
+        if (alfredIsDead) {
+            return State.DEAD;
+        } else if (runTransformingAnimation) {
+            return State.TRANSFORMING;
+        } else if (b2body.getLinearVelocity().y != 0 ) {
+            return State.JUMPING;
+        } else if (b2body.getLinearVelocity().x != 0) {
+            return State.RUNNING;
+        } else {
+            return State.STAYING;
+        }
+    }
+
+    public void transform() {
+        runTransformingAnimation = true;
+        alfredIsBlack = true;
+        //timeToDefineBlackAlfred = true;
+        setBounds(getX(), getY(), getWidth(), getHeight());
+    }
+
+    public boolean isDead() {
+        return alfredIsDead;
+    }
+
+    public float getStateTimer() {
+        return stateTimer;
+    }
+
+    public boolean isBlack() {
+        return alfredIsBlack;
+    }
+
+    public void die(String string) {
+
+        if (!isDead()) {
+
+            alfredIsDead = true;
+            Filter filter = new Filter();
+            filter.maskBits = AlfredMain.NOTHING_BIT;
+
+            for (Fixture fixture : b2body.getFixtureList()) {
+                fixture.setFilterData(filter);
+            }
+
+            b2body.applyLinearImpulse(new Vector2(0, 4f), b2body.getWorldCenter(), true);
+        }
+
+        judgment = string;
+    }
+
+    public void hit(int damage, String string) {
+        if (hp > damage) {
+            hp = hp - damage;
+            String howmanyhp = Integer.toString(hp);
+            Gdx.app.log("ALFRED HP", howmanyhp);
+        } else {
+            die(string);
+        }
+        /*
+        if (hp > 0) {
+            //timeToRedefineAlfred = true;
+            hp = hp - damage;
+            String howmanyhp = Integer.toString(hp);
+            Gdx.app.log("ALFRED HP", howmanyhp);
+        } else {
+            Gdx.app.log("ALFRED", "DIED");
+            die();
+        }*/
+    }
+
     /*
     public void defineBlackAlfred() {
         Vector2 currentPosition = b2body.getPosition();
@@ -176,15 +309,6 @@ public class Alfred extends Sprite {
     }
     */
 
-    public void update(float dt) {
-        // if (IsBlack)
-        setPosition(b2body.getPosition().x - getWidth() / 2, b2body.getPosition().y - getHeight() / 2);
-        setRegion(getFrame(dt));
-        /*if (timeToDefineBlackAlfred) {
-            defineBlackAlfred();
-        }*/
-    }
-
     /*
     public void redefineAlfred() {
         Vector2 position = b2body.getPosition();
@@ -232,86 +356,5 @@ public class Alfred extends Sprite {
         timeToRedefineAlfred = false;
     }
      */
-
-    public TextureRegion getFrame(float dt) {
-        currentState = getState();
-
-        TextureRegion region;
-        switch (currentState) {
-            case TRANSFORMING:
-                region = (TextureRegion) transformingToBlack.getKeyFrame(stateTimer);
-                Gdx.app.log("TRANSFORMING","BLACK");
-                if (runningRight == true) {
-                    region.flip(true, false);
-                }
-                if (transformingToBlack.isAnimationFinished(stateTimer)) {
-                    runTransformingAnimation = false;
-                    hp = 25;
-                }
-                break;
-            case JUMPING:
-                region = alfredIsBlack ? blackAlfredJump : alfredJump;
-                break;
-            case RUNNING:
-                region = alfredIsBlack ? (TextureRegion) blackAlfredRun.getKeyFrame(stateTimer, true) : (TextureRegion) alfredRun.getKeyFrame(stateTimer, true);
-                break;
-            case STAYING:
-            default:
-                region = alfredIsBlack ? blackAlfredStay : alfredStay;
-                break;
-        }
-
-        if ((b2body.getLinearVelocity().x < 0 || !runningRight) && !region.isFlipX()) {
-            region.flip(true, false);
-            runningRight = false;
-        } else if ((b2body.getLinearVelocity().x > 0 || runningRight) && region.isFlipX()) {
-            region.flip(true, false);
-            runningRight = true;
-        }
-
-        if (currentState == previousState) {
-            stateTimer = stateTimer + dt;
-        } else {
-            stateTimer = 0;
-        }
-
-        previousState = currentState;
-
-        return region;
-    }
-
-    public State getState(){
-        if (runTransformingAnimation) {
-            return State.TRANSFORMING;
-        } else if (b2body.getLinearVelocity().y != 0 ) {
-            return State.JUMPING;
-        } else if (b2body.getLinearVelocity().x != 0) {
-            return State.RUNNING;
-        } else {
-            return State.STAYING;
-        }
-    }
-
-    public void transform() {
-        runTransformingAnimation = true;
-        alfredIsBlack = true;
-        //timeToDefineBlackAlfred = true;
-        setBounds(getX(), getY(), getWidth(), getHeight());
-    }
-
-    public boolean isBlack() {
-        return alfredIsBlack;
-    }
-
-    public void hit(int damage) {
-        if (hp == 50) {
-            //timeToRedefineAlfred = true;
-            hp = hp - damage;
-            String howmanyhp = Integer.toString(hp);
-            Gdx.app.log("ALFRED HP", howmanyhp);
-        } else {
-            Gdx.app.log("ALFRED", "DIED");
-        }
-    }
 
 }

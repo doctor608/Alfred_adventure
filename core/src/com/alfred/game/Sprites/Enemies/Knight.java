@@ -88,7 +88,7 @@ public class Knight extends Enemy {
 
     public void killAlfred(Alfred alfred) {
         setToKill = true;
-        alfred.hit(25);
+        alfred.hit(25, "Alfred was slain by a gray knight");
     }
 
     @Override

@@ -15,6 +15,7 @@ public class AlfredMain extends Game {
 	public static final int vir_height = 320;
 	public static final float PPM = 100;
 
+	public static final short NOTHING_BIT = 0;
 	public static final short GROUND_BIT = 1;
 	public static final short ALFRED_BIT = 2;
 	public static final short BADGROUND_BIT = 4;
@@ -30,6 +31,7 @@ public class AlfredMain extends Game {
 	public static final short ALFRED_LEGS_BIT = 4096;
 	public static final short ALFRED_BODY_BIT = 8192;
 	public static final short REDGROUND_BIT = 16384;
+	public static final int DROYERBULLET_BIT = 32768;
 
 	@Override
 	public void create () {
