@@ -3,6 +3,7 @@ package com.alfred.game.Screens;
 import com.alfred.game.Sprites.Alfred;
 import com.alfred.game.Sprites.Enemies.Enemy;
 import com.alfred.game.Sprites.Items.BlackRose;
+import com.alfred.game.Sprites.Items.DroyerBullet;
 import com.alfred.game.Sprites.Items.Item;
 import com.alfred.game.Sprites.Items.ItemDef;
 import com.alfred.game.Tools.B2WorldCreator;
@@ -88,6 +89,8 @@ public class PlayScreen implements Screen {
             ItemDef idef = itemsToSpawn.poll();
             if (idef.type == BlackRose.class) {
                 items.add(new BlackRose(this, idef.position.x, idef.position.y));
+            } else if (idef.type == DroyerBullet.class) {
+                items.add(new BlackRose(this, idef.position.x, idef.position.y));
             }
         }
     }
@@ -123,9 +126,15 @@ public class PlayScreen implements Screen {
                 enemy.b2body.setActive(true);
             }
         }
-
         for (Item item: items) {
             item.update(dt);
+        }
+
+        for (Enemy enemy: creator.getDroyers()) {
+            enemy.update(dt);
+            if (enemy.getX() < player.getX() + 352 / AlfredMain.PPM) {
+                enemy.b2body.setActive(true);
+            }
         }
 
         hud.update(dt);
@@ -156,6 +165,9 @@ public class PlayScreen implements Screen {
         }
         for (Item item: items) {
             item.draw(game.batch);
+        }
+        for (Enemy enemy: creator.getDroyers()) {
+            enemy.draw(game.batch);
         }
 
         game.batch.end();

@@ -19,7 +19,7 @@ import com.badlogic.gdx.utils.Array;
 
 public class Alfred extends Sprite {
 
-    public enum State{ FALLING, JUMPING, STAYING, RUNNING, TRANSFORMING, DEAD };
+    public enum State{ JUMPING, STAYING, RUNNING, TRANSFORMING, DEAD };
     public State currentState;
     public State previousState;
 
@@ -102,9 +102,9 @@ public class Alfred extends Sprite {
 
         fdef.filter.categoryBits = AlfredMain.ALFRED_BIT;
         fdef.filter.maskBits = AlfredMain.GROUND_BIT | AlfredMain.BADGROUND_BIT
-                | AlfredMain.BROKENGROUND_BIT | AlfredMain.COIN_BIT
-                | AlfredMain.OBJECT_BIT | AlfredMain.ENEMY_BIT | AlfredMain.ENEMYHEAD_BIT | AlfredMain.DEMONICGROUND_BIT | AlfredMain.ITEM_BIT
-                | AlfredMain.REDGROUND_BIT;
+                        | AlfredMain.BROKENGROUND_BIT | AlfredMain.COIN_BIT
+                        | AlfredMain.OBJECT_BIT | AlfredMain.ENEMY_BIT | AlfredMain.ENEMYHEAD_BIT | AlfredMain.DEMONICGROUND_BIT | AlfredMain.ITEM_BIT
+                        | AlfredMain.REDGROUND_BIT /*| AlfredMain.DROYERBULLET_BIT*/;
 
         fdef.shape = shape;
         b2body.createFixture(fdef).setUserData(this);
@@ -123,12 +123,15 @@ public class Alfred extends Sprite {
         fdef.isSensor = true;
         b2body.createFixture(fdef).setUserData(this);
 
+        /*
         EdgeShape body = new EdgeShape();
         body.set(new Vector2(0 / AlfredMain.PPM, 0 / AlfredMain.PPM), new Vector2(0 / AlfredMain.PPM, 0 / AlfredMain.PPM));
         fdef.filter.categoryBits = AlfredMain.ALFRED_BODY_BIT;
         fdef.shape = body;
         fdef.isSensor = true;
         b2body.createFixture(fdef).setUserData(this);
+
+         */
 
     }
 

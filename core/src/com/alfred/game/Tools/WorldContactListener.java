@@ -94,6 +94,7 @@ public class WorldContactListener implements ContactListener {
                 }
                 break;
 
+                /*
             case AlfredMain.ALFRED_BODY_BIT | AlfredMain.BADGROUND_BIT:
                 if (fixA.getFilterData().categoryBits == AlfredMain.BADGROUND_BIT) {
                     ((InteractiveTileObject)fixA.getUserData()).onBodyHit((Alfred)fixB.getUserData());
@@ -129,6 +130,7 @@ public class WorldContactListener implements ContactListener {
                     ((InteractiveTileObject)fixB.getUserData()).onBodyHit((Alfred)fixA.getUserData());
                 }
                 break;
+                */
 
             case AlfredMain.ENEMYHEAD_BIT | AlfredMain.ALFRED_BIT:
                 if (fixA.getFilterData().categoryBits == AlfredMain.ENEMYHEAD_BIT) {
@@ -184,6 +186,7 @@ public class WorldContactListener implements ContactListener {
                     ((DroyerBullet)fixB.getUserData()).use((Alfred)fixA.getUserData());
                 }
                 break;
+                /*
             case AlfredMain.DROYERBULLET_BIT | AlfredMain.OBJECT_BIT | AlfredMain.DROYERBULLET_BIT | AlfredMain.ENEMYHEAD_BIT
                     | AlfredMain.ENEMY_BIT | AlfredMain.ITEM_BIT:
                 if (fixA.getFilterData().categoryBits == AlfredMain.DROYERBULLET_BIT) {
@@ -192,6 +195,7 @@ public class WorldContactListener implements ContactListener {
                     ((DroyerBullet)fixB.getUserData()).destroy();
                 }
                 break;
+                */
         }
     }
 

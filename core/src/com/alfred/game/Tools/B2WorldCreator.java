@@ -2,6 +2,7 @@ package com.alfred.game.Tools;
 
 import com.alfred.game.AlfredMain;
 import com.alfred.game.Screens.PlayScreen;
+import com.alfred.game.Sprites.Enemies.Droyer;
 import com.alfred.game.Sprites.TileObjects.BadGround;
 import com.alfred.game.Sprites.TileObjects.BrokenGround;
 import com.alfred.game.Sprites.TileObjects.Coin;
@@ -22,6 +23,7 @@ import com.badlogic.gdx.utils.Array;
 public class B2WorldCreator {
 
     private Array<Knight> knights;
+    private Array<Droyer> droyers;
 
     public B2WorldCreator(PlayScreen screen) {
 
@@ -74,9 +76,19 @@ public class B2WorldCreator {
 
             knights.add(new Knight(screen, rect.getX() / AlfredMain.PPM, rect.getY() / AlfredMain.PPM));
         }
+
+        droyers = new Array<Droyer>();
+        for (MapObject object: map.getLayers().get(9).getObjects().getByType(RectangleMapObject.class)) {
+            Rectangle rect = ((RectangleMapObject) object).getRectangle();
+
+            droyers.add(new Droyer(screen, rect.getX() / AlfredMain.PPM, rect.getY() / AlfredMain.PPM));
+        }
     }
 
     public Array<Knight> getKnights() {
         return knights;
+    }
+    public Array<Droyer> getDroyers() {
+        return droyers;
     }
 }
