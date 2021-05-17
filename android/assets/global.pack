@@ -39,16 +39,15 @@ blackalfred
     index: -1
 droyer
     rotate: false
-    xy: 634, 0
+    xy: 630, 0
     size: 64, 32
     orig: 64, 32
     offset: 0, 0
     index: -1
-
-
-
-
-
-
-
-
+smalldeath
+    rotate: false
+    xy: 700, 0
+    size: 70, 32
+    orig: 70, 32
+    offset: 0, 0
+    index: -1

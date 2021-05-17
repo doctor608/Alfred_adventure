@@ -4,10 +4,9 @@ import com.alfred.game.AlfredMain;
 import com.alfred.game.Scenes.Hud;
 import com.alfred.game.Screens.PlayScreen;
 import com.alfred.game.Sprites.Alfred;
-import com.alfred.game.Sprites.Items.BlackRose;
+import com.alfred.game.Sprites.Items.BlackRaven;
 import com.alfred.game.Sprites.Items.DroyerBullet;
 import com.alfred.game.Sprites.Items.ItemDef;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -18,34 +17,57 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.utils.Array;
 
-import static com.badlogic.gdx.math.MathUtils.random;
-
-public class Droyer extends Enemy{
+public class SmallDeath extends Enemy{
 
     private float stateTime;
 
-    private TextureRegion droyerStay;
-
+    private TextureRegion deathStay;
     private boolean setToDestroy;
     private boolean destroyed;
+    private boolean setToKill;
 
-    public Droyer(PlayScreen screen, float x, float y) {
-        super(screen, x + 16 / AlfredMain.PPM, y + 16 / AlfredMain.PPM);
+    private boolean runningRight;
 
-        droyerStay = new TextureRegion(screen.getAtlas().findRegion("droyer"), 0, 0, 32, 32);
+    public SmallDeath(PlayScreen screen, float x, float y) {
+        super(screen, x, y);
 
-        setBounds(getX(), getY(), 32 / AlfredMain.PPM, 32 / AlfredMain.PPM);
+        deathStay = new TextureRegion(screen.getAtlas().findRegion("smalldeath"), 0, 0, 32, 32);
         stateTime = 0;
+        setBounds(getX(), getY(), 32 / AlfredMain.PPM, 32 / AlfredMain.PPM);
 
         setToDestroy = false;
         destroyed = false;
+        setToKill = false;
+        runningRight = false;
+    }
+
+    public void update(float dt) {
+        setRegion(deathStay);
+        stateTime += dt;
+
+        if(setToDestroy && !destroyed){
+            world.destroyBody(b2body);
+            destroyed = true;
+            //screen.spawnItem(new ItemDef(new Vector2(b2body.getPosition().x, b2body.getPosition().y), BlackRaven.class));
+            stateTime = 0;
+            Hud.addScore(10);
+        } else if(!destroyed) {
+            b2body.setLinearVelocity(velocity);
+            setPosition(b2body.getPosition().x - getWidth() / 2, b2body.getPosition().y - getHeight() / 2);
+        }
+
+    }
+
+    public void killAlfred(Alfred alfred) {
+        setToKill = true;
+        alfred.hit(50, "Alfred was gibbet by death");
     }
 
     @Override
     protected void defineEnemy() {
         BodyDef bdef = new BodyDef();
         bdef.position.set(getX(), getY());
-        bdef.type = BodyDef.BodyType.StaticBody;
+        bdef.type = BodyDef.BodyType.DynamicBody;
         b2body = world.createBody(bdef);
 
         FixtureDef fdef = new FixtureDef();
@@ -55,12 +77,11 @@ public class Droyer extends Enemy{
         fdef.filter.categoryBits = AlfredMain.ENEMY_BIT;
         fdef.filter.maskBits = AlfredMain.GROUND_BIT | AlfredMain.ALFRED_BIT
                 | AlfredMain.BADGROUND_BIT | AlfredMain.BROKENGROUND_BIT
-                | AlfredMain.COIN_BIT | AlfredMain.OBJECT_BIT | AlfredMain.ENEMY_BIT | AlfredMain.ITEM_BIT;
+                | AlfredMain.COIN_BIT | AlfredMain.OBJECT_BIT |AlfredMain.ENEMY_BIT;
 
         fdef.shape = shape;
         b2body.createFixture(fdef).setUserData(this);
 
-        /*
         PolygonShape head = new PolygonShape();
         Vector2[] vertice = new Vector2[4];
         vertice[0] = new Vector2(-10, 16).scl(1 / AlfredMain.PPM);
@@ -72,57 +93,16 @@ public class Droyer extends Enemy{
         fdef.shape = head;
         fdef.restitution = 0.5f;
         fdef.filter.categoryBits = AlfredMain.ENEMYHEAD_BIT;
-        b2body.createFixture(fdef).setUserData(this);*/
-    }
-
-    @Override
-    public void hitOnHead() {
-        setToDestroy = true;
-    }
-
-    @Override
-    public void killAlfred(Alfred alfred) {
-
-    }
-
-    @Override
-    public void update(float dt) {
-        setRegion(droyerStay);
-        stateTime += dt;
-
-        if(setToDestroy && !destroyed){
-            world.destroyBody(b2body);
-            destroyed = true;
-            //setRegion(new TextureRegion(screen.getAtlas().findRegion("droyer"), 32, 0, 32, 32));
-            stateTime = 0;
-            Hud.addScore(10);
-        } else if(!destroyed) {
-            if (stateTime > 33 * dt) {
-                screen.spawnItem(new ItemDef(new Vector2(b2body.getPosition().x, b2body.getPosition().y -16 / AlfredMain.PPM), DroyerBullet.class));
-                stateTime = 0;
-            }
-            setPosition(b2body.getPosition().x - getWidth() / 2, b2body.getPosition().y - getHeight() /2);
-        }
+        b2body.createFixture(fdef).setUserData(this);
     }
 
     public void draw(Batch batch) {
         if ((!destroyed || stateTime < 5)) super.draw(batch);
 
     }
+
+    @Override
+    public void hitOnHead() {
+        setToDestroy = true;
+    }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

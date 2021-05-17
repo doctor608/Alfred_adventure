@@ -3,12 +3,15 @@ package com.alfred.game.Tools;
 import com.alfred.game.AlfredMain;
 import com.alfred.game.Screens.PlayScreen;
 import com.alfred.game.Sprites.Enemies.Droyer;
+import com.alfred.game.Sprites.Enemies.Enemy;
+import com.alfred.game.Sprites.Enemies.SmallDeath;
 import com.alfred.game.Sprites.TileObjects.BadGround;
 import com.alfred.game.Sprites.TileObjects.BrokenGround;
 import com.alfred.game.Sprites.TileObjects.Coin;
 import com.alfred.game.Sprites.Enemies.Knight;
 import com.alfred.game.Sprites.TileObjects.DemonicGround;
 import com.alfred.game.Sprites.TileObjects.RedGround;
+import com.alfred.game.Sprites.TileObjects.RedRose;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
@@ -24,6 +27,7 @@ public class B2WorldCreator {
 
     private Array<Knight> knights;
     private Array<Droyer> droyers;
+    private Array<SmallDeath> smallDeaths;
 
     public B2WorldCreator(PlayScreen screen) {
 
@@ -70,6 +74,10 @@ public class B2WorldCreator {
             new RedGround(screen, object);
         }
 
+        for (MapObject object: map.getLayers().get(10).getObjects().getByType(RectangleMapObject.class)) {
+            new RedRose(screen, object);
+        }
+
         knights = new Array<Knight>();
         for (MapObject object: map.getLayers().get(6).getObjects().getByType(RectangleMapObject.class)) {
             Rectangle rect = ((RectangleMapObject) object).getRectangle();
@@ -83,12 +91,25 @@ public class B2WorldCreator {
 
             droyers.add(new Droyer(screen, rect.getX() / AlfredMain.PPM, rect.getY() / AlfredMain.PPM));
         }
+
+        smallDeaths = new Array<SmallDeath>();
+        for (MapObject object: map.getLayers().get(11).getObjects().getByType(RectangleMapObject.class)) {
+            Rectangle rect = ((RectangleMapObject) object).getRectangle();
+
+            smallDeaths.add(new SmallDeath(screen, rect.getX() / AlfredMain.PPM, rect.getY() / AlfredMain.PPM));
+        }
+
     }
 
     public Array<Knight> getKnights() {
         return knights;
     }
-    public Array<Droyer> getDroyers() {
-        return droyers;
+    public Array<Enemy> getEnemies() {
+        Array<Enemy> enemies = new Array<Enemy>();
+        enemies.addAll(knights);
+        enemies.addAll(droyers);
+        enemies.addAll(smallDeaths);
+
+        return enemies;
     }
 }

@@ -14,12 +14,13 @@ import com.badlogic.gdx.physics.box2d.EdgeShape;
 import com.badlogic.gdx.physics.box2d.Filter;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.RayCastCallback;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 
 public class Alfred extends Sprite {
 
-    public enum State{ JUMPING, STAYING, RUNNING, TRANSFORMING, DEAD };
+    public enum State{ JUMPING, STAYING, RUNNING, TRANSFORMING, DEAD, RETRANSFORMING };
     public State currentState;
     public State previousState;
 
@@ -36,10 +37,12 @@ public class Alfred extends Sprite {
     private TextureRegion blackAlfredJump;
     private Animation blackAlfredRun;
     private Animation transformingToBlack;
+    private Animation retransforming;
 
     private boolean runningRight;
     private boolean alfredIsBlack;
     private boolean runTransformingAnimation;
+    private boolean runRetransformingAnimation;
     private boolean alfredIsDead;
 
     public static String judgment;
@@ -47,6 +50,8 @@ public class Alfred extends Sprite {
     //private boolean timeToRedefineAlfred;
 
     public int hp;
+
+    public boolean isAlfredOnGround;
 
     public Alfred(PlayScreen screen) {
         //super(screen.getAtlas().findRegion("alfred"));
@@ -76,6 +81,11 @@ public class Alfred extends Sprite {
         frames.add(new TextureRegion(screen.getAtlas().findRegion("blackalfred"), 204, 0, 34, 32));
         transformingToBlack = new Animation(0.2f, frames);
 
+        frames.add(new TextureRegion(screen.getAtlas().findRegion("blackalfred"), 204, 0, 34, 32));
+        frames.add(new TextureRegion(screen.getAtlas().findRegion("blackalfred"), 166, 0, 34, 32));
+        frames.add(new TextureRegion(screen.getAtlas().findRegion("blackalfred"), 130, 0, 34, 32));
+        retransforming = new Animation(0.2f, frames);
+
         alfredJump = new TextureRegion(screen.getAtlas().findRegion("alfred"), 102, 0, 34, 32);
         blackAlfredJump = new TextureRegion(screen.getAtlas().findRegion("blackalfred"), 102, 0, 34, 32);
 
@@ -104,7 +114,7 @@ public class Alfred extends Sprite {
         fdef.filter.maskBits = AlfredMain.GROUND_BIT | AlfredMain.BADGROUND_BIT
                         | AlfredMain.BROKENGROUND_BIT | AlfredMain.COIN_BIT
                         | AlfredMain.OBJECT_BIT | AlfredMain.ENEMY_BIT | AlfredMain.ENEMYHEAD_BIT | AlfredMain.DEMONICGROUND_BIT | AlfredMain.ITEM_BIT
-                        | AlfredMain.REDGROUND_BIT /*| AlfredMain.DROYERBULLET_BIT*/;
+                        | AlfredMain.REDGROUND_BIT | AlfredMain.DROYERBULLET_BIT;
 
         fdef.shape = shape;
         b2body.createFixture(fdef).setUserData(this);
@@ -153,12 +163,21 @@ public class Alfred extends Sprite {
         switch (currentState) {
             case TRANSFORMING:
                 region = (TextureRegion) transformingToBlack.getKeyFrame(stateTimer);
-                Gdx.app.log("TRANSFORMING","BLACK");
+                //Gdx.app.log("TRANSFORMING","BLACK");
                 if (runningRight == true) {
                     region.flip(true, false);
                 }
                 if (transformingToBlack.isAnimationFinished(stateTimer)) {
                     runTransformingAnimation = false;
+                }
+                break;
+            case RETRANSFORMING:
+                region = (TextureRegion) retransforming.getKeyFrame(stateTimer);
+                if (runningRight == true) {
+                    region.flip(true, false);
+                }
+                if (retransforming.isAnimationFinished(stateTimer)) {
+                    runRetransformingAnimation = false;
                 }
                 break;
             case JUMPING:
@@ -197,7 +216,9 @@ public class Alfred extends Sprite {
             return State.DEAD;
         } else if (runTransformingAnimation) {
             return State.TRANSFORMING;
-        } else if (b2body.getLinearVelocity().y != 0 ) {
+        } else if (runRetransformingAnimation) {
+            return State.RETRANSFORMING;
+        } else if (b2body.getLinearVelocity().y != 0) {
             return State.JUMPING;
         } else if (b2body.getLinearVelocity().x != 0) {
             return State.RUNNING;
@@ -209,7 +230,12 @@ public class Alfred extends Sprite {
     public void transform() {
         runTransformingAnimation = true;
         alfredIsBlack = true;
-        //timeToDefineBlackAlfred = true;
+        setBounds(getX(), getY(), getWidth(), getHeight());
+    }
+
+    public void retransform() {
+        runRetransformingAnimation = true;
+        alfredIsBlack = false;
         setBounds(getX(), getY(), getWidth(), getHeight());
     }
 
@@ -251,16 +277,16 @@ public class Alfred extends Sprite {
         } else {
             die(string);
         }
-        /*
-        if (hp > 0) {
-            //timeToRedefineAlfred = true;
-            hp = hp - damage;
-            String howmanyhp = Integer.toString(hp);
-            Gdx.app.log("ALFRED HP", howmanyhp);
+    }
+
+    public void heal(int healing) {
+        if (hp + healing > 50) {
+            hp = 50;
         } else {
-            Gdx.app.log("ALFRED", "DIED");
-            die();
-        }*/
+            hp = hp + healing;
+        }
+        String howmanyhp = Integer.toString(hp);
+        Gdx.app.log("ALFRED HP", howmanyhp);
     }
 
     /*

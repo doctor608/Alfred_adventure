@@ -33,6 +33,7 @@ public class RedGround extends InteractiveTileObject {
         if (alfred.isBlack()) {
             getCell().setTile(tileSet.getTile(9));
         }
+
     }
 
     @Override
