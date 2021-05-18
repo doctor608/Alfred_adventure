@@ -12,7 +12,7 @@ public class DroyerBullet extends Item{
 
     public DroyerBullet(PlayScreen screen, float x, float y) {
         super(screen, x, y);
-        setRegion(screen.getAtlas().findRegion("droyer"), 32, 0, 32, 32);
+        setRegion(screen.getAtlas().findRegion("droyer"), 34, 0, 32, 32);
         velocity = new Vector2(0, 1f);
     }
 

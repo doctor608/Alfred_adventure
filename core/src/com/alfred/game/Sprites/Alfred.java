@@ -42,7 +42,6 @@ public class Alfred extends Sprite {
     private boolean runningRight;
     private boolean alfredIsBlack;
     private boolean runTransformingAnimation;
-    private boolean runRetransformingAnimation;
     private boolean alfredIsDead;
 
     public static String judgment;
@@ -51,7 +50,7 @@ public class Alfred extends Sprite {
 
     public int hp;
 
-    public boolean isAlfredOnGround;
+    public boolean jumped;
 
     public Alfred(PlayScreen screen) {
         //super(screen.getAtlas().findRegion("alfred"));
@@ -80,11 +79,6 @@ public class Alfred extends Sprite {
         frames.add(new TextureRegion(screen.getAtlas().findRegion("blackalfred"), 166, 0, 34, 32));
         frames.add(new TextureRegion(screen.getAtlas().findRegion("blackalfred"), 204, 0, 34, 32));
         transformingToBlack = new Animation(0.2f, frames);
-
-        frames.add(new TextureRegion(screen.getAtlas().findRegion("blackalfred"), 204, 0, 34, 32));
-        frames.add(new TextureRegion(screen.getAtlas().findRegion("blackalfred"), 166, 0, 34, 32));
-        frames.add(new TextureRegion(screen.getAtlas().findRegion("blackalfred"), 130, 0, 34, 32));
-        retransforming = new Animation(0.2f, frames);
 
         alfredJump = new TextureRegion(screen.getAtlas().findRegion("alfred"), 102, 0, 34, 32);
         blackAlfredJump = new TextureRegion(screen.getAtlas().findRegion("blackalfred"), 102, 0, 34, 32);
@@ -146,14 +140,8 @@ public class Alfred extends Sprite {
     }
 
     public void update(float dt) {
-
-
         setPosition(b2body.getPosition().x - getWidth() / 2, b2body.getPosition().y - getHeight() / 2);
         setRegion(getFrame(dt));
-        // if (IsBlack)
-        /*if (timeToDefineBlackAlfred) {
-            defineBlackAlfred();
-        }*/
     }
 
     public TextureRegion getFrame(float dt) {
@@ -171,25 +159,23 @@ public class Alfred extends Sprite {
                     runTransformingAnimation = false;
                 }
                 break;
-            case RETRANSFORMING:
-                region = (TextureRegion) retransforming.getKeyFrame(stateTimer);
-                if (runningRight == true) {
-                    region.flip(true, false);
-                }
-                if (retransforming.isAnimationFinished(stateTimer)) {
-                    runRetransformingAnimation = false;
-                }
-                break;
             case JUMPING:
                 region = alfredIsBlack ? blackAlfredJump : alfredJump;
+                jumped = true;
                 break;
             case RUNNING:
                 region = alfredIsBlack ? (TextureRegion) blackAlfredRun.getKeyFrame(stateTimer, true) : (TextureRegion) alfredRun.getKeyFrame(stateTimer, true);
+                jumped = false;
                 break;
             case STAYING:
             default:
                 region = alfredIsBlack ? blackAlfredStay : alfredStay;
+                jumped = false;
                 break;
+        }
+
+        if (b2body.getLinearVelocity().y < -10f) {
+            die("Alfred was consumed by void");
         }
 
         if ((b2body.getLinearVelocity().x < 0 || !runningRight) && !region.isFlipX()) {
@@ -216,8 +202,6 @@ public class Alfred extends Sprite {
             return State.DEAD;
         } else if (runTransformingAnimation) {
             return State.TRANSFORMING;
-        } else if (runRetransformingAnimation) {
-            return State.RETRANSFORMING;
         } else if (b2body.getLinearVelocity().y != 0) {
             return State.JUMPING;
         } else if (b2body.getLinearVelocity().x != 0) {
@@ -230,12 +214,6 @@ public class Alfred extends Sprite {
     public void transform() {
         runTransformingAnimation = true;
         alfredIsBlack = true;
-        setBounds(getX(), getY(), getWidth(), getHeight());
-    }
-
-    public void retransform() {
-        runRetransformingAnimation = true;
-        alfredIsBlack = false;
         setBounds(getX(), getY(), getWidth(), getHeight());
     }
 

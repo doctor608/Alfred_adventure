@@ -32,7 +32,7 @@ public class Droyer extends Enemy{
     public Droyer(PlayScreen screen, float x, float y) {
         super(screen, x + 16 / AlfredMain.PPM, y + 16 / AlfredMain.PPM);
 
-        droyerStay = new TextureRegion(screen.getAtlas().findRegion("droyer"), 0, 0, 32, 32);
+        droyerStay = new TextureRegion(screen.getAtlas().findRegion("droyer"), 0, 0, 34, 32);
 
         setBounds(getX(), getY(), 32 / AlfredMain.PPM, 32 / AlfredMain.PPM);
         stateTime = 0;

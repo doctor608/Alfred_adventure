@@ -32,12 +32,11 @@ public class BadGround extends InteractiveTileObject {
 
     @Override
     public void onLegsHit(Alfred alfred){
-        if (getCell().getTile().getId() == BLANK_BROKENGROUND) {
-            setCategoryFilter(AlfredMain.DESTROYED_BIT);
-            getCell().setTile(null);
-        } else if (getCell().getTile().getId() == BLANK_BADGROUND){
+        if (getCell().getTile().getId() == BLANK_BADGROUND) {
             getCell().setTile(tileSet.getTile(BLANK_BROKENGROUND));
-        }
+        } /*else if (getCell().getTile().getId() == BLANK_BADGROUND){
+            getCell().setTile(tileSet.getTile(BLANK_BROKENGROUND));
+        }*/
     }
 
     @Override

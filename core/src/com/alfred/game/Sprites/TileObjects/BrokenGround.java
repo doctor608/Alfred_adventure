@@ -26,8 +26,8 @@ public class BrokenGround extends InteractiveTileObject {
     @Override
     public void onLegsHit(Alfred alfred){
         Gdx.app.log("BrokenGround", "Collision");
-        setCategoryFilter(AlfredMain.DESTROYED_BIT);
-        getCell().setTile(null);
+        //setCategoryFilter(AlfredMain.DESTROYED_BIT);
+        //getCell().setTile(null);
     }
 
     @Override

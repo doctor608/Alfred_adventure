@@ -5,6 +5,7 @@ import com.alfred.game.Scenes.Hud;
 import com.alfred.game.Screens.PlayScreen;
 import com.alfred.game.Sprites.Alfred;
 import com.alfred.game.Sprites.Items.BlackRaven;
+import com.alfred.game.Sprites.Items.BlackRose;
 import com.alfred.game.Sprites.Items.DroyerBullet;
 import com.alfred.game.Sprites.Items.ItemDef;
 import com.badlogic.gdx.graphics.g2d.Animation;
@@ -42,25 +43,36 @@ public class SmallDeath extends Enemy{
     }
 
     public void update(float dt) {
-        setRegion(deathStay);
         stateTime += dt;
+
+        TextureRegion region = deathStay;
+
+        if ((b2body.getLinearVelocity().x < 0 || !runningRight) && region.isFlipX()) {
+            region.flip(true, false);
+            runningRight = false;
+        } else if ((b2body.getLinearVelocity().x > 0 || runningRight) && !region.isFlipX()) {
+            region.flip(true, false);
+            runningRight = true;
+        }
 
         if(setToDestroy && !destroyed){
             world.destroyBody(b2body);
             destroyed = true;
-            //screen.spawnItem(new ItemDef(new Vector2(b2body.getPosition().x, b2body.getPosition().y), BlackRaven.class));
+            screen.spawnItem(new ItemDef(new Vector2(b2body.getPosition().x, b2body.getPosition().y), BlackRaven.class));
             stateTime = 0;
             Hud.addScore(10);
         } else if(!destroyed) {
             b2body.setLinearVelocity(velocity);
             setPosition(b2body.getPosition().x - getWidth() / 2, b2body.getPosition().y - getHeight() / 2);
+            setRegion(region);
         }
 
     }
 
     public void killAlfred(Alfred alfred) {
-        setToKill = true;
-        alfred.hit(50, "Alfred was gibbet by death");
+        //setToKill = true;
+        //alfred.hit(50, "Alfred was gibbet by death");
+        setToDestroy = true;
     }
 
     @Override
@@ -84,8 +96,8 @@ public class SmallDeath extends Enemy{
 
         PolygonShape head = new PolygonShape();
         Vector2[] vertice = new Vector2[4];
-        vertice[0] = new Vector2(-10, 16).scl(1 / AlfredMain.PPM);
-        vertice[1] = new Vector2(10, 16).scl(1 / AlfredMain.PPM);
+        vertice[0] = new Vector2(-10, 20).scl(1 / AlfredMain.PPM);
+        vertice[1] = new Vector2(10, 20).scl(1 / AlfredMain.PPM);
         vertice[2] = new Vector2(-3, 3).scl(1 / AlfredMain.PPM);
         vertice[3] = new Vector2(3, 3).scl(1 / AlfredMain.PPM);
         head.set(vertice);
@@ -97,7 +109,7 @@ public class SmallDeath extends Enemy{
     }
 
     public void draw(Batch batch) {
-        if ((!destroyed || stateTime < 5)) super.draw(batch);
+        if ((!destroyed)) super.draw(batch);
 
     }
 

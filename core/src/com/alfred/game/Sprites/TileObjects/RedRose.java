@@ -36,8 +36,5 @@ public class RedRose extends InteractiveTileObject{
         setCategoryFilter(AlfredMain.DESTROYED_BIT);
         getCell().setTile(null);
         alfred.heal(25);
-        if (alfred.isBlack()) {
-            alfred.retransform();
-        }
     }
 }
