@@ -1,5 +1,6 @@
 package com.alfred.game;
 
+import com.alfred.game.Screens.MenuScreen;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
@@ -11,8 +12,8 @@ import com.alfred.game.Screens.PlayScreen;
 public class AlfredMain extends Game {
 	public SpriteBatch batch;
 
-	public static final int vir_width = 620;
-	public static final int vir_height = 320;
+	public static final int vir_width = 480;
+	public static final int vir_height = 256;
 	public static final float PPM = 100;
 
 	public static final short NOTHING_BIT = 0;
@@ -38,7 +39,7 @@ public class AlfredMain extends Game {
 	public void create () {
 		batch = new SpriteBatch();
 
-		setScreen(new PlayScreen(this));
+		setScreen(new MenuScreen(this));
 	}
 
 	@Override

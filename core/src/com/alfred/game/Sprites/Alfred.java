@@ -1,6 +1,7 @@
 package com.alfred.game.Sprites;
 
 import com.alfred.game.AlfredMain;
+import com.alfred.game.Scenes.Hud;
 import com.alfred.game.Screens.PlayScreen;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Animation;
@@ -48,7 +49,7 @@ public class Alfred extends Sprite {
     //private boolean timeToDefineBlackAlfred;
     //private boolean timeToRedefineAlfred;
 
-    public int hp;
+    public static int hp;
 
     public boolean jumped;
 
@@ -92,6 +93,7 @@ public class Alfred extends Sprite {
         setRegion(alfredStay);
 
         hp = 50;
+        Hud.setHp(hp);
     }
 
     public void defineAlfred() {
@@ -174,7 +176,7 @@ public class Alfred extends Sprite {
                 break;
         }
 
-        if (b2body.getLinearVelocity().y < -10f) {
+        if (b2body.getLinearVelocity().y < -10f && !alfredIsDead) {
             die("Alfred was consumed by void");
         }
 
@@ -255,6 +257,7 @@ public class Alfred extends Sprite {
         } else {
             die(string);
         }
+        Hud.downHp(damage);
     }
 
     public void heal(int healing) {
@@ -263,8 +266,13 @@ public class Alfred extends Sprite {
         } else {
             hp = hp + healing;
         }
+        Hud.addHp(hp);
         String howmanyhp = Integer.toString(hp);
         Gdx.app.log("ALFRED HP", howmanyhp);
+    }
+
+    public void bowShotRight() {
+
     }
 
     /*

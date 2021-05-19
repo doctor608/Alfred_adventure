@@ -1,5 +1,6 @@
 package com.alfred.game.Screens;
 
+import com.alfred.game.BowJoystick;
 import com.alfred.game.PlayerJoystick;
 import com.alfred.game.Sprites.Alfred;
 import com.alfred.game.Sprites.Enemies.Enemy;
@@ -57,6 +58,7 @@ public class PlayScreen implements Screen {
     private LinkedBlockingQueue<ItemDef> itemsToSpawn;
 
     public PlayerJoystick joystick;
+    public BowJoystick bowJoystick;
     public static SpriteBatch batch;
 
     public PlayScreen(AlfredMain game) {
@@ -119,14 +121,35 @@ public class PlayScreen implements Screen {
 
     public void handleInput(float dt) {
         if (joystick.isRightTouched()) {
-            player.b2body.applyLinearImpulse(new Vector2(0.1f, 0), player.b2body.getWorldCenter(), true);
+            if (!(player.b2body.getLinearVelocity().x > 2f)) {
+                player.b2body.applyLinearImpulse(new Vector2(0.1f, 0), player.b2body.getWorldCenter(), true);
+            }
+            //player.b2body.applyLinearImpulse(new Vector2(0.1f, 0), player.b2body.getWorldCenter(), true);
         }
         if (joystick.isLeftTouched()) {
-            player.b2body.applyLinearImpulse(new Vector2(-0.1f, 0), player.b2body.getWorldCenter(), true);
+            if (!(player.b2body.getLinearVelocity().x < -2f)) {
+                player.b2body.applyLinearImpulse(new Vector2(-0.1f, 0), player.b2body.getWorldCenter(), true);
+            }
+            //player.b2body.applyLinearImpulse(new Vector2(-0.1f, 0), player.b2body.getWorldCenter(), true);
         }
         if (joystick.isUpTouched() && !player.jumped && !player.isDead()) {
             player.b2body.applyLinearImpulse(new Vector2(0, 5f), player.b2body.getWorldCenter(), true);
         }
+
+        if (joystick.isBowRightTouched()) {
+            Gdx.app.log("RIGHT", "SHOT");
+            joystick.bowrightTouched = false;
+        }
+        if (joystick.isBowDownTouched()) {
+            Gdx.app.log("DOWN", "SHOT");
+            joystick.bowdownTouched = false;
+        }
+        if (joystick.isBowUpTouched()) {
+            Gdx.app.log("UP", "SHOT");
+            joystick.bowupTouched = false;
+            player.bowShotRight();
+        }
+
 
         if(Gdx.input.isKeyJustPressed(Input.Keys.UP) && !player.jumped && !player.isDead())
             player.b2body.applyLinearImpulse(new Vector2(0, 5f), player.b2body.getWorldCenter(), true);
@@ -153,8 +176,6 @@ public class PlayScreen implements Screen {
         for (Item item: items) {
             item.update(dt);
         }
-
-
 
         hud.update(dt);
 
@@ -200,7 +221,7 @@ public class PlayScreen implements Screen {
     }
 
     public boolean gameOver(){
-        if(player.currentState == Alfred.State.DEAD && player.getStateTimer() > 3){
+        if(player.currentState == Alfred.State.DEAD && player.getStateTimer() > 1.5){
             return true;
         }
         return false;

@@ -2,6 +2,7 @@ package com.alfred.game.Scenes;
 
 import com.alfred.game.AlfredMain;
 
+import com.alfred.game.Sprites.Alfred;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -25,9 +26,11 @@ public class Hud implements Disposable {
     private int worldTimer;
     private float timeCount;
     private static int score;
+    private static int hp;
 
     private Label countTimeLabel;
     private static Label scoreLabel;
+    private static Label hpLabel;
     private Label emptyLabel1;
     private Label emptyLabel2;
 
@@ -40,6 +43,7 @@ public class Hud implements Disposable {
         worldTimer = 0;
         timeCount = 0;
         score = 0;
+        hp = 50;
 
         viewport = new FitViewport(AlfredMain.vir_width, AlfredMain.vir_height, new OrthographicCamera());
         stage = new Stage(viewport, batch);
@@ -48,6 +52,7 @@ public class Hud implements Disposable {
         table.top();
         table.setFillParent(true);
 
+        hpLabel = new Label(String.format("HP: %d", hp), new Label.LabelStyle(new BitmapFont(), Color.GREEN));
         countTimeLabel = new Label(String.format("%03d", worldTimer), new Label.LabelStyle(new BitmapFont(), Color.GREEN));
         scoreLabel = new Label(String.format("%d", score), new Label.LabelStyle(new BitmapFont(), Color.GREEN));
         emptyLabel1 = new Label(" ", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
@@ -58,7 +63,7 @@ public class Hud implements Disposable {
         //worldLabel = new Label(" ", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
         //alfredLabel = new Label("ALFRED", new Label.LabelStyle(new BitmapFont(), Color.GREEN));
 
-        table.add(emptyLabel1).expandX().padTop(10);
+        table.add(hpLabel).expandX().padTop(10);
         table.add(countTimeLabel).expandX().padTop(10);
         //table.add(emptyLabel2).expandX().padTop(10);
         table.add(scoreLabel).expandX().padTop(10);
@@ -78,6 +83,28 @@ public class Hud implements Disposable {
     public static void addScore(int value) {
         score = score + value;
         scoreLabel.setText(String.format("%d", score));
+    }
+
+    public static void addHp(int value) {
+        if (hp + value > 50) {
+            hp = 50;
+        } else {
+            hp = hp + value;
+        }
+        hpLabel.setText(String.format("HP: %d", hp));
+    }
+
+    public static void downHp(int value) {
+        if (hp - value < 0) {
+            hp = 0;
+        } else {
+            hp = hp - value;
+        }
+        hpLabel.setText(String.format("HP: %d", hp));
+    }
+
+    public static void setHp(int health) {
+        hp = health;
     }
 
     @Override

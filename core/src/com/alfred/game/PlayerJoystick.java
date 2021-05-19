@@ -22,6 +22,7 @@ public class PlayerJoystick {
 
     public boolean isTouched;
     public boolean upTouched, leftTouched, rightTouched;
+    public boolean bowupTouched, bowdownTouched, bowrightTouched;
 
     public PlayerJoystick() {
         camera = new OrthographicCamera();
@@ -77,54 +78,68 @@ public class PlayerJoystick {
         });
 
         table.left().bottom();
-        table.row().padLeft(16);
+        table.row().padLeft(2);
 
         table.add(leftImg).size(leftImg.getWidth(), leftImg.getHeight());
         table.add(rightImg).size(rightImg.getWidth(), rightImg.getHeight());
-        table.add();
-        table.add();
-        table.add();
-        table.add();
-        table.add();
-        table.add();
-        table.add();
-        table.add();
-        table.add();
-        table.add();
-        table.add();
-        table.add();
-        table.add();
-        table.add();
-        table.add();
-        table.add();
-        table.add();
-        table.add();
-        table.add();
-        table.add();
-        table.add();
-        table.add();
-        table.add();
-        table.add(upImg).size(upImg.getWidth(), upImg.getHeight());
+        table.add(upImg).size(upImg.getWidth(), upImg.getHeight()).padLeft(270);
 
         stage.addActor(table);
 
-        /*
-        Table table1 = new Table();
-        table1.center().bottom();
-        table1.add();
-        table1.add();
-        table1.add(upImg).size(upImg.getWidth(), upImg.getHeight());
-        table1.add();
-        stage.addActor(table1);*/
 
-        /* если кнопка прыжок над передвижением
         Table table1 = new Table();
-        table1.left().padBottom(168);
-        table1.padLeft(64);
-        table1.add(upImg).size(upImg.getWidth(), upImg.getHeight());
+
+        Image bowdownImg = new Image(new Texture("bowdownjoystick.png"));
+        bowdownImg.setSize(38, 38);
+        bowdownImg.addListener(new InputListener() {
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                bowdownTouched = true;
+                return true;
+            }
+
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                bowdownTouched = false;
+            }
+        });
+        Image bowupImg = new Image(new Texture("bowupjoystick.png"));
+        bowupImg.setSize(38, 38);
+        bowupImg.addListener(new InputListener() {
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                bowupTouched = true;
+                return true;
+            }
+
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                bowupTouched = false;
+            }
+        });
+        Image bowrightImg = new Image(new Texture("bowrightjoystick.png"));
+        bowrightImg.setSize(38, 38);
+        bowrightImg.addListener(new InputListener() {
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                bowrightTouched = true;
+                return true;
+            }
+
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                bowrightTouched = false;
+            }
+        });
+
+        table1.bottom();
+        table1.add(bowupImg).size(bowupImg.getWidth(), bowupImg.getHeight()).padLeft(38).padBottom(2);
+        table1.row();
+        table1.add(bowrightImg).size(bowrightImg.getWidth(), bowrightImg.getHeight()).padLeft(38).padBottom(2);
+        table1.row();
+        table1.add(bowdownImg).size(bowdownImg.getWidth(), bowdownImg.getHeight()).padLeft(38).padBottom(64);
+
         stage.addActor(table1);
-        */
-
     }
 
     public void draw() {
@@ -141,6 +156,18 @@ public class PlayerJoystick {
 
     public boolean isRightTouched() {
         return rightTouched;
+    }
+
+    public boolean isBowUpTouched() {
+        return bowupTouched;
+    }
+
+    public boolean isBowDownTouched() {
+        return bowdownTouched;
+    }
+
+    public boolean isBowRightTouched() {
+        return bowrightTouched;
     }
 
     public void resize(int width, int height) {
