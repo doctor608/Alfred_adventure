@@ -13,7 +13,7 @@ public class Arrow extends Item {
     public Arrow(PlayScreen screen, float x, float y) {
         super(screen, x, y);
         setRegion(screen.getAtlas().findRegion("arrow"), 0, 0, 32, 32);
-        velocity = new Vector2(0, 0);
+        velocity = new Vector2(1f, 0);
     }
 
     @Override
@@ -26,8 +26,8 @@ public class Arrow extends Item {
         FixtureDef fdef = new FixtureDef();
         CircleShape shape = new CircleShape();
         shape.setRadius(3 / AlfredMain.PPM);
-        fdef.filter.categoryBits = AlfredMain.ITEM_BIT;
-        fdef.filter.maskBits = AlfredMain.ALFRED_BIT | AlfredMain.OBJECT_BIT | AlfredMain.GROUND_BIT | AlfredMain.DEMONICGROUND_BIT | AlfredMain.ALFRED_LEGS_BIT;
+        fdef.filter.categoryBits = AlfredMain.ARROW_BIT;
+        fdef.filter.maskBits = AlfredMain.OBJECT_BIT | AlfredMain.GROUND_BIT | AlfredMain.DEMONICGROUND_BIT | AlfredMain.ALFRED_LEGS_BIT;
 
         fdef.shape = shape;
         body.createFixture(fdef).setUserData(this);
@@ -42,7 +42,7 @@ public class Arrow extends Item {
     public void update(float dt) {
         super.update(dt);
         setPosition(body.getPosition().x - getWidth() / 2, body.getPosition().y - getHeight() / 2);
-        velocity.y = body.getLinearVelocity().y + 0.3f;
+        velocity.y = body.getLinearVelocity().y;
         if (velocity.y > 15f) {
             destroy();
         }

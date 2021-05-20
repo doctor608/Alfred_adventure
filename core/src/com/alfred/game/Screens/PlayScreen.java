@@ -4,6 +4,7 @@ import com.alfred.game.BowJoystick;
 import com.alfred.game.PlayerJoystick;
 import com.alfred.game.Sprites.Alfred;
 import com.alfred.game.Sprites.Enemies.Enemy;
+import com.alfred.game.Sprites.Items.Arrow;
 import com.alfred.game.Sprites.Items.BlackRaven;
 import com.alfred.game.Sprites.Items.BlackRose;
 import com.alfred.game.Sprites.Items.DroyerBullet;
@@ -106,6 +107,8 @@ public class PlayScreen implements Screen {
                 items.add(new DroyerBullet(this, idef.position.x, idef.position.y));
             } else if (idef.type == BlackRaven.class) {
                 items.add(new BlackRaven(this, idef.position.x, idef.position.y));
+            } else if(idef.type == Arrow.class) {
+                items.add(new Arrow(this, idef.position.x, idef.position.y));
             }
         }
     }
@@ -139,6 +142,7 @@ public class PlayScreen implements Screen {
         if (joystick.isBowRightTouched()) {
             Gdx.app.log("RIGHT", "SHOT");
             joystick.bowrightTouched = false;
+            player.bowShotRight();
         }
         if (joystick.isBowDownTouched()) {
             Gdx.app.log("DOWN", "SHOT");

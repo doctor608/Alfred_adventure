@@ -34,6 +34,8 @@ public class AlfredMain extends Game {
 	public static final short REDGROUND_BIT = 8192;
 	public static final int DROYERBULLET_BIT = 16384;
 	public static final short REDROSE_BIT = -1;
+	//public static final short ARROW_BIT = -4;
+	public static final short ARROW_BIT = -32768;
 
 	@Override
 	public void create () {

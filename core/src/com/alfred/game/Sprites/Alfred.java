@@ -3,6 +3,10 @@ package com.alfred.game.Sprites;
 import com.alfred.game.AlfredMain;
 import com.alfred.game.Scenes.Hud;
 import com.alfred.game.Screens.PlayScreen;
+import com.alfred.game.Sprites.Items.Arrow;
+import com.alfred.game.Sprites.Items.BlackRaven;
+import com.alfred.game.Sprites.Items.DroyerBullet;
+import com.alfred.game.Sprites.Items.ItemDef;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -21,7 +25,7 @@ import com.badlogic.gdx.utils.Array;
 
 public class Alfred extends Sprite {
 
-    public enum State{ JUMPING, STAYING, RUNNING, TRANSFORMING, DEAD, RETRANSFORMING };
+    public enum State{ JUMPING, STAYING, RUNNING, TRANSFORMING, DEAD, RETRANSFORMING, BOWRIGHTSHOT };
     public State currentState;
     public State previousState;
 
@@ -29,6 +33,7 @@ public class Alfred extends Sprite {
 
     public World world;
     public Body b2body;
+    protected PlayScreen screen;
 
     private TextureRegion alfredStay;
     private Animation alfredRun;
@@ -40,10 +45,13 @@ public class Alfred extends Sprite {
     private Animation transformingToBlack;
     private Animation retransforming;
 
+    private TextureRegion bowrightshot;
+
     private boolean runningRight;
     private boolean alfredIsBlack;
     private boolean runTransformingAnimation;
     private boolean alfredIsDead;
+    private boolean isBowRightShot;
 
     public static String judgment;
     //private boolean timeToDefineBlackAlfred;
@@ -56,6 +64,7 @@ public class Alfred extends Sprite {
     public Alfred(PlayScreen screen) {
         //super(screen.getAtlas().findRegion("alfred"));
         this.world = screen.getWorld();
+        this.screen = screen;
 
         currentState = State.STAYING;
         previousState = State.STAYING;
@@ -86,6 +95,8 @@ public class Alfred extends Sprite {
 
         alfredStay = new TextureRegion(screen.getAtlas().findRegion("alfred"), 0, 0, 32, 32);
         blackAlfredStay = new TextureRegion(screen.getAtlas().findRegion("blackalfred"), 0, 0, 32, 32);
+
+        bowrightshot = new TextureRegion(screen.getAtlas().findRegion("bow"), 0, 0, 32, 32);
 
         defineAlfred();
 
@@ -161,18 +172,27 @@ public class Alfred extends Sprite {
                     runTransformingAnimation = false;
                 }
                 break;
+            case BOWRIGHTSHOT:
+                region = bowrightshot;
+                jumped = false;
+                screen.spawnItem(new ItemDef(new Vector2(b2body.getPosition().x + 16 / AlfredMain.PPM, b2body.getPosition().y), Arrow.class));
+                isBowRightShot = false;
+                break;
             case JUMPING:
                 region = alfredIsBlack ? blackAlfredJump : alfredJump;
                 jumped = true;
+                isBowRightShot = false;
                 break;
             case RUNNING:
                 region = alfredIsBlack ? (TextureRegion) blackAlfredRun.getKeyFrame(stateTimer, true) : (TextureRegion) alfredRun.getKeyFrame(stateTimer, true);
                 jumped = false;
+                isBowRightShot = false;
                 break;
             case STAYING:
             default:
                 region = alfredIsBlack ? blackAlfredStay : alfredStay;
                 jumped = false;
+                isBowRightShot = false;
                 break;
         }
 
@@ -208,6 +228,8 @@ public class Alfred extends Sprite {
             return State.JUMPING;
         } else if (b2body.getLinearVelocity().x != 0) {
             return State.RUNNING;
+        } else if (isBowRightShot) {
+            return State.BOWRIGHTSHOT;
         } else {
             return State.STAYING;
         }
@@ -272,7 +294,7 @@ public class Alfred extends Sprite {
     }
 
     public void bowShotRight() {
-
+        isBowRightShot = true;
     }
 
     /*

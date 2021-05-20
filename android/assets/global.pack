@@ -51,3 +51,32 @@ smalldeath
     orig: 70, 32
     offset: 0, 0
     index: -1
+bow
+    rotate: false
+    xy: 770, 0
+    size: 32, 32
+    orig: 32, 32
+    offset: 0, 0
+    index: -1
+arrow
+    rotate: false
+    xy: 878, 0
+    size: 32, 32
+    orig: 32, 32
+    offset: 0, 0
+    index: -1
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

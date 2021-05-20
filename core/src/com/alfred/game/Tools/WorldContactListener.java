@@ -3,9 +3,11 @@ package com.alfred.game.Tools;
 import com.alfred.game.AlfredMain;
 import com.alfred.game.Sprites.Alfred;
 import com.alfred.game.Sprites.Enemies.Enemy;
+import com.alfred.game.Sprites.Items.Arrow;
 import com.alfred.game.Sprites.Items.DroyerBullet;
 import com.alfred.game.Sprites.Items.Item;
 import com.alfred.game.Sprites.TileObjects.InteractiveTileObject;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.ContactListener;
@@ -153,6 +155,24 @@ public class WorldContactListener implements ContactListener {
                     ((DroyerBullet)fixA.getUserData()).destroy();
                 } else {
                     ((DroyerBullet)fixB.getUserData()).destroy();
+                }
+                break;
+            case AlfredMain.ARROW_BIT | AlfredMain.ENEMY_BIT:
+                if (fixA.getFilterData().categoryBits == AlfredMain.ARROW_BIT) {
+                    //((DroyerBullet)fixA.getUserData()).use((Alfred)fixB.getUserData());
+                    Gdx.app.log("XD", "ARROW");
+                } else {
+                    //((DroyerBullet)fixB.getUserData()).use((Alfred)fixA.getUserData());
+                    Gdx.app.log("XDD", "ARROW");
+                }
+                break;
+            case AlfredMain.ARROW_BIT | AlfredMain.OBJECT_BIT:
+                if (fixA.getFilterData().categoryBits == AlfredMain.ARROW_BIT) {
+                    //((Arrow)fixA.getUserData()).destroy();
+                    Gdx.app.log("XDDD", "ARROW");
+                } else {
+                    //((Arrow)fixB.getUserData()).destroy();
+                    Gdx.app.log("XDDDD", "ARROW");
                 }
                 break;
             case AlfredMain.ALFRED_BIT | AlfredMain.COIN_BIT:
