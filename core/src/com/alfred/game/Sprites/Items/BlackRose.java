@@ -3,6 +3,7 @@ package com.alfred.game.Sprites.Items;
 import com.alfred.game.AlfredMain;
 import com.alfred.game.Screens.PlayScreen;
 import com.alfred.game.Sprites.Alfred;
+import com.alfred.game.Sprites.Enemies.Enemy;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -41,6 +42,11 @@ public class BlackRose extends Item{
         destroy();
         alfred.transform();
         alfred.hit(25, "Alfred was poisoned by a black rose");
+    }
+
+    @Override
+    public void hitEnemy(Enemy enemy) {
+
     }
 
     @Override

@@ -30,6 +30,7 @@ public abstract class Enemy extends Sprite {
     public abstract void hitOnHead();
     public abstract void killAlfred(Alfred alfred);
     public abstract void update(float dt);
+    public abstract void getHit(int damage);
 
     public void reverseVelocity(boolean x, boolean y) {
         if (x) {

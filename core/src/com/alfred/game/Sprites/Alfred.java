@@ -5,6 +5,7 @@ import com.alfred.game.Scenes.Hud;
 import com.alfred.game.Screens.PlayScreen;
 import com.alfred.game.Sprites.Items.Arrow;
 import com.alfred.game.Sprites.Items.BlackRaven;
+import com.alfred.game.Sprites.Items.BlackRose;
 import com.alfred.game.Sprites.Items.DroyerBullet;
 import com.alfred.game.Sprites.Items.ItemDef;
 import com.badlogic.gdx.Gdx;
@@ -25,7 +26,7 @@ import com.badlogic.gdx.utils.Array;
 
 public class Alfred extends Sprite {
 
-    public enum State{ JUMPING, STAYING, RUNNING, TRANSFORMING, DEAD, RETRANSFORMING, BOWRIGHTSHOT };
+    public enum State{ JUMPING, STAYING, RUNNING, TRANSFORMING, DEAD, RETRANSFORMING, BOWRIGHTSHOT, BOWDOWNSHOT, BOWUPSHOT };
     public State currentState;
     public State previousState;
 
@@ -45,13 +46,27 @@ public class Alfred extends Sprite {
     private Animation transformingToBlack;
     private Animation retransforming;
 
-    private TextureRegion bowrightshot;
 
-    private boolean runningRight;
+    private Animation bowrightshot;
+    private Animation bowdownshot;
+    private Animation bowupshot;
+
+    private boolean runBowRightShotAnimation;
+    private boolean runBowDownShotAnimation;
+    private boolean runBowUpShotAnimation;
+
+    public static boolean shotRight;
+    public static boolean shotLeft;
+    public static boolean shotDownRight;
+    public static boolean shotDownLeft;
+    public static boolean shotUpRight;
+    public static boolean shotUpLeft;
+
+
+    public static boolean runningRight;
     private boolean alfredIsBlack;
     private boolean runTransformingAnimation;
     private boolean alfredIsDead;
-    private boolean isBowRightShot;
 
     public static String judgment;
     //private boolean timeToDefineBlackAlfred;
@@ -89,6 +104,7 @@ public class Alfred extends Sprite {
         frames.add(new TextureRegion(screen.getAtlas().findRegion("blackalfred"), 166, 0, 34, 32));
         frames.add(new TextureRegion(screen.getAtlas().findRegion("blackalfred"), 204, 0, 34, 32));
         transformingToBlack = new Animation(0.2f, frames);
+        frames.clear();
 
         alfredJump = new TextureRegion(screen.getAtlas().findRegion("alfred"), 102, 0, 34, 32);
         blackAlfredJump = new TextureRegion(screen.getAtlas().findRegion("blackalfred"), 102, 0, 34, 32);
@@ -96,7 +112,23 @@ public class Alfred extends Sprite {
         alfredStay = new TextureRegion(screen.getAtlas().findRegion("alfred"), 0, 0, 32, 32);
         blackAlfredStay = new TextureRegion(screen.getAtlas().findRegion("blackalfred"), 0, 0, 32, 32);
 
-        bowrightshot = new TextureRegion(screen.getAtlas().findRegion("bow"), 0, 0, 32, 32);
+        frames.add(new TextureRegion(screen.getAtlas().findRegion("bow"), 0, 0, 32, 32));
+        frames.add(new TextureRegion(screen.getAtlas().findRegion("bow"), 0, 0, 32, 32));
+        frames.add(new TextureRegion(screen.getAtlas().findRegion("bow"), 0, 0, 32, 32));
+        bowrightshot = new Animation(0.2f, frames);
+        frames.clear();
+
+        frames.add(new TextureRegion(screen.getAtlas().findRegion("bow"), 32, 0, 32, 32));
+        frames.add(new TextureRegion(screen.getAtlas().findRegion("bow"), 32, 0, 32, 32));
+        frames.add(new TextureRegion(screen.getAtlas().findRegion("bow"), 32, 0, 32, 32));
+        bowdownshot = new Animation(0.2f, frames);
+        frames.clear();
+
+        frames.add(new TextureRegion(screen.getAtlas().findRegion("bow"), 64, 0, 32, 32));
+        frames.add(new TextureRegion(screen.getAtlas().findRegion("bow"), 64, 0, 32, 32));
+        frames.add(new TextureRegion(screen.getAtlas().findRegion("bow"), 64, 0, 32, 32));
+        bowupshot = new Animation(0.2f, frames);
+        frames.clear();
 
         defineAlfred();
 
@@ -105,6 +137,11 @@ public class Alfred extends Sprite {
 
         hp = 50;
         Hud.setHp(hp);
+
+        runBowRightShotAnimation = false;
+        runBowDownShotAnimation = false;
+        runBowUpShotAnimation = false;
+        //isBowRightShot = false;
     }
 
     public void defineAlfred() {
@@ -164,7 +201,6 @@ public class Alfred extends Sprite {
         switch (currentState) {
             case TRANSFORMING:
                 region = (TextureRegion) transformingToBlack.getKeyFrame(stateTimer);
-                //Gdx.app.log("TRANSFORMING","BLACK");
                 if (runningRight == true) {
                     region.flip(true, false);
                 }
@@ -173,26 +209,80 @@ public class Alfred extends Sprite {
                 }
                 break;
             case BOWRIGHTSHOT:
-                region = bowrightshot;
-                jumped = false;
-                screen.spawnItem(new ItemDef(new Vector2(b2body.getPosition().x + 16 / AlfredMain.PPM, b2body.getPosition().y), Arrow.class));
-                isBowRightShot = false;
+                region = (TextureRegion) bowrightshot.getKeyFrame(stateTimer);
+                if (runningRight == true) {
+                    region.flip(true, false);
+                }
+                boolean variabl = bowrightshot.isAnimationFinished(stateTimer);
+                if (previousState == State.STAYING) {
+                    variabl = false;
+                }
+                if (variabl) {
+                    if (runningRight == true) {
+                        screen.spawnItem(new ItemDef(new Vector2(b2body.getPosition().x + 32 / AlfredMain.PPM, b2body.getPosition().y + 16 / AlfredMain.PPM), Arrow.class));
+                    } else {
+                        screen.spawnItem(new ItemDef(new Vector2(b2body.getPosition().x - 32 / AlfredMain.PPM, b2body.getPosition().y + 16 / AlfredMain.PPM), Arrow.class));
+                    }
+                    runBowRightShotAnimation = false;
+                    //currentState = State.STAYING;
+                }
+                //currentState = State.STAYING;
+                //jumped = false;
+                break;
+            case BOWUPSHOT:
+                region = (TextureRegion) bowupshot.getKeyFrame(stateTimer);
+                if (runningRight == true) {
+                    region.flip(true, false);
+                }
+                boolean variable = bowupshot.isAnimationFinished(stateTimer);
+                if (previousState == State.STAYING) {
+                    variable = false;
+                }
+                if (variable) {
+                    if (runningRight == true) {
+                        screen.spawnItem(new ItemDef(new Vector2(b2body.getPosition().x + 32 / AlfredMain.PPM, b2body.getPosition().y + 8 / AlfredMain.PPM), Arrow.class));
+                    } else {
+                        screen.spawnItem(new ItemDef(new Vector2(b2body.getPosition().x - 32 / AlfredMain.PPM, b2body.getPosition().y + 8 / AlfredMain.PPM), Arrow.class));
+                    }
+                    runBowUpShotAnimation = false;
+                    //currentState = State.STAYING;
+                }
+                //currentState = State.STAYING;
+                //jumped = false;
+                break;
+            case BOWDOWNSHOT:
+                region = (TextureRegion) bowdownshot.getKeyFrame(stateTimer);
+                if (runningRight == true) {
+                    region.flip(true, false);
+                }
+                boolean variabel = bowdownshot.isAnimationFinished(stateTimer);
+                if (previousState == State.STAYING) {
+                    variabel = false;
+                }
+                if (variabel) {
+                    if (runningRight == true) {
+                        screen.spawnItem(new ItemDef(new Vector2(b2body.getPosition().x + 32 / AlfredMain.PPM, b2body.getPosition().y - 8 / AlfredMain.PPM), Arrow.class));
+                    } else {
+                        screen.spawnItem(new ItemDef(new Vector2(b2body.getPosition().x - 32 / AlfredMain.PPM, b2body.getPosition().y - 8 / AlfredMain.PPM), Arrow.class));
+                    }
+                    runBowDownShotAnimation = false;
+                    //currentState = State.STAYING;
+                }
+                //currentState = State.STAYING;
+                //jumped = false;
                 break;
             case JUMPING:
                 region = alfredIsBlack ? blackAlfredJump : alfredJump;
                 jumped = true;
-                isBowRightShot = false;
                 break;
             case RUNNING:
                 region = alfredIsBlack ? (TextureRegion) blackAlfredRun.getKeyFrame(stateTimer, true) : (TextureRegion) alfredRun.getKeyFrame(stateTimer, true);
                 jumped = false;
-                isBowRightShot = false;
                 break;
             case STAYING:
             default:
                 region = alfredIsBlack ? blackAlfredStay : alfredStay;
                 jumped = false;
-                isBowRightShot = false;
                 break;
         }
 
@@ -222,14 +312,18 @@ public class Alfred extends Sprite {
     public State getState(){
         if (alfredIsDead) {
             return State.DEAD;
+        } else if (runBowRightShotAnimation) {
+            return State.BOWRIGHTSHOT;
+        } else if (runBowDownShotAnimation) {
+            return State.BOWDOWNSHOT;
+        } else if (runBowUpShotAnimation) {
+            return State.BOWUPSHOT;
         } else if (runTransformingAnimation) {
             return State.TRANSFORMING;
         } else if (b2body.getLinearVelocity().y != 0) {
             return State.JUMPING;
         } else if (b2body.getLinearVelocity().x != 0) {
             return State.RUNNING;
-        } else if (isBowRightShot) {
-            return State.BOWRIGHTSHOT;
         } else {
             return State.STAYING;
         }
@@ -239,6 +333,76 @@ public class Alfred extends Sprite {
         runTransformingAnimation = true;
         alfredIsBlack = true;
         setBounds(getX(), getY(), getWidth(), getHeight());
+    }
+
+    public void bowShotRight() {
+        runBowRightShotAnimation = true;
+        if (runningRight) {
+            shotRight = true;
+            shotLeft = false;
+            shotDownRight = false;
+            shotDownLeft = false;
+            shotUpLeft = false;
+            shotUpRight = false;
+        } else {
+            shotRight = false;
+            shotLeft = true;
+            shotDownRight = false;
+            shotDownLeft = false;
+            shotUpLeft = false;
+            shotUpRight = false;
+        }
+        setBounds(getX(), getY(), getWidth(), getHeight());
+    }
+
+    public void bowShotDown() {
+        runBowDownShotAnimation = true;
+        if (runningRight) {
+            shotDownRight = true;
+            shotDownLeft = false;
+            shotRight = false;
+            shotLeft = false;
+            shotUpLeft = false;
+            shotUpRight = false;
+        } else {
+            shotDownRight = false;
+            shotDownLeft = true;
+            shotRight = false;
+            shotLeft = false;
+            shotUpLeft = false;
+            shotUpRight = false;
+        }
+    }
+
+    public void bowUpShot() {
+        runBowUpShotAnimation = true;
+        if (runningRight) {
+            shotUpRight = true;
+            shotUpLeft = false;
+            shotDownRight = false;
+            shotDownLeft = false;
+            shotRight = false;
+            shotLeft = false;
+        } else {
+            shotUpLeft  = true;
+            shotUpRight = false;
+            shotDownRight = false;
+            shotDownLeft = false;
+            shotRight = false;
+            shotLeft = false;
+        }
+    }
+
+    public boolean isRunBowUpShotAnimation() {
+        return runBowUpShotAnimation;
+    }
+
+    public boolean isRunBowDownShotAnimation() {
+        return runBowDownShotAnimation;
+    }
+
+    public boolean isRunBowRightShotAnimation() {
+        return runBowRightShotAnimation;
     }
 
     public boolean isDead() {
@@ -252,6 +416,7 @@ public class Alfred extends Sprite {
     public boolean isBlack() {
         return alfredIsBlack;
     }
+
 
     public void die(String string) {
 
@@ -291,10 +456,6 @@ public class Alfred extends Sprite {
         Hud.addHp(hp);
         String howmanyhp = Integer.toString(hp);
         Gdx.app.log("ALFRED HP", howmanyhp);
-    }
-
-    public void bowShotRight() {
-        isBowRightShot = true;
     }
 
     /*

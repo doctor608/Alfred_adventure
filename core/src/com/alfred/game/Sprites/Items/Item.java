@@ -3,6 +3,7 @@ package com.alfred.game.Sprites.Items;
 import com.alfred.game.AlfredMain;
 import com.alfred.game.Screens.PlayScreen;
 import com.alfred.game.Sprites.Alfred;
+import com.alfred.game.Sprites.Enemies.Enemy;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -32,6 +33,7 @@ public abstract class Item extends Sprite {
 
     public abstract void defineItem();
     public abstract void use(Alfred alfred);
+    public abstract void hitEnemy(Enemy enemy);
 
     public void update(float dt) {
         if (toDestroy && !destroyed) {

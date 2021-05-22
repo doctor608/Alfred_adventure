@@ -105,6 +105,11 @@ public class Droyer extends Enemy{
         }
     }
 
+    @Override
+    public void getHit(int damage) {
+
+    }
+
     public void draw(Batch batch) {
         if ((!destroyed || stateTime < 5)) super.draw(batch);
 

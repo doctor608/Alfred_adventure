@@ -3,6 +3,7 @@ package com.alfred.game.Sprites.Items;
 import com.alfred.game.AlfredMain;
 import com.alfred.game.Screens.PlayScreen;
 import com.alfred.game.Sprites.Alfred;
+import com.alfred.game.Sprites.Enemies.Enemy;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
@@ -13,7 +14,7 @@ public class DroyerBullet extends Item{
     public DroyerBullet(PlayScreen screen, float x, float y) {
         super(screen, x, y);
         setRegion(screen.getAtlas().findRegion("droyer"), 34, 0, 32, 32);
-        velocity = new Vector2(0, 1f);
+        velocity = new Vector2(0, 0/*1f*/);
     }
 
 
@@ -28,7 +29,8 @@ public class DroyerBullet extends Item{
         CircleShape shape = new CircleShape();
         shape.setRadius(3 / AlfredMain.PPM);
         fdef.filter.categoryBits = (short) AlfredMain.DROYERBULLET_BIT;
-        fdef.filter.maskBits = AlfredMain.ALFRED_BIT | AlfredMain.OBJECT_BIT | AlfredMain.GROUND_BIT | AlfredMain.DEMONICGROUND_BIT | AlfredMain.ALFRED_HEAD_BIT;
+        fdef.filter.maskBits = AlfredMain.ALFRED_BIT | AlfredMain.OBJECT_BIT | AlfredMain.GROUND_BIT | AlfredMain.DEMONICGROUND_BIT | AlfredMain.ALFRED_HEAD_BIT |
+                                AlfredMain.ARROW_BIT;
 
         fdef.shape = shape;
         body.createFixture(fdef).setUserData(this);
@@ -41,10 +43,15 @@ public class DroyerBullet extends Item{
     }
 
     @Override
+    public void hitEnemy(Enemy enemy) {
+
+    }
+
+    @Override
     public void update(float dt) {
         super.update(dt);
         setPosition(body.getPosition().x - getWidth() / 2, body.getPosition().y - getHeight() / 2);
-        velocity.y = body.getLinearVelocity().y;
+        velocity.y = -1f/*body.getLinearVelocity().y*/;
         body.setLinearVelocity(velocity);
     }
 }

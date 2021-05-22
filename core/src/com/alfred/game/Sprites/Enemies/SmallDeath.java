@@ -69,6 +69,11 @@ public class SmallDeath extends Enemy{
 
     }
 
+    @Override
+    public void getHit(int damage) {
+
+    }
+
     public void killAlfred(Alfred alfred) {
         //setToKill = true;
         //alfred.hit(50, "Alfred was gibbet by death");

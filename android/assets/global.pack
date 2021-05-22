@@ -54,15 +54,15 @@ smalldeath
 bow
     rotate: false
     xy: 770, 0
-    size: 32, 32
-    orig: 32, 32
+    size: 118, 32
+    orig: 118, 32
     offset: 0, 0
     index: -1
 arrow
     rotate: false
     xy: 878, 0
-    size: 32, 32
-    orig: 32, 32
+    size: 100, 32
+    orig: 100, 32
     offset: 0, 0
     index: -1
 

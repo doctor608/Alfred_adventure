@@ -159,19 +159,19 @@ public class WorldContactListener implements ContactListener {
                 break;
             case AlfredMain.ARROW_BIT | AlfredMain.ENEMY_BIT:
                 if (fixA.getFilterData().categoryBits == AlfredMain.ARROW_BIT) {
-                    //((DroyerBullet)fixA.getUserData()).use((Alfred)fixB.getUserData());
-                    Gdx.app.log("XD", "ARROW");
+                    ((Arrow)fixA.getUserData()).hitEnemy((Enemy) fixB.getUserData());
                 } else {
+                    ((Arrow)fixB.getUserData()).hitEnemy((Enemy) fixA.getUserData());
                     //((DroyerBullet)fixB.getUserData()).use((Alfred)fixA.getUserData());
                     Gdx.app.log("XDD", "ARROW");
                 }
                 break;
             case AlfredMain.ARROW_BIT | AlfredMain.OBJECT_BIT:
                 if (fixA.getFilterData().categoryBits == AlfredMain.ARROW_BIT) {
-                    //((Arrow)fixA.getUserData()).destroy();
+                    ((Arrow)fixA.getUserData()).destroy();
                     Gdx.app.log("XDDD", "ARROW");
                 } else {
-                    //((Arrow)fixB.getUserData()).destroy();
+                    ((Arrow)fixB.getUserData()).destroy();
                     Gdx.app.log("XDDDD", "ARROW");
                 }
                 break;

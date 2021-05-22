@@ -142,20 +142,27 @@ public class PlayScreen implements Screen {
         if (joystick.isBowRightTouched()) {
             Gdx.app.log("RIGHT", "SHOT");
             joystick.bowrightTouched = false;
-            player.bowShotRight();
+            if (player.isRunBowRightShotAnimation() == false) {
+                player.bowShotRight();
+            }
         }
         if (joystick.isBowDownTouched()) {
             Gdx.app.log("DOWN", "SHOT");
             joystick.bowdownTouched = false;
+            if (player.isRunBowDownShotAnimation() == false) {
+                player.bowShotDown();
+            }
         }
         if (joystick.isBowUpTouched()) {
             Gdx.app.log("UP", "SHOT");
             joystick.bowupTouched = false;
-            player.bowShotRight();
+            if (player.isRunBowUpShotAnimation() == false) {
+                player.bowUpShot();
+            }
         }
 
 
-        if(Gdx.input.isKeyJustPressed(Input.Keys.UP) && !player.jumped && !player.isDead())
+        if(Gdx.input.isKeyJustPressed(Input.Keys.UP)/* && !player.jumped*/ && !player.isDead())
             player.b2body.applyLinearImpulse(new Vector2(0, 5f), player.b2body.getWorldCenter(), true);
         if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) && player.b2body.getLinearVelocity().x <= 2)
             player.b2body.applyLinearImpulse(new Vector2(0.1f, 0), player.b2body.getWorldCenter(), true);

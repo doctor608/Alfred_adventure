@@ -28,6 +28,7 @@ public class Knight extends Enemy {
     private boolean alfredKilled;
 
     private boolean runningRight;
+    public int enemyHp = 50;
 
     public Knight(PlayScreen screen, float x, float y) {
         super(screen, x, y);
@@ -60,6 +61,11 @@ public class Knight extends Enemy {
             runningRight = true;
         }
 
+        /*
+        if (enemyHp <= 0) {
+            setToDestroy = true;
+        } */
+
         if (setToKill && !alfredKilled) {
             world.destroyBody(b2body);
             alfredKilled = true;
@@ -86,6 +92,11 @@ public class Knight extends Enemy {
 
     }
 
+    public void getHit(int damage) {
+        enemyHp = enemyHp - damage;
+        setToDestroy = true;
+    }
+
     public void killAlfred(Alfred alfred) {
         setToKill = true;
         alfred.hit(25, "Alfred was slain by a gray knight");
@@ -105,17 +116,23 @@ public class Knight extends Enemy {
         fdef.filter.categoryBits = AlfredMain.ENEMY_BIT;
         fdef.filter.maskBits = AlfredMain.GROUND_BIT | AlfredMain.ALFRED_BIT
                 | AlfredMain.BADGROUND_BIT | AlfredMain.BROKENGROUND_BIT
-                | AlfredMain.COIN_BIT | AlfredMain.OBJECT_BIT |AlfredMain.ENEMY_BIT;
+                | AlfredMain.COIN_BIT | AlfredMain.OBJECT_BIT |AlfredMain.ENEMY_BIT | AlfredMain.ARROW_BIT;
 
         fdef.shape = shape;
         b2body.createFixture(fdef).setUserData(this);
 
         PolygonShape head = new PolygonShape();
         Vector2[] vertice = new Vector2[4];
+        /*
         vertice[0] = new Vector2(-10, 16).scl(1 / AlfredMain.PPM);
         vertice[1] = new Vector2(10, 16).scl(1 / AlfredMain.PPM);
         vertice[2] = new Vector2(-3, 3).scl(1 / AlfredMain.PPM);
         vertice[3] = new Vector2(3, 3).scl(1 / AlfredMain.PPM);
+        */
+        vertice[0] = new Vector2(3, 3).scl(1 / AlfredMain.PPM);
+        vertice[1] = new Vector2(-3, 3).scl(1 / AlfredMain.PPM);
+        vertice[2] = new Vector2(0, 0).scl(1 / AlfredMain.PPM);
+        vertice[3] = new Vector2(0, -1).scl(1 / AlfredMain.PPM);
         head.set(vertice);
 
         fdef.shape = head;
