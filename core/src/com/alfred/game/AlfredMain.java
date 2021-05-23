@@ -35,6 +35,8 @@ public class AlfredMain extends Game {
 	public static final int DROYERBULLET_BIT = 16384;
 	public static final short REDROSE_BIT = -1;
 	public static final short BLACKRAVEN_BIT = -4;
+	public static final short ENEMYPERED_BIT = -8;
+	public static final short ENEMYZAD_BIT = -16;
 	public static final short ARROW_BIT = -32768;
 
 	@Override

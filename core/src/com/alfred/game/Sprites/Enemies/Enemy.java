@@ -27,6 +27,9 @@ public abstract class Enemy extends Sprite {
     }
 
     protected abstract void defineEnemy();
+    public abstract void redef();
+    protected abstract void redefineEnemy();
+    protected abstract void reredefineEnemy();
     public abstract void hitOnHead();
     public abstract void killAlfred(Alfred alfred);
     public abstract void update(float dt);

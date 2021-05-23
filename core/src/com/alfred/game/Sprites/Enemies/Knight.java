@@ -28,7 +28,7 @@ public class Knight extends Enemy {
     private boolean alfredKilled;
 
     private boolean runningRight;
-    public int enemyHp = 50;
+    public int enemyHp = 25;
 
     public Knight(PlayScreen screen, float x, float y) {
         super(screen, x, y);
@@ -139,6 +139,21 @@ public class Knight extends Enemy {
         fdef.restitution = 0.5f;
         fdef.filter.categoryBits = AlfredMain.ENEMYHEAD_BIT;
         b2body.createFixture(fdef).setUserData(this);
+    }
+
+    @Override
+    public void redef() {
+
+    }
+
+    @Override
+    protected void redefineEnemy() {
+
+    }
+
+    @Override
+    protected void reredefineEnemy() {
+
     }
 
     public void draw(Batch batch) {

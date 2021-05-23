@@ -29,6 +29,8 @@ public class Droyer extends Enemy{
     private boolean setToDestroy;
     private boolean destroyed;
 
+    public int enemyHp;
+
     public Droyer(PlayScreen screen, float x, float y) {
         super(screen, x + 16 / AlfredMain.PPM, y + 16 / AlfredMain.PPM);
 
@@ -39,6 +41,7 @@ public class Droyer extends Enemy{
 
         setToDestroy = false;
         destroyed = false;
+        enemyHp = 50;
     }
 
     @Override
@@ -55,7 +58,7 @@ public class Droyer extends Enemy{
         fdef.filter.categoryBits = AlfredMain.ENEMY_BIT;
         fdef.filter.maskBits = AlfredMain.GROUND_BIT | AlfredMain.ALFRED_BIT
                 | AlfredMain.BADGROUND_BIT | AlfredMain.BROKENGROUND_BIT
-                | AlfredMain.COIN_BIT | AlfredMain.OBJECT_BIT | AlfredMain.ENEMY_BIT | AlfredMain.ITEM_BIT;
+                | AlfredMain.COIN_BIT | AlfredMain.OBJECT_BIT | AlfredMain.ENEMY_BIT | AlfredMain.ITEM_BIT | AlfredMain.ARROW_BIT;
 
         fdef.shape = shape;
         b2body.createFixture(fdef).setUserData(this);
@@ -76,6 +79,21 @@ public class Droyer extends Enemy{
     }
 
     @Override
+    public void redef() {
+
+    }
+
+    @Override
+    protected void redefineEnemy() {
+
+    }
+
+    @Override
+    protected void reredefineEnemy() {
+
+    }
+
+    @Override
     public void hitOnHead() {
         setToDestroy = true;
     }
@@ -87,13 +105,13 @@ public class Droyer extends Enemy{
 
     @Override
     public void update(float dt) {
-        setRegion(droyerStay);
+        //setRegion(droyerStay);
         stateTime += dt;
 
         if(setToDestroy && !destroyed){
             world.destroyBody(b2body);
             destroyed = true;
-            //setRegion(new TextureRegion(screen.getAtlas().findRegion("droyer"), 32, 0, 32, 32));
+            setRegion(new TextureRegion(screen.getAtlas().findRegion("deaddroyer"), 0, 0, 32, 32));
             stateTime = 0;
             Hud.addScore(10);
         } else if(!destroyed) {
@@ -102,16 +120,20 @@ public class Droyer extends Enemy{
                 stateTime = 0;
             }
             setPosition(b2body.getPosition().x - getWidth() / 2, b2body.getPosition().y - getHeight() /2);
+            setRegion(droyerStay);
         }
     }
 
     @Override
     public void getHit(int damage) {
-
+        enemyHp = enemyHp - damage;
+        if (enemyHp <= 0) {
+            setToDestroy = true;
+        }
     }
 
     public void draw(Batch batch) {
-        if ((!destroyed || stateTime < 5)) super.draw(batch);
+        if ((!destroyed || stateTime < 1)) super.draw(batch);
 
     }
 }

@@ -52,7 +52,7 @@ public class Arrow extends Item {
         fdef.filter.categoryBits = AlfredMain.ARROW_BIT;
         fdef.filter.maskBits = AlfredMain.OBJECT_BIT | AlfredMain.GROUND_BIT | AlfredMain.DEMONICGROUND_BIT
                 | AlfredMain.ALFRED_LEGS_BIT | AlfredMain.REDGROUND_BIT | AlfredMain.ENEMY_BIT
-                | AlfredMain.DROYERBULLET_BIT | AlfredMain.REDROSE_BIT;
+                | AlfredMain.DROYERBULLET_BIT | AlfredMain.REDROSE_BIT | AlfredMain.BLACKRAVEN_BIT;
 
         fdef.shape = shape;
         body.createFixture(fdef).setUserData(this);
@@ -67,8 +67,8 @@ public class Arrow extends Item {
     @Override
     public void hitEnemy(Enemy enemy) {
         enemy.getHit(25);
+        destroy();
     }
-
 
     @Override
     public void update(float dt) {
@@ -97,7 +97,7 @@ public class Arrow extends Item {
             velocity.y = 3f;
         }
 
-        if (stateTime > 40*dt) {
+        if (stateTime > 75*dt) {
             destroy();
         }
 

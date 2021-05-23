@@ -106,8 +106,10 @@ public class WorldContactListener implements ContactListener {
             case AlfredMain.ENEMY_BIT | AlfredMain.OBJECT_BIT:
                 if (fixA.getFilterData().categoryBits == AlfredMain.ENEMY_BIT) {
                     ((Enemy)fixA.getUserData()).reverseVelocity(true, false);
+                    //((Enemy)fixA.getUserData()).redef();
                 } else {
                     ((Enemy)fixB.getUserData()).reverseVelocity(true, false);
+                    //((Enemy)fixB.getUserData()).redef();
                 }
                 break;
             case AlfredMain.ALFRED_BIT | AlfredMain.ENEMY_BIT:
@@ -127,8 +129,11 @@ public class WorldContactListener implements ContactListener {
                  */
             case AlfredMain.ENEMY_BIT | AlfredMain.ENEMY_BIT:
                 ((Enemy)fixA.getUserData()).reverseVelocity(true, false);
+                //((Enemy)fixA.getUserData()).redef();
                 ((Enemy)fixB.getUserData()).reverseVelocity(true, false);
+                //((Enemy)fixB.getUserData()).redef();
                 break;
+
             case AlfredMain.ITEM_BIT | AlfredMain.OBJECT_BIT:
                 if (fixA.getFilterData().categoryBits == AlfredMain.ITEM_BIT) {
                     ((Item)fixA.getUserData()).reverseVelocity(true, false);

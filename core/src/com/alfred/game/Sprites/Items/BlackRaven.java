@@ -29,7 +29,7 @@ public class BlackRaven extends Item{
         CircleShape shape = new CircleShape();
         shape.setRadius(3 / AlfredMain.PPM);
         fdef.filter.categoryBits = AlfredMain.BLACKRAVEN_BIT;
-        fdef.filter.maskBits = AlfredMain.ALFRED_BIT /*| AlfredMain.OBJECT_BIT | AlfredMain.GROUND_BIT | AlfredMain.DEMONICGROUND_BIT | AlfredMain.ALFRED_LEGS_BIT*/;
+        fdef.filter.maskBits = AlfredMain.ALFRED_BIT | AlfredMain.ARROW_BIT/*| AlfredMain.OBJECT_BIT | AlfredMain.GROUND_BIT | AlfredMain.DEMONICGROUND_BIT | AlfredMain.ALFRED_LEGS_BIT*/;
 
         fdef.shape = shape;
         body.createFixture(fdef).setUserData(this);
@@ -49,7 +49,7 @@ public class BlackRaven extends Item{
     public void update(float dt) {
         super.update(dt);
         setPosition(body.getPosition().x - getWidth() / 2, body.getPosition().y - getHeight() / 2);
-        velocity.y = body.getLinearVelocity().y + 0.3f;
+        velocity.y = /*body.getLinearVelocity().y*/ velocity.y + 0.3f;
         if (velocity.y > 7f) {
             destroy();
         }

@@ -29,6 +29,12 @@ public class SmallDeath extends Enemy{
 
     private boolean runningRight;
 
+    public int enemyHp;
+
+    private boolean timeToRedefineEnemy;
+    private boolean timetoReRedefineEnemy;
+    //public boolean checker = false;
+
     public SmallDeath(PlayScreen screen, float x, float y) {
         super(screen, x, y);
 
@@ -40,6 +46,171 @@ public class SmallDeath extends Enemy{
         destroyed = false;
         setToKill = false;
         runningRight = false;
+
+        enemyHp = 25;
+    }
+
+    @Override
+    protected void defineEnemy() {
+        BodyDef bdef = new BodyDef();
+        bdef.position.set(getX(), getY());
+        bdef.type = BodyDef.BodyType.DynamicBody;
+        b2body = world.createBody(bdef);
+
+        FixtureDef fdef = new FixtureDef();
+        CircleShape shape = new CircleShape();
+        shape.setRadius(15 / AlfredMain.PPM);
+
+        fdef.filter.categoryBits = AlfredMain.ENEMY_BIT;
+        fdef.filter.maskBits = AlfredMain.GROUND_BIT | AlfredMain.ALFRED_BIT
+                | AlfredMain.BADGROUND_BIT | AlfredMain.BROKENGROUND_BIT
+                | AlfredMain.COIN_BIT | AlfredMain.OBJECT_BIT |AlfredMain.ENEMY_BIT | AlfredMain.ARROW_BIT;
+
+        fdef.shape = shape;
+        b2body.createFixture(fdef).setUserData(this);
+
+
+        PolygonShape head = new PolygonShape();
+        Vector2[] vertice = new Vector2[4];
+        vertice[0] = new Vector2(-10, 17).scl(1 / AlfredMain.PPM);
+        vertice[1] = new Vector2(10, 17).scl(1 / AlfredMain.PPM);
+        vertice[2] = new Vector2(-3, 3).scl(1 / AlfredMain.PPM);
+        vertice[3] = new Vector2(3, 3).scl(1 / AlfredMain.PPM);
+        head.set(vertice);
+
+        fdef.shape = head;
+        fdef.restitution = 0.5f;
+        fdef.filter.categoryBits = AlfredMain.ENEMYHEAD_BIT;
+        b2body.createFixture(fdef).setUserData(this);
+
+
+        PolygonShape zad = new PolygonShape();
+        Vector2[] zadvertice = new Vector2[4];
+        zadvertice[0] = new Vector2(15, 15).scl(1 / AlfredMain.PPM);
+        zadvertice[1] = new Vector2(17, 15).scl(1 / AlfredMain.PPM);
+        zadvertice[2] = new Vector2(15, -15).scl(1 / AlfredMain.PPM);
+        zadvertice[3] = new Vector2(17, -15).scl(1 / AlfredMain.PPM);
+        zad.set(zadvertice);
+
+        fdef.shape = zad;
+        fdef.restitution = 0.5f;
+        fdef.filter.categoryBits = AlfredMain.ENEMYZAD_BIT;
+        b2body.createFixture(fdef).setUserData(this);
+
+        timeToRedefineEnemy = false;
+        timetoReRedefineEnemy = false;
+    }
+
+    @Override
+    protected void redefineEnemy() {
+        Vector2 currentPosition = b2body.getPosition();
+        world.destroyBody(b2body);
+
+        BodyDef bdef = new BodyDef();
+        bdef.position.set(currentPosition);
+        bdef.type = BodyDef.BodyType.DynamicBody;
+        b2body = world.createBody(bdef);
+
+        FixtureDef fdef = new FixtureDef();
+        CircleShape shape = new CircleShape();
+        shape.setRadius(15 / AlfredMain.PPM);
+
+        fdef.filter.categoryBits = AlfredMain.ENEMY_BIT;
+        fdef.filter.maskBits = AlfredMain.GROUND_BIT | AlfredMain.ALFRED_BIT
+                | AlfredMain.BADGROUND_BIT | AlfredMain.BROKENGROUND_BIT
+                | AlfredMain.COIN_BIT | AlfredMain.OBJECT_BIT |AlfredMain.ENEMY_BIT | AlfredMain.ARROW_BIT;
+
+        fdef.shape = shape;
+        b2body.createFixture(fdef).setUserData(this);
+
+        PolygonShape head = new PolygonShape();
+        Vector2[] vertice = new Vector2[4];
+        vertice[0] = new Vector2(-10, 17).scl(1 / AlfredMain.PPM);
+        vertice[1] = new Vector2(10, 17).scl(1 / AlfredMain.PPM);
+        vertice[2] = new Vector2(-3, 3).scl(1 / AlfredMain.PPM);
+        vertice[3] = new Vector2(3, 3).scl(1 / AlfredMain.PPM);
+        head.set(vertice);
+
+        fdef.shape = head;
+        fdef.restitution = 0.5f;
+        fdef.filter.categoryBits = AlfredMain.ENEMYHEAD_BIT;
+        b2body.createFixture(fdef).setUserData(this);
+
+
+        PolygonShape zad = new PolygonShape();
+        Vector2[] zadvertice = new Vector2[4];
+        zadvertice[0] = new Vector2(-17, 15).scl(1 / AlfredMain.PPM);
+        zadvertice[1] = new Vector2(-15, 15).scl(1 / AlfredMain.PPM);
+        zadvertice[2] = new Vector2(-17, -15).scl(1 / AlfredMain.PPM);
+        zadvertice[3] = new Vector2(-15, -15).scl(1 / AlfredMain.PPM);
+        zad.set(zadvertice);
+
+        fdef.shape = zad;
+        fdef.restitution = 0.5f;
+        fdef.filter.categoryBits = AlfredMain.ENEMYZAD_BIT;
+        b2body.createFixture(fdef).setUserData(this);
+
+        timeToRedefineEnemy = false;
+        timetoReRedefineEnemy = false;
+    }
+
+    @Override
+    protected void reredefineEnemy() {
+        Vector2 currentPosition = b2body.getPosition();
+        world.destroyBody(b2body);
+
+        BodyDef bdef = new BodyDef();
+        bdef.position.set(currentPosition);
+        bdef.type = BodyDef.BodyType.DynamicBody;
+        b2body = world.createBody(bdef);
+
+        FixtureDef fdef = new FixtureDef();
+        CircleShape shape = new CircleShape();
+        shape.setRadius(15 / AlfredMain.PPM);
+
+        fdef.filter.categoryBits = AlfredMain.ENEMY_BIT;
+        fdef.filter.maskBits = AlfredMain.GROUND_BIT | AlfredMain.ALFRED_BIT
+                | AlfredMain.BADGROUND_BIT | AlfredMain.BROKENGROUND_BIT
+                | AlfredMain.COIN_BIT | AlfredMain.OBJECT_BIT |AlfredMain.ENEMY_BIT | AlfredMain.ARROW_BIT;
+
+        fdef.shape = shape;
+        b2body.createFixture(fdef).setUserData(this);
+
+
+        PolygonShape head = new PolygonShape();
+        Vector2[] vertice = new Vector2[4];
+        vertice[0] = new Vector2(-10, 17).scl(1 / AlfredMain.PPM);
+        vertice[1] = new Vector2(10, 17).scl(1 / AlfredMain.PPM);
+        vertice[2] = new Vector2(-3, 3).scl(1 / AlfredMain.PPM);
+        vertice[3] = new Vector2(3, 3).scl(1 / AlfredMain.PPM);
+        head.set(vertice);
+
+        fdef.shape = head;
+        fdef.restitution = 0.5f;
+        fdef.filter.categoryBits = AlfredMain.ENEMYHEAD_BIT;
+        b2body.createFixture(fdef).setUserData(this);
+
+
+        PolygonShape zad = new PolygonShape();
+        Vector2[] zadvertice = new Vector2[4];
+        zadvertice[0] = new Vector2(15, 15).scl(1 / AlfredMain.PPM);
+        zadvertice[1] = new Vector2(17, 15).scl(1 / AlfredMain.PPM);
+        zadvertice[2] = new Vector2(15, -15).scl(1 / AlfredMain.PPM);
+        zadvertice[3] = new Vector2(17, -15).scl(1 / AlfredMain.PPM);
+        zad.set(zadvertice);
+
+        fdef.shape = zad;
+        fdef.restitution = 0.5f;
+        fdef.filter.categoryBits = AlfredMain.ENEMYZAD_BIT;
+        b2body.createFixture(fdef).setUserData(this);
+
+        timeToRedefineEnemy = false;
+        timetoReRedefineEnemy = false;
+    }
+
+
+    public void redef() {
+        redefineEnemy();
     }
 
     public void update(float dt) {
@@ -47,12 +218,21 @@ public class SmallDeath extends Enemy{
 
         TextureRegion region = deathStay;
 
+        if (timeToRedefineEnemy) {
+            redefineEnemy();
+        }
+        if (timetoReRedefineEnemy) {
+            reredefineEnemy();
+        }
+
         if ((b2body.getLinearVelocity().x < 0 || !runningRight) && region.isFlipX()) {
             region.flip(true, false);
             runningRight = false;
+            reredefineEnemy();
         } else if ((b2body.getLinearVelocity().x > 0 || runningRight) && !region.isFlipX()) {
             region.flip(true, false);
             runningRight = true;
+            redefineEnemy();
         }
 
         if(setToDestroy && !destroyed){
@@ -71,46 +251,17 @@ public class SmallDeath extends Enemy{
 
     @Override
     public void getHit(int damage) {
-
-    }
-
-    public void killAlfred(Alfred alfred) {
-        //setToKill = true;
-        //alfred.hit(50, "Alfred was gibbet by death");
+        //enemyHp = enemyHp - damage;
+        //if (enemyHp <= 0) {
+          //  setToDestroy = true;
+        //}
         setToDestroy = true;
     }
 
-    @Override
-    protected void defineEnemy() {
-        BodyDef bdef = new BodyDef();
-        bdef.position.set(getX(), getY());
-        bdef.type = BodyDef.BodyType.DynamicBody;
-        b2body = world.createBody(bdef);
-
-        FixtureDef fdef = new FixtureDef();
-        CircleShape shape = new CircleShape();
-        shape.setRadius(15 / AlfredMain.PPM);
-
-        fdef.filter.categoryBits = AlfredMain.ENEMY_BIT;
-        fdef.filter.maskBits = AlfredMain.GROUND_BIT | AlfredMain.ALFRED_BIT
-                | AlfredMain.BADGROUND_BIT | AlfredMain.BROKENGROUND_BIT
-                | AlfredMain.COIN_BIT | AlfredMain.OBJECT_BIT |AlfredMain.ENEMY_BIT;
-
-        fdef.shape = shape;
-        b2body.createFixture(fdef).setUserData(this);
-
-        PolygonShape head = new PolygonShape();
-        Vector2[] vertice = new Vector2[4];
-        vertice[0] = new Vector2(-10, 20).scl(1 / AlfredMain.PPM);
-        vertice[1] = new Vector2(10, 20).scl(1 / AlfredMain.PPM);
-        vertice[2] = new Vector2(-3, 3).scl(1 / AlfredMain.PPM);
-        vertice[3] = new Vector2(3, 3).scl(1 / AlfredMain.PPM);
-        head.set(vertice);
-
-        fdef.shape = head;
-        fdef.restitution = 0.5f;
-        fdef.filter.categoryBits = AlfredMain.ENEMYHEAD_BIT;
-        b2body.createFixture(fdef).setUserData(this);
+    public void killAlfred(Alfred alfred) {
+        setToKill = true;
+        alfred.hit(50, "Alfred was gibbet by death");
+        //setToDestroy = true;
     }
 
     public void draw(Batch batch) {
