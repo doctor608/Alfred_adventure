@@ -155,7 +155,7 @@ public class Alfred extends Sprite {
         shape.setRadius(15 / AlfredMain.PPM);
 
         fdef.filter.categoryBits = AlfredMain.ALFRED_BIT;
-        fdef.filter.maskBits = AlfredMain.GROUND_BIT | AlfredMain.BADGROUND_BIT
+        fdef.filter.maskBits = /*AlfredMain.GROUND_BIT |*/ AlfredMain.BADGROUND_BIT
                         | AlfredMain.BROKENGROUND_BIT | AlfredMain.COIN_BIT
                         | AlfredMain.OBJECT_BIT | AlfredMain.ENEMY_BIT | AlfredMain.ENEMYHEAD_BIT | AlfredMain.DEMONICGROUND_BIT | AlfredMain.ITEM_BIT
                         | AlfredMain.REDGROUND_BIT | AlfredMain.DROYERBULLET_BIT;

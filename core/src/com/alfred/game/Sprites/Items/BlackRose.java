@@ -30,7 +30,7 @@ public class BlackRose extends Item{
         CircleShape shape = new CircleShape();
         shape.setRadius(15 / AlfredMain.PPM);
         fdef.filter.categoryBits = AlfredMain.ITEM_BIT;
-        fdef.filter.maskBits = AlfredMain.ALFRED_BIT | AlfredMain.OBJECT_BIT | AlfredMain.GROUND_BIT | AlfredMain.DEMONICGROUND_BIT;
+        fdef.filter.maskBits = AlfredMain.ALFRED_BIT | AlfredMain.OBJECT_BIT /*| AlfredMain.GROUND_BIT */| AlfredMain.DEMONICGROUND_BIT;
 
         fdef.shape = shape;
         body.createFixture(fdef).setUserData(this);
@@ -46,6 +46,11 @@ public class BlackRose extends Item{
 
     @Override
     public void hitEnemy(Enemy enemy) {
+
+    }
+
+    @Override
+    public void hitBackEnemy(Enemy enemy) {
 
     }
 

@@ -8,6 +8,7 @@ import com.alfred.game.Sprites.Items.BlackRaven;
 import com.alfred.game.Sprites.Items.BlackRose;
 import com.alfred.game.Sprites.Items.DroyerBullet;
 import com.alfred.game.Sprites.Items.ItemDef;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -47,7 +48,7 @@ public class SmallDeath extends Enemy{
         setToKill = false;
         runningRight = false;
 
-        enemyHp = 25;
+        enemyHp = 50;
     }
 
     @Override
@@ -62,7 +63,7 @@ public class SmallDeath extends Enemy{
         shape.setRadius(15 / AlfredMain.PPM);
 
         fdef.filter.categoryBits = AlfredMain.ENEMY_BIT;
-        fdef.filter.maskBits = AlfredMain.GROUND_BIT | AlfredMain.ALFRED_BIT
+        fdef.filter.maskBits = /*AlfredMain.GROUND_BIT |*/ AlfredMain.ALFRED_BIT
                 | AlfredMain.BADGROUND_BIT | AlfredMain.BROKENGROUND_BIT
                 | AlfredMain.COIN_BIT | AlfredMain.OBJECT_BIT |AlfredMain.ENEMY_BIT | AlfredMain.ARROW_BIT;
 
@@ -116,7 +117,7 @@ public class SmallDeath extends Enemy{
         shape.setRadius(15 / AlfredMain.PPM);
 
         fdef.filter.categoryBits = AlfredMain.ENEMY_BIT;
-        fdef.filter.maskBits = AlfredMain.GROUND_BIT | AlfredMain.ALFRED_BIT
+        fdef.filter.maskBits = /*AlfredMain.GROUND_BIT |*/ AlfredMain.ALFRED_BIT
                 | AlfredMain.BADGROUND_BIT | AlfredMain.BROKENGROUND_BIT
                 | AlfredMain.COIN_BIT | AlfredMain.OBJECT_BIT |AlfredMain.ENEMY_BIT | AlfredMain.ARROW_BIT;
 
@@ -169,7 +170,7 @@ public class SmallDeath extends Enemy{
         shape.setRadius(15 / AlfredMain.PPM);
 
         fdef.filter.categoryBits = AlfredMain.ENEMY_BIT;
-        fdef.filter.maskBits = AlfredMain.GROUND_BIT | AlfredMain.ALFRED_BIT
+        fdef.filter.maskBits = /*AlfredMain.GROUND_BIT | */AlfredMain.ALFRED_BIT
                 | AlfredMain.BADGROUND_BIT | AlfredMain.BROKENGROUND_BIT
                 | AlfredMain.COIN_BIT | AlfredMain.OBJECT_BIT |AlfredMain.ENEMY_BIT | AlfredMain.ARROW_BIT;
 
@@ -206,6 +207,17 @@ public class SmallDeath extends Enemy{
 
         timeToRedefineEnemy = false;
         timetoReRedefineEnemy = false;
+    }
+
+    @Override
+    public void hitOnBack(int damage) {
+        enemyHp = enemyHp - damage;
+        String hp = Integer.toString(enemyHp);
+        Gdx.app.log("HP", hp);
+        if (enemyHp <= 0) {
+          setToDestroy = true;
+        }
+        //setToDestroy = true;
     }
 
 
@@ -255,7 +267,7 @@ public class SmallDeath extends Enemy{
         //if (enemyHp <= 0) {
           //  setToDestroy = true;
         //}
-        setToDestroy = true;
+        //setToDestroy = true;
     }
 
     public void killAlfred(Alfred alfred) {
@@ -271,6 +283,6 @@ public class SmallDeath extends Enemy{
 
     @Override
     public void hitOnHead() {
-        setToDestroy = true;
+        //setToDestroy = true;
     }
 }

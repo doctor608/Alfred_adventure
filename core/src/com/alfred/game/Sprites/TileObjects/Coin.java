@@ -5,6 +5,7 @@ import com.alfred.game.Scenes.Hud;
 import com.alfred.game.Screens.PlayScreen;
 import com.alfred.game.Sprites.Alfred;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.math.Rectangle;
 
@@ -21,6 +22,7 @@ public class Coin extends InteractiveTileObject {
     @Override
     public void onHeadHit(Alfred alfred) {
         Gdx.app.log("Coin", "Collision");
+        AlfredMain.manager.get("audio/sounds/coin.wav", Sound.class).play();
         setCategoryFilter(AlfredMain.DESTROYED_BIT);
         getCell().setTile(null);
         Hud.addScore(10);

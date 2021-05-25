@@ -8,6 +8,7 @@ import com.alfred.game.Sprites.Items.BlackRose;
 import com.alfred.game.Sprites.Items.DroyerBullet;
 import com.alfred.game.Sprites.Items.ItemDef;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -56,7 +57,7 @@ public class Droyer extends Enemy{
         shape.setRadius(15 / AlfredMain.PPM);
 
         fdef.filter.categoryBits = AlfredMain.ENEMY_BIT;
-        fdef.filter.maskBits = AlfredMain.GROUND_BIT | AlfredMain.ALFRED_BIT
+        fdef.filter.maskBits = /*AlfredMain.GROUND_BIT | */AlfredMain.ALFRED_BIT
                 | AlfredMain.BADGROUND_BIT | AlfredMain.BROKENGROUND_BIT
                 | AlfredMain.COIN_BIT | AlfredMain.OBJECT_BIT | AlfredMain.ENEMY_BIT | AlfredMain.ITEM_BIT | AlfredMain.ARROW_BIT;
 
@@ -94,6 +95,11 @@ public class Droyer extends Enemy{
     }
 
     @Override
+    public void hitOnBack(int damage) {
+
+    }
+
+    @Override
     public void hitOnHead() {
         setToDestroy = true;
     }
@@ -116,6 +122,7 @@ public class Droyer extends Enemy{
             Hud.addScore(10);
         } else if(!destroyed) {
             if (stateTime > 33 * dt) {
+                AlfredMain.manager.get("audio/sounds/droyer.wav", Sound.class).play();
                 screen.spawnItem(new ItemDef(new Vector2(b2body.getPosition().x, b2body.getPosition().y -16 / AlfredMain.PPM), DroyerBullet.class));
                 stateTime = 0;
             }

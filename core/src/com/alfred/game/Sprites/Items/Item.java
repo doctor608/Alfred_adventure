@@ -34,6 +34,7 @@ public abstract class Item extends Sprite {
     public abstract void defineItem();
     public abstract void use(Alfred alfred);
     public abstract void hitEnemy(Enemy enemy);
+    public abstract void hitBackEnemy(Enemy enemy);
 
     public void update(float dt) {
         if (toDestroy && !destroyed) {

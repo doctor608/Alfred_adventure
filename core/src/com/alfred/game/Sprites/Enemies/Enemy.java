@@ -30,6 +30,7 @@ public abstract class Enemy extends Sprite {
     public abstract void redef();
     protected abstract void redefineEnemy();
     protected abstract void reredefineEnemy();
+    public abstract void hitOnBack(int damage);
     public abstract void hitOnHead();
     public abstract void killAlfred(Alfred alfred);
     public abstract void update(float dt);

@@ -28,8 +28,8 @@ public class DroyerBullet extends Item{
         FixtureDef fdef = new FixtureDef();
         CircleShape shape = new CircleShape();
         shape.setRadius(3 / AlfredMain.PPM);
-        fdef.filter.categoryBits = (short) AlfredMain.DROYERBULLET_BIT;
-        fdef.filter.maskBits = AlfredMain.ALFRED_BIT | AlfredMain.OBJECT_BIT | AlfredMain.GROUND_BIT | AlfredMain.DEMONICGROUND_BIT | AlfredMain.ALFRED_HEAD_BIT |
+        fdef.filter.categoryBits = AlfredMain.DROYERBULLET_BIT;
+        fdef.filter.maskBits = AlfredMain.ALFRED_BIT | AlfredMain.OBJECT_BIT /*| AlfredMain.GROUND_BIT */| AlfredMain.DEMONICGROUND_BIT | AlfredMain.ALFRED_HEAD_BIT |
                                 AlfredMain.ARROW_BIT;
 
         fdef.shape = shape;
@@ -44,6 +44,11 @@ public class DroyerBullet extends Item{
 
     @Override
     public void hitEnemy(Enemy enemy) {
+
+    }
+
+    @Override
+    public void hitBackEnemy(Enemy enemy) {
 
     }
 

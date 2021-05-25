@@ -46,6 +46,11 @@ public class BlackRaven extends Item{
     }
 
     @Override
+    public void hitBackEnemy(Enemy enemy) {
+
+    }
+
+    @Override
     public void update(float dt) {
         super.update(dt);
         setPosition(body.getPosition().x - getWidth() / 2, body.getPosition().y - getHeight() / 2);

@@ -4,6 +4,7 @@ import com.alfred.game.AlfredMain;
 import com.alfred.game.Screens.PlayScreen;
 import com.alfred.game.Sprites.Alfred;
 import com.alfred.game.Sprites.Enemies.Enemy;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -50,12 +51,14 @@ public class Arrow extends Item {
         CircleShape shape = new CircleShape();
         shape.setRadius(3 / AlfredMain.PPM);
         fdef.filter.categoryBits = AlfredMain.ARROW_BIT;
-        fdef.filter.maskBits = AlfredMain.OBJECT_BIT | AlfredMain.GROUND_BIT | AlfredMain.DEMONICGROUND_BIT
+        fdef.filter.maskBits = AlfredMain.OBJECT_BIT | /*AlfredMain.GROUND_BIT |*/ AlfredMain.DEMONICGROUND_BIT
                 | AlfredMain.ALFRED_LEGS_BIT | AlfredMain.REDGROUND_BIT | AlfredMain.ENEMY_BIT
-                | AlfredMain.DROYERBULLET_BIT | AlfredMain.REDROSE_BIT | AlfredMain.BLACKRAVEN_BIT;
+                | AlfredMain.DROYERBULLET_BIT | AlfredMain.REDROSE_BIT | AlfredMain.BLACKRAVEN_BIT | AlfredMain.ENEMYZAD_BIT;
 
         fdef.shape = shape;
         body.createFixture(fdef).setUserData(this);
+
+        stateTime = 0;
     }
 
     @Override
@@ -68,6 +71,12 @@ public class Arrow extends Item {
     public void hitEnemy(Enemy enemy) {
         enemy.getHit(25);
         destroy();
+    }
+
+    @Override
+    public void hitBackEnemy(Enemy enemy) {
+        destroy();
+        enemy.hitOnBack(25);
     }
 
     @Override

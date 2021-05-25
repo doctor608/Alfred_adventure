@@ -8,6 +8,7 @@ import com.alfred.game.Sprites.Items.DroyerBullet;
 import com.alfred.game.Sprites.Items.Item;
 import com.alfred.game.Sprites.TileObjects.InteractiveTileObject;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.ContactListener;
@@ -103,13 +104,20 @@ public class WorldContactListener implements ContactListener {
                     ((Enemy)fixB.getUserData()).hitOnHead();
                 }
                 break;
+
+            case AlfredMain.ARROW_BIT | AlfredMain.ENEMYZAD_BIT:
+                if (fixA.getFilterData().categoryBits == AlfredMain.ARROW_BIT) {
+                    ((Arrow)fixA.getUserData()).hitBackEnemy((Enemy)fixB.getUserData());
+                } else {
+                    ((Arrow)fixB.getUserData()).hitBackEnemy((Enemy)fixA.getUserData());
+                }
+                break;
+
             case AlfredMain.ENEMY_BIT | AlfredMain.OBJECT_BIT:
                 if (fixA.getFilterData().categoryBits == AlfredMain.ENEMY_BIT) {
                     ((Enemy)fixA.getUserData()).reverseVelocity(true, false);
-                    //((Enemy)fixA.getUserData()).redef();
                 } else {
                     ((Enemy)fixB.getUserData()).reverseVelocity(true, false);
-                    //((Enemy)fixB.getUserData()).redef();
                 }
                 break;
             case AlfredMain.ALFRED_BIT | AlfredMain.ENEMY_BIT:
@@ -119,19 +127,9 @@ public class WorldContactListener implements ContactListener {
                     ((Enemy)fixA.getUserData()).killAlfred((Alfred) fixB.getUserData());
                 }
                 break;
-                /*
-                if (fixA.getFilterData().categoryBits == AlfredMain.ENEMY_BIT) {
-                    ((Enemy)fixA.getUserData()).killAlfred();
-                } else {
-                    ((Enemy)fixB.getUserData()).killAlfred();
-                }
-                break;
-                 */
             case AlfredMain.ENEMY_BIT | AlfredMain.ENEMY_BIT:
                 ((Enemy)fixA.getUserData()).reverseVelocity(true, false);
-                //((Enemy)fixA.getUserData()).redef();
                 ((Enemy)fixB.getUserData()).reverseVelocity(true, false);
-                //((Enemy)fixB.getUserData()).redef();
                 break;
 
             case AlfredMain.ITEM_BIT | AlfredMain.OBJECT_BIT:
@@ -167,8 +165,18 @@ public class WorldContactListener implements ContactListener {
                     ((Arrow)fixA.getUserData()).hitEnemy((Enemy) fixB.getUserData());
                 } else {
                     ((Arrow)fixB.getUserData()).hitEnemy((Enemy) fixA.getUserData());
-                    //((DroyerBullet)fixB.getUserData()).use((Alfred)fixA.getUserData());
                     Gdx.app.log("XDD", "ARROW");
+                }
+                break;
+            case AlfredMain.ARROW_BIT | AlfredMain.DROYERBULLET_BIT:
+                if (fixA.getFilterData().categoryBits == AlfredMain.ARROW_BIT) {
+                    AlfredMain.manager.get("audio/sounds/splash.wav", Sound.class).play();
+                    ((Arrow)fixA.getUserData()).destroy();
+                    ((DroyerBullet)fixB.getUserData()).destroy();
+                } else {
+                    AlfredMain.manager.get("audio/sounds/splash.wav", Sound.class).play();
+                    ((Arrow)fixB.getUserData()).destroy();
+                    ((DroyerBullet)fixA.getUserData()).destroy();
                 }
                 break;
             case AlfredMain.ARROW_BIT | AlfredMain.OBJECT_BIT:
@@ -194,7 +202,6 @@ public class WorldContactListener implements ContactListener {
                     ((InteractiveTileObject)fixB.getUserData()).onBodyHit((Alfred)fixA.getUserData());
                 }
                 break;
-
         }
     }
 

@@ -114,7 +114,7 @@ public class Knight extends Enemy {
         shape.setRadius(15 / AlfredMain.PPM);
 
         fdef.filter.categoryBits = AlfredMain.ENEMY_BIT;
-        fdef.filter.maskBits = AlfredMain.GROUND_BIT | AlfredMain.ALFRED_BIT
+        fdef.filter.maskBits = /*AlfredMain.GROUND_BIT | */AlfredMain.ALFRED_BIT
                 | AlfredMain.BADGROUND_BIT | AlfredMain.BROKENGROUND_BIT
                 | AlfredMain.COIN_BIT | AlfredMain.OBJECT_BIT |AlfredMain.ENEMY_BIT | AlfredMain.ARROW_BIT;
 
@@ -153,6 +153,11 @@ public class Knight extends Enemy {
 
     @Override
     protected void reredefineEnemy() {
+
+    }
+
+    @Override
+    public void hitOnBack(int damage) {
 
     }
 
