@@ -6,6 +6,7 @@ import com.alfred.game.Screens.PlayScreen;
 import com.alfred.game.Sprites.Alfred;
 import com.alfred.game.Sprites.Enemies.Enemy;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -30,6 +31,9 @@ public class Knight extends Enemy {
     private boolean runningRight;
     public int enemyHp = 25;
 
+    private Sound knightkillsound;
+    private Sound knightdiesound;
+
     public Knight(PlayScreen screen, float x, float y) {
         super(screen, x, y);
         frames = new Array<>();
@@ -46,6 +50,9 @@ public class Knight extends Enemy {
         setToKill = false;
         alfredKilled = false;
         runningRight = false;
+
+        knightkillsound = AlfredMain.manager.get("audio/sounds/knightkill.wav", Sound.class);
+        knightdiesound = AlfredMain.manager.get("audio/sounds/knightdie.wav", Sound.class);
     }
 
     public void update(float dt) {
@@ -70,6 +77,7 @@ public class Knight extends Enemy {
             world.destroyBody(b2body);
             alfredKilled = true;
             destroyed = true;
+            knightkillsound.setVolume(knightkillsound.play(), 0.1f);
             region = new TextureRegion(screen.getAtlas().findRegion("knight"), 142, 0, 34, 32);
             if (runningRight == true) {
                 region.flip(true, false);
@@ -81,7 +89,8 @@ public class Knight extends Enemy {
         } else if(setToDestroy && !destroyed){
             world.destroyBody(b2body);
             destroyed = true;
-            setRegion(new TextureRegion(screen.getAtlas().findRegion("knight"), 70, 0, 34, 32));
+            knightdiesound.setVolume(knightdiesound.play(), 0.3f);
+            setRegion(new TextureRegion(screen.getAtlas().findRegion("knight"), 74, 0, 34, 32));
             stateTime = 0;
             Hud.addScore(5);
         } else if(!destroyed) {

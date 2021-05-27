@@ -32,6 +32,8 @@ public class Droyer extends Enemy{
 
     public int enemyHp;
 
+    private Sound droyersound;
+
     public Droyer(PlayScreen screen, float x, float y) {
         super(screen, x + 16 / AlfredMain.PPM, y + 16 / AlfredMain.PPM);
 
@@ -43,6 +45,7 @@ public class Droyer extends Enemy{
         setToDestroy = false;
         destroyed = false;
         enemyHp = 50;
+        droyersound = AlfredMain.manager.get("audio/sounds/droyer.wav", Sound.class);
     }
 
     @Override
@@ -121,8 +124,8 @@ public class Droyer extends Enemy{
             stateTime = 0;
             Hud.addScore(10);
         } else if(!destroyed) {
-            if (stateTime > 33 * dt) {
-                AlfredMain.manager.get("audio/sounds/droyer.wav", Sound.class).play();
+            if (stateTime > 44 * dt) {
+                droyersound.setVolume(droyersound.play(), 0.6f);
                 screen.spawnItem(new ItemDef(new Vector2(b2body.getPosition().x, b2body.getPosition().y -16 / AlfredMain.PPM), DroyerBullet.class));
                 stateTime = 0;
             }

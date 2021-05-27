@@ -1,7 +1,6 @@
 package com.alfred.game.Screens;
 
-import com.alfred.game.BowJoystick;
-import com.alfred.game.PlayerJoystick;
+import com.alfred.game.Joystick;
 import com.alfred.game.Sprites.Alfred;
 import com.alfred.game.Sprites.Enemies.Enemy;
 import com.alfred.game.Sprites.Items.Arrow;
@@ -14,8 +13,10 @@ import com.alfred.game.Tools.B2WorldCreator;
 import com.alfred.game.Tools.WorldContactListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -26,7 +27,6 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -57,11 +57,14 @@ public class PlayScreen implements Screen {
     private Array<Item> items;
     private LinkedBlockingQueue<ItemDef> itemsToSpawn;
 
-    public PlayerJoystick joystick;
-    public BowJoystick bowJoystick;
+    public Joystick joystick;
     public static SpriteBatch batch;
 
     private Music music;
+
+    private Sound bowsound;
+
+    Preferences prefs = Gdx.app.getPreferences("My Preferences");
 
     public PlayScreen(AlfredMain game) {
         atlas = new TextureAtlas("global.pack");
@@ -96,12 +99,14 @@ public class PlayScreen implements Screen {
         items = new Array<Item>();
         itemsToSpawn = new LinkedBlockingQueue<ItemDef>();
 
-        joystick = new PlayerJoystick();
+        joystick = new Joystick();
 
         music = AlfredMain.manager.get("audio/music/classic_music.ogg", Music.class);
         music.setLooping(true);
         music.setVolume(0.03f);
         music.play();
+
+        bowsound = AlfredMain.manager.get("audio/sounds/bowandarrow.wav", Sound.class);
     }
 
     public void spawnItem(ItemDef idef) {
@@ -154,6 +159,7 @@ public class PlayScreen implements Screen {
             joystick.bowrightTouched = false;
             if (player.isRunBowRightShotAnimation() == false) {
                 player.bowShotRight();
+                bowsound.setVolume(bowsound.play(), 0.1f);
             }
         }
         if (joystick.isBowDownTouched()) {
@@ -161,6 +167,7 @@ public class PlayScreen implements Screen {
             joystick.bowdownTouched = false;
             if (player.isRunBowDownShotAnimation() == false) {
                 player.bowShotDown();
+                bowsound.setVolume(bowsound.play(), 0.1f);
             }
         }
         if (joystick.isBowUpTouched()) {
@@ -168,6 +175,7 @@ public class PlayScreen implements Screen {
             joystick.bowupTouched = false;
             if (player.isRunBowUpShotAnimation() == false) {
                 player.bowUpShot();
+                bowsound.setVolume(bowsound.play(), 0.1f);
             }
         }
 

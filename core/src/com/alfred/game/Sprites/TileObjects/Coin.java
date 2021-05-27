@@ -11,18 +11,21 @@ import com.badlogic.gdx.math.Rectangle;
 
 public class Coin extends InteractiveTileObject {
 
+    private Sound coinsound;
     public Coin(PlayScreen screen, MapObject object) {
         super(screen, object);
 
         fixture.setUserData(this);
 
         setCategoryFilter(AlfredMain.COIN_BIT);
+
+        coinsound = AlfredMain.manager.get("audio/sounds/coin.wav", Sound.class);
     }
 
     @Override
     public void onHeadHit(Alfred alfred) {
         Gdx.app.log("Coin", "Collision");
-        AlfredMain.manager.get("audio/sounds/coin.wav", Sound.class).play();
+        coinsound.setVolume(coinsound.play(), 0.1f);
         setCategoryFilter(AlfredMain.DESTROYED_BIT);
         getCell().setTile(null);
         Hud.addScore(10);
@@ -31,6 +34,7 @@ public class Coin extends InteractiveTileObject {
     @Override
     public void onLegsHit(Alfred alfred) {
         Gdx.app.log("Coin", "Collision");
+        coinsound.setVolume(coinsound.play(), 0.1f);
         setCategoryFilter(AlfredMain.DESTROYED_BIT);
         getCell().setTile(null);
         Hud.addScore(10);
@@ -39,6 +43,7 @@ public class Coin extends InteractiveTileObject {
     @Override
     public void onBodyHit(Alfred alfred) {
         Gdx.app.log("Coin", "Collision");
+        coinsound.setVolume(coinsound.play(), 0.1f);
         setCategoryFilter(AlfredMain.DESTROYED_BIT);
         getCell().setTile(null);
         Hud.addScore(10);

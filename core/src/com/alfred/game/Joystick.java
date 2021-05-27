@@ -14,7 +14,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 
-public class PlayerJoystick {
+public class Joystick {
 
     private Viewport viewport;
     private Stage stage;
@@ -24,7 +24,7 @@ public class PlayerJoystick {
     public boolean upTouched, leftTouched, rightTouched;
     public boolean bowupTouched, bowdownTouched, bowrightTouched;
 
-    public PlayerJoystick() {
+    public Joystick() {
         camera = new OrthographicCamera();
         viewport = new FitViewport(AlfredMain.vir_width,AlfredMain.vir_height, camera);
         stage = new Stage(viewport, PlayScreen.batch);

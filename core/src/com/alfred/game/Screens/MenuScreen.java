@@ -40,7 +40,6 @@ public class MenuScreen implements Screen {
 
         Table table = new Table();
 
-
         Image levelImg = new Image(new Texture("levelsbutton.png"));
         levelImg.setSize(240, 256);
         levelImg.addListener(new InputListener() {
@@ -95,7 +94,8 @@ public class MenuScreen implements Screen {
     @Override
     public void render(float delta) {
         if (isLevelButtonTouched()) {
-            game.setScreen(new PlayScreen((AlfredMain) game));
+            game.setScreen(new LevelsScreen((AlfredMain) game));
+            //game.setScreen(new PlayScreen((AlfredMain) game));
             dispose();
         } /*else if (isShopButtonTouched()) {
             game.setScreen(new ShopScreen((AlfredMain) game));

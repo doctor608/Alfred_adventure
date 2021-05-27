@@ -9,6 +9,7 @@ import com.alfred.game.Sprites.Items.BlackRose;
 import com.alfred.game.Sprites.Items.DroyerBullet;
 import com.alfred.game.Sprites.Items.ItemDef;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -34,7 +35,9 @@ public class SmallDeath extends Enemy{
 
     private boolean timeToRedefineEnemy;
     private boolean timetoReRedefineEnemy;
-    //public boolean checker = false;
+
+    private Sound deathkillsound;
+    private Sound blackravensound;
 
     public SmallDeath(PlayScreen screen, float x, float y) {
         super(screen, x, y);
@@ -48,7 +51,10 @@ public class SmallDeath extends Enemy{
         setToKill = false;
         runningRight = false;
 
-        enemyHp = 50;
+        enemyHp = 75;
+
+        deathkillsound = AlfredMain.manager.get("audio/sounds/deathkill.wav", Sound.class);
+        blackravensound = AlfredMain.manager.get("audio/sounds/blackraven.wav", Sound.class);
     }
 
     @Override
@@ -217,7 +223,6 @@ public class SmallDeath extends Enemy{
         if (enemyHp <= 0) {
           setToDestroy = true;
         }
-        //setToDestroy = true;
     }
 
 
@@ -247,9 +252,15 @@ public class SmallDeath extends Enemy{
             redefineEnemy();
         }
 
+        if (setToKill) {
+            deathkillsound.setVolume(deathkillsound.play(), 0.1f);
+            setToKill = false;
+        }
+
         if(setToDestroy && !destroyed){
             world.destroyBody(b2body);
             destroyed = true;
+            blackravensound.setVolume(blackravensound.play(), 0.1f);
             screen.spawnItem(new ItemDef(new Vector2(b2body.getPosition().x, b2body.getPosition().y), BlackRaven.class));
             stateTime = 0;
             Hud.addScore(10);
