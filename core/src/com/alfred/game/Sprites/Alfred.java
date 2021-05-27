@@ -9,6 +9,7 @@ import com.alfred.game.Sprites.Items.BlackRose;
 import com.alfred.game.Sprites.Items.DroyerBullet;
 import com.alfred.game.Sprites.Items.ItemDef;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -75,6 +76,8 @@ public class Alfred extends Sprite {
     public static int hp;
 
     public boolean jumped;
+
+    //private boolean cansound;
 
     public Alfred(PlayScreen screen) {
         //super(screen.getAtlas().findRegion("alfred"));

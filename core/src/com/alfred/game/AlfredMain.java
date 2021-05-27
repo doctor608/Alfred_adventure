@@ -46,14 +46,13 @@ public class AlfredMain extends Game {
 		manager.load("audio/music/classic_music.ogg", Music.class);
 
 		manager.load("audio/sounds/droyer.wav", Sound.class);
-		/*
-		manager.load("audio/sounds/death.wav", Sound.class);
-		manager.load("audio/sounds/blackraven.wav", Sound.class);
-		manager.load("audio/sounds/knighthit.wav", Sound.class);
-		manager.load("audio/sounds/knightdie.wav", Sound.class);
-		*/
+		manager.load("audio/sounds/deathkill.wav", Sound.class);
+		manager.load("audio/sounds/knightkill.wav", Sound.class);
+		manager.load("audio/sounds/bowandarrow.wav", Sound.class);
 		manager.load("audio/sounds/splash.wav", Sound.class);
 		manager.load("audio/sounds/coin.wav", Sound.class);
+		manager.load("audio/sounds/blackraven.wav", Sound.class);
+		manager.load("audio/sounds/knightdie.wav", Sound.class);
 		//manager.load("audio/sounds/badground.wav", Sound.class);
 
 		manager.finishLoading();

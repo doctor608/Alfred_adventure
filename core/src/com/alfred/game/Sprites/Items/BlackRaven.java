@@ -55,7 +55,7 @@ public class BlackRaven extends Item{
         super.update(dt);
         setPosition(body.getPosition().x - getWidth() / 2, body.getPosition().y - getHeight() / 2);
         velocity.y = /*body.getLinearVelocity().y*/ velocity.y + 0.3f;
-        if (velocity.y > 7f) {
+        if (velocity.y > 15f) {
             destroy();
         }
         body.setLinearVelocity(velocity);
