@@ -31,6 +31,8 @@ public class Alfred extends Sprite {
     public State currentState;
     public State previousState;
 
+    public static boolean alfredwon;
+
     private float stateTimer;
 
     public World world;
@@ -310,6 +312,10 @@ public class Alfred extends Sprite {
         previousState = currentState;
 
         return region;
+    }
+
+    public void makeAlfredWon() {
+        alfredwon = true;
     }
 
     public State getState(){

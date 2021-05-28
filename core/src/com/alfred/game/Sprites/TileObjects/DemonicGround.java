@@ -26,7 +26,7 @@ public class DemonicGround extends InteractiveTileObject{
     }
     @Override
     public void onHeadHit(Alfred alfred) {
-        int rand = random.nextInt(1) + 1;
+        int rand = random.nextInt(4) + 1;
         if (rand == 1) {
             screen.spawnItem(new ItemDef(new Vector2(body.getPosition().x, body.getPosition().y + 32 / AlfredMain.PPM), BlackRose.class));
             setCategoryFilter(AlfredMain.DESTROYED_BIT);
@@ -37,7 +37,7 @@ public class DemonicGround extends InteractiveTileObject{
 
     @Override
     public void onLegsHit(Alfred alfred) {
-        int rand = random.nextInt(1) + 1;
+        int rand = random.nextInt(4) + 1;
         if (rand == 1) {
             screen.spawnItem(new ItemDef(new Vector2(body.getPosition().x, body.getPosition().y + 32 / AlfredMain.PPM), BlackRose.class));
             setCategoryFilter(AlfredMain.DESTROYED_BIT);

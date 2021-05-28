@@ -118,17 +118,17 @@ public class LevelsScreen implements Screen {
     @Override
     public void render(float delta) {
         if (isFirstButtonTouched()) {
-            game.setScreen(new PlayScreen((AlfredMain) game));
+            game.setScreen(new PlayScreen((AlfredMain) game, 1));
             dispose();
         } else if (isSecondButtonTouched()) {
-            game.setScreen(new PlayScreen((AlfredMain) game));
+            game.setScreen(new PlayScreen((AlfredMain) game, 2));
             dispose();
         } else if (isThirdButtonTouched()) {
-            game.setScreen(new PlayScreen((AlfredMain) game));
+            game.setScreen(new PlayScreen((AlfredMain) game, 3));
             dispose();
         }
 
-        Gdx.gl.glClearColor(0, 0, 0, 1);
+        Gdx.gl.glClearColor(.25f, .68f, .18f,1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.draw();
     }

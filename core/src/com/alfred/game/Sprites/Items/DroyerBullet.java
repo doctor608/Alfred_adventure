@@ -11,10 +11,14 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 
 public class DroyerBullet extends Item{
 
+    public float stateTime;
+
     public DroyerBullet(PlayScreen screen, float x, float y) {
         super(screen, x, y);
         setRegion(screen.getAtlas().findRegion("droyer"), 34, 0, 32, 32);
         velocity = new Vector2(0, 0/*1f*/);
+
+        stateTime = 0;
     }
 
 
@@ -54,6 +58,12 @@ public class DroyerBullet extends Item{
 
     @Override
     public void update(float dt) {
+        stateTime += dt;
+
+        if (stateTime > 120*dt) {
+            destroy();
+        }
+
         super.update(dt);
         setPosition(body.getPosition().x - getWidth() / 2, body.getPosition().y - getHeight() / 2);
         velocity.y = -1f/*body.getLinearVelocity().y*/;

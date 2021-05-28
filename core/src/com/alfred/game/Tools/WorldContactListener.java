@@ -6,6 +6,7 @@ import com.alfred.game.Sprites.Enemies.Enemy;
 import com.alfred.game.Sprites.Items.Arrow;
 import com.alfred.game.Sprites.Items.DroyerBullet;
 import com.alfred.game.Sprites.Items.Item;
+import com.alfred.game.Sprites.TileObjects.Finish;
 import com.alfred.game.Sprites.TileObjects.InteractiveTileObject;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
@@ -200,6 +201,57 @@ public class WorldContactListener implements ContactListener {
                     ((InteractiveTileObject)fixA.getUserData()).onBodyHit((Alfred)fixB.getUserData());
                 } else {
                     ((InteractiveTileObject)fixB.getUserData()).onBodyHit((Alfred)fixA.getUserData());
+                }
+                break;
+            case AlfredMain.ENEMY_BIT | AlfredMain.FINISH_BIT:
+                if (fixA.getFilterData().categoryBits == AlfredMain.FINISH_BIT) {
+                    ((Enemy)fixB.getUserData()).reverseVelocity(true, false);
+                } else {
+                    ((Enemy)fixA.getUserData()).reverseVelocity(true, false);
+                }
+                break;
+            case AlfredMain.ALFRED_BIT | AlfredMain.FINISH_BIT:
+                if (fixA.getFilterData().categoryBits == AlfredMain.ALFRED_BIT) {
+                    ((Alfred)fixA.getUserData()).makeAlfredWon();
+                    ((Finish)fixB.getUserData()).onBodyHit((Alfred)fixA.getUserData());
+                } else {
+                    ((Alfred)fixB.getUserData()).makeAlfredWon();
+                    ((Finish)fixA.getUserData()).onBodyHit((Alfred)fixB.getUserData());
+                }
+                break;
+            case AlfredMain.ENEMY_BIT | AlfredMain.COIN_BIT:
+                if (fixA.getFilterData().categoryBits == AlfredMain.COIN_BIT) {
+                    ((Enemy)fixB.getUserData()).reverseVelocity(true, false);
+                } else {
+                    ((Enemy)fixA.getUserData()).reverseVelocity(true, false);
+                }
+                break;
+            case AlfredMain.ENEMY_BIT | AlfredMain.REDGROUND_BIT:
+                if (fixA.getFilterData().categoryBits == AlfredMain.REDGROUND_BIT) {
+                    ((Enemy)fixB.getUserData()).reverseVelocity(true,false);
+                } else {
+                    ((Enemy)fixA.getUserData()).reverseVelocity(true,false);
+                }
+                break;
+            case AlfredMain.ENEMY_BIT | AlfredMain.DEMONICGROUND_BIT:
+                if (fixA.getFilterData().categoryBits == AlfredMain.DEMONICGROUND_BIT) {
+                    ((Enemy)fixB.getUserData()).reverseVelocity(true,false);
+                } else {
+                    ((Enemy)fixA.getUserData()).reverseVelocity(true,false);
+                }
+                break;
+            case AlfredMain.ARROW_BIT | AlfredMain.FINISH_BIT:
+                if (fixA.getFilterData().categoryBits ==  AlfredMain.FINISH_BIT) {
+                    ((Arrow)fixB.getUserData()).destroy();
+                } else {
+                    ((Arrow)fixA.getUserData()).destroy();
+                }
+                break;
+            case AlfredMain.ENEMY_BIT | AlfredMain.BADGROUND_BIT:
+                if (fixA.getFilterData().categoryBits ==  AlfredMain.BADGROUND_BIT) {
+                    ((Enemy)fixB.getUserData()).reverseVelocity(true, false);
+                } else {
+                    ((Enemy)fixA.getUserData()).reverseVelocity(true, false);
                 }
                 break;
         }

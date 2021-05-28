@@ -41,7 +41,7 @@ public class MenuScreen implements Screen {
         Table table = new Table();
 
         Image levelImg = new Image(new Texture("levelsbutton.png"));
-        levelImg.setSize(240, 256);
+        levelImg.setSize(480, 256);
         levelImg.addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -72,7 +72,7 @@ public class MenuScreen implements Screen {
         table.left().bottom();
         //table.row().padLeft(16);
         table.add(levelImg).size(levelImg.getWidth(), levelImg.getHeight());
-        table.add(shopImg).size(shopImg.getWidth(), shopImg.getHeight());
+        //table.add(shopImg).size(shopImg.getWidth(), shopImg.getHeight());
 
         stage.addActor(table);
     }
@@ -101,7 +101,7 @@ public class MenuScreen implements Screen {
             game.setScreen(new ShopScreen((AlfredMain) game));
             dispose();
         }*/
-        Gdx.gl.glClearColor(0, 0, 1, 1);
+        Gdx.gl.glClearColor(66, 177, 18, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.draw();
     }

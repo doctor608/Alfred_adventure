@@ -114,7 +114,6 @@ public class Droyer extends Enemy{
 
     @Override
     public void update(float dt) {
-        //setRegion(droyerStay);
         stateTime += dt;
 
         if(setToDestroy && !destroyed){
@@ -122,10 +121,9 @@ public class Droyer extends Enemy{
             destroyed = true;
             setRegion(new TextureRegion(screen.getAtlas().findRegion("deaddroyer"), 0, 0, 32, 32));
             stateTime = 0;
-            Hud.addScore(10);
+            Hud.addScore(2);
         } else if(!destroyed) {
             if (stateTime > 44 * dt) {
-                droyersound.setVolume(droyersound.play(), 0.6f);
                 screen.spawnItem(new ItemDef(new Vector2(b2body.getPosition().x, b2body.getPosition().y -16 / AlfredMain.PPM), DroyerBullet.class));
                 stateTime = 0;
             }

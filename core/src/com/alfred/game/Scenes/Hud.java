@@ -6,9 +6,11 @@ import com.alfred.game.Sprites.Alfred;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.Disposable;
@@ -23,9 +25,9 @@ public class Hud implements Disposable {
     public Stage stage;
     private Viewport viewport;
 
-    private int worldTimer;
+    public static int worldTimer;
     private float timeCount;
-    private static int score;
+    public static int score;
     private static int hp;
 
     private Label countTimeLabel;
@@ -33,11 +35,6 @@ public class Hud implements Disposable {
     private static Label hpLabel;
     private Label emptyLabel1;
     private Label emptyLabel2;
-
-    //Label worldLabel;
-    //Label timeLabel;
-    //Label levelLabel
-    //Label alfredLabel;
 
     public Hud(SpriteBatch batch) {
         worldTimer = 0;
@@ -52,9 +49,15 @@ public class Hud implements Disposable {
         table.top();
         table.setFillParent(true);
 
-        hpLabel = new Label(String.format("HP: %d", hp), new Label.LabelStyle(new BitmapFont(), Color.GREEN));
-        countTimeLabel = new Label(String.format("%03d", worldTimer), new Label.LabelStyle(new BitmapFont(), Color.GREEN));
-        scoreLabel = new Label(String.format("%d", score), new Label.LabelStyle(new BitmapFont(), Color.GREEN));
+        Image heartImg = new Image(new Texture("heart.png"));
+        heartImg.setSize(32, 32);
+
+        Image coinImg = new Image(new Texture("coin_z.png"));
+        coinImg.setSize(32, 32);
+
+        hpLabel = new Label(String.format(": %d", hp), new Label.LabelStyle(new BitmapFont(), Color.GREEN));
+        countTimeLabel = new Label(String.format("%d", worldTimer), new Label.LabelStyle(new BitmapFont(), Color.GREEN));
+        scoreLabel = new Label(String.format(":%02d", score), new Label.LabelStyle(new BitmapFont(), Color.GREEN));
         emptyLabel1 = new Label(" ", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
         emptyLabel2 = new Label(" ", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
 
@@ -63,10 +66,12 @@ public class Hud implements Disposable {
         //worldLabel = new Label(" ", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
         //alfredLabel = new Label("ALFRED", new Label.LabelStyle(new BitmapFont(), Color.GREEN));
 
-        table.add(hpLabel).expandX().padTop(10);
-        table.add(countTimeLabel).expandX().padTop(10);
+        table.add(heartImg).size(heartImg.getWidth(), heartImg.getHeight());
+        table.add(hpLabel).padTop(10);
+        table.add(countTimeLabel).padTop(10).expandX();
         //table.add(emptyLabel2).expandX().padTop(10);
-        table.add(scoreLabel).expandX().padTop(10);
+        table.add(coinImg).size(coinImg.getWidth(), coinImg.getHeight()).padTop(10);
+        table.add(scoreLabel).padTop(10).padLeft(2).padRight(4);
 
         stage.addActor(table);
     }
@@ -75,14 +80,14 @@ public class Hud implements Disposable {
         timeCount += dt;
         if (timeCount >= 1) {
             worldTimer++;
-            countTimeLabel.setText(String.format("%03d", worldTimer));
+            countTimeLabel.setText(String.format("%d", worldTimer));
             timeCount = 0;
         }
     }
 
     public static void addScore(int value) {
         score = score + value;
-        scoreLabel.setText(String.format("%d", score));
+        scoreLabel.setText(String.format(":%02d", score));
     }
 
     public static void addHp(int value) {
@@ -91,7 +96,7 @@ public class Hud implements Disposable {
         } else {
             hp = hp + value;
         }
-        hpLabel.setText(String.format("HP: %d", hp));
+        hpLabel.setText(String.format(": %d", hp));
     }
 
     public static void downHp(int value) {
@@ -100,7 +105,7 @@ public class Hud implements Disposable {
         } else {
             hp = hp - value;
         }
-        hpLabel.setText(String.format("HP: %d", hp));
+        hpLabel.setText(String.format(": %d", hp));
     }
 
     public static void setHp(int health) {

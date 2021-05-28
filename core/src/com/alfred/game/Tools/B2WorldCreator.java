@@ -10,6 +10,7 @@ import com.alfred.game.Sprites.TileObjects.BrokenGround;
 import com.alfred.game.Sprites.TileObjects.Coin;
 import com.alfred.game.Sprites.Enemies.Knight;
 import com.alfred.game.Sprites.TileObjects.DemonicGround;
+import com.alfred.game.Sprites.TileObjects.Finish;
 import com.alfred.game.Sprites.TileObjects.RedGround;
 import com.alfred.game.Sprites.TileObjects.RedRose;
 import com.badlogic.gdx.maps.MapObject;
@@ -78,6 +79,10 @@ public class B2WorldCreator {
             new RedRose(screen, object);
         }
 
+        for (MapObject object: map.getLayers().get(12).getObjects().getByType(RectangleMapObject.class)) {
+            new Finish(screen, object);
+        }
+
         knights = new Array<Knight>();
         for (MapObject object: map.getLayers().get(6).getObjects().getByType(RectangleMapObject.class)) {
             Rectangle rect = ((RectangleMapObject) object).getRectangle();
@@ -98,7 +103,6 @@ public class B2WorldCreator {
 
             smallDeaths.add(new SmallDeath(screen, rect.getX() / AlfredMain.PPM, rect.getY() / AlfredMain.PPM));
         }
-
     }
 
     public Array<Knight> getKnights() {

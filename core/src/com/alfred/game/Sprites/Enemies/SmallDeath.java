@@ -71,7 +71,7 @@ public class SmallDeath extends Enemy{
         fdef.filter.categoryBits = AlfredMain.ENEMY_BIT;
         fdef.filter.maskBits = /*AlfredMain.GROUND_BIT |*/ AlfredMain.ALFRED_BIT
                 | AlfredMain.BADGROUND_BIT | AlfredMain.BROKENGROUND_BIT
-                | AlfredMain.COIN_BIT | AlfredMain.OBJECT_BIT |AlfredMain.ENEMY_BIT | AlfredMain.ARROW_BIT;
+                | AlfredMain.COIN_BIT | AlfredMain.OBJECT_BIT |AlfredMain.ENEMY_BIT | AlfredMain.ARROW_BIT | AlfredMain.DEMONICGROUND_BIT;
 
         fdef.shape = shape;
         b2body.createFixture(fdef).setUserData(this);
@@ -178,7 +178,7 @@ public class SmallDeath extends Enemy{
         fdef.filter.categoryBits = AlfredMain.ENEMY_BIT;
         fdef.filter.maskBits = /*AlfredMain.GROUND_BIT | */AlfredMain.ALFRED_BIT
                 | AlfredMain.BADGROUND_BIT | AlfredMain.BROKENGROUND_BIT
-                | AlfredMain.COIN_BIT | AlfredMain.OBJECT_BIT |AlfredMain.ENEMY_BIT | AlfredMain.ARROW_BIT;
+                | AlfredMain.COIN_BIT | AlfredMain.OBJECT_BIT |AlfredMain.ENEMY_BIT | AlfredMain.ARROW_BIT | AlfredMain.REDGROUND_BIT | AlfredMain.DEMONICGROUND_BIT;
 
         fdef.shape = shape;
         b2body.createFixture(fdef).setUserData(this);
@@ -233,6 +233,7 @@ public class SmallDeath extends Enemy{
     public void update(float dt) {
         stateTime += dt;
 
+
         TextureRegion region = deathStay;
 
         if (timeToRedefineEnemy) {
@@ -263,7 +264,7 @@ public class SmallDeath extends Enemy{
             blackravensound.setVolume(blackravensound.play(), 0.1f);
             screen.spawnItem(new ItemDef(new Vector2(b2body.getPosition().x, b2body.getPosition().y), BlackRaven.class));
             stateTime = 0;
-            Hud.addScore(10);
+            Hud.addScore(3);
         } else if(!destroyed) {
             b2body.setLinearVelocity(velocity);
             setPosition(b2body.getPosition().x - getWidth() / 2, b2body.getPosition().y - getHeight() / 2);

@@ -30,9 +30,9 @@ public class RedGround extends InteractiveTileObject {
 
     @Override
     public void onLegsHit(Alfred alfred){
-        if (alfred.isBlack()) {
+        /*if (alfred.isBlack()) {
             getCell().setTile(tileSet.getTile(9));
-        }
+        }*/
 
     }
 

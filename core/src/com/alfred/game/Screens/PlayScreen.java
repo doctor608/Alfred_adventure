@@ -51,7 +51,7 @@ public class PlayScreen implements Screen {
     private OrthogonalTiledMapRenderer renderer;
 
     private World world;
-    private Box2DDebugRenderer b2dr;
+    //private Box2DDebugRenderer b2dr;
     private B2WorldCreator creator;
 
     private Array<Item> items;
@@ -64,12 +64,15 @@ public class PlayScreen implements Screen {
 
     private Sound bowsound;
 
-    Preferences prefs = Gdx.app.getPreferences("My Preferences");
+    private int level;
 
-    public PlayScreen(AlfredMain game) {
+    //Preferences prefs = Gdx.app.getPreferences("My Preferences");
+
+    public PlayScreen(AlfredMain game, int level) {
         atlas = new TextureAtlas("global.pack");
 
         this.game = game;
+        this.level = level;
 
         gamecam = new OrthographicCamera();
         gamePort = new FitViewport(game.vir_width / AlfredMain.PPM, game.vir_height / AlfredMain.PPM, gamecam);
@@ -77,14 +80,32 @@ public class PlayScreen implements Screen {
         batch = game.batch;
 
         mapLoader = new TmxMapLoader();
-        map = mapLoader.load("level_1.tmx");
+        if (level == 1) {
+            music = AlfredMain.manager.get("audio/music/classic_music.ogg", Music.class);
+            music.setLooping(true);
+            music.setVolume(0.03f);
+            music.play();
+            map = mapLoader.load(/*"level_1.tmx"*/"Level1.tmx");
+        } else if (level == 2) {
+            music = AlfredMain.manager.get("audio/music/level2_music.ogg", Music.class);
+            music.setLooping(true);
+            music.setVolume(0.03f);
+            music.play();
+            map = mapLoader.load("Level2.tmx");
+        } else if (level == 3) {
+            music = AlfredMain.manager.get("audio/music/level3_music.ogg", Music.class);
+            music.setLooping(true);
+            music.setVolume(0.03f);
+            music.play();
+            map = mapLoader.load("Level3.tmx");
+        }
 
         renderer = new OrthogonalTiledMapRenderer(map, 1f / AlfredMain.PPM);
 
         gamecam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
 
         world = new World(new Vector2(0, -10), true);
-        b2dr = new Box2DDebugRenderer();
+        //b2dr = new Box2DDebugRenderer();
 
         creator = new B2WorldCreator(this);
 
@@ -100,11 +121,6 @@ public class PlayScreen implements Screen {
         itemsToSpawn = new LinkedBlockingQueue<ItemDef>();
 
         joystick = new Joystick();
-
-        music = AlfredMain.manager.get("audio/music/classic_music.ogg", Music.class);
-        music.setLooping(true);
-        music.setVolume(0.03f);
-        music.play();
 
         bowsound = AlfredMain.manager.get("audio/sounds/bowandarrow.wav", Sound.class);
     }
@@ -157,6 +173,7 @@ public class PlayScreen implements Screen {
         if (joystick.isBowRightTouched()) {
             Gdx.app.log("RIGHT", "SHOT");
             joystick.bowrightTouched = false;
+            player.jumped = true;
             if (player.isRunBowRightShotAnimation() == false) {
                 player.bowShotRight();
                 bowsound.setVolume(bowsound.play(), 0.1f);
@@ -165,6 +182,7 @@ public class PlayScreen implements Screen {
         if (joystick.isBowDownTouched()) {
             Gdx.app.log("DOWN", "SHOT");
             joystick.bowdownTouched = false;
+            player.jumped = true;
             if (player.isRunBowDownShotAnimation() == false) {
                 player.bowShotDown();
                 bowsound.setVolume(bowsound.play(), 0.1f);
@@ -173,6 +191,7 @@ public class PlayScreen implements Screen {
         if (joystick.isBowUpTouched()) {
             Gdx.app.log("UP", "SHOT");
             joystick.bowupTouched = false;
+            player.jumped = true;
             if (player.isRunBowUpShotAnimation() == false) {
                 player.bowUpShot();
                 bowsound.setVolume(bowsound.play(), 0.1f);
@@ -223,7 +242,7 @@ public class PlayScreen implements Screen {
 
         renderer.render();
 
-        b2dr.render(world, gamecam.combined);
+        //b2dr.render(world, gamecam.combined);
 
         game.batch.setProjectionMatrix(gamecam.combined);
         game.batch.begin();
@@ -244,13 +263,24 @@ public class PlayScreen implements Screen {
         joystick.draw();
 
         if(gameOver()){
-            game.setScreen(new GameOverScreen(game, Alfred.judgment));
+            game.setScreen(new GameOverScreen(game, Alfred.judgment, level));
             dispose();
+        }
+        if(alfredFinish()){
+            music.stop();
+            game.setScreen(new FinishScreen(game, level));
         }
     }
 
     public boolean gameOver(){
         if(player.currentState == Alfred.State.DEAD && player.getStateTimer() > 1.5){
+            return true;
+        }
+        return false;
+    }
+
+    public boolean alfredFinish() {
+        if (Alfred.alfredwon == true) {
             return true;
         }
         return false;
@@ -290,7 +320,7 @@ public class PlayScreen implements Screen {
         map.dispose();
         renderer.dispose();
         world.dispose();
-        b2dr.dispose();
+        //b2dr.dispose();
         hud.dispose();
 
     }

@@ -16,7 +16,7 @@ public class BlackRose extends Item{
     public BlackRose(PlayScreen screen, float x, float y) {
         super(screen, x, y);
         setRegion(screen.getAtlas().findRegion("blackrose"), 0, 0, 36, 32);
-        velocity = new Vector2(1.7f, 0);
+        velocity = new Vector2(0, 0);
     }
 
     @Override
@@ -40,7 +40,7 @@ public class BlackRose extends Item{
     @Override
     public void use(Alfred alfred) {
         destroy();
-        alfred.transform();
+        //alfred.transform();
         alfred.hit(25, "Alfred was poisoned by a black rose");
     }
 
@@ -58,7 +58,6 @@ public class BlackRose extends Item{
     public void update(float dt) {
         super.update(dt);
         setPosition(body.getPosition().x - getWidth() / 2, body.getPosition().y - getHeight() / 2);
-        velocity.y = body.getLinearVelocity().y;
         body.setLinearVelocity(velocity);
     }
 }

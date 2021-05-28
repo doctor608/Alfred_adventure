@@ -37,13 +37,17 @@ public class AlfredMain extends Game {
 	public static final short BLACKRAVEN_BIT = -2;
 	//public static final short ENEMYPERED_BIT = -4;
 	public static final short ENEMYZAD_BIT = -4;
+	public static final short FINISH_BIT = -8;
 	//public static final short ARROW_BIT = -8;
 
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
 		manager = new AssetManager();
+
 		manager.load("audio/music/classic_music.ogg", Music.class);
+		manager.load("audio/music/level2_music.ogg", Music.class);
+		manager.load("audio/music/level3_music.ogg", Music.class);
 
 		manager.load("audio/sounds/droyer.wav", Sound.class);
 		manager.load("audio/sounds/deathkill.wav", Sound.class);
@@ -53,7 +57,7 @@ public class AlfredMain extends Game {
 		manager.load("audio/sounds/coin.wav", Sound.class);
 		manager.load("audio/sounds/blackraven.wav", Sound.class);
 		manager.load("audio/sounds/knightdie.wav", Sound.class);
-		//manager.load("audio/sounds/badground.wav", Sound.class);
+		manager.load("audio/sounds/finish.wav", Sound.class);
 
 		manager.finishLoading();
 

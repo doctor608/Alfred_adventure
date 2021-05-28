@@ -28,7 +28,7 @@ public class Coin extends InteractiveTileObject {
         coinsound.setVolume(coinsound.play(), 0.1f);
         setCategoryFilter(AlfredMain.DESTROYED_BIT);
         getCell().setTile(null);
-        Hud.addScore(10);
+        Hud.addScore(3);
     }
 
     @Override
@@ -37,7 +37,7 @@ public class Coin extends InteractiveTileObject {
         coinsound.setVolume(coinsound.play(), 0.1f);
         setCategoryFilter(AlfredMain.DESTROYED_BIT);
         getCell().setTile(null);
-        Hud.addScore(10);
+        Hud.addScore(3);
     }
 
     @Override
@@ -46,6 +46,6 @@ public class Coin extends InteractiveTileObject {
         coinsound.setVolume(coinsound.play(), 0.1f);
         setCategoryFilter(AlfredMain.DESTROYED_BIT);
         getCell().setTile(null);
-        Hud.addScore(10);
+        Hud.addScore(3);
     }
 }
