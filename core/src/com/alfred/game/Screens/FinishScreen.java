@@ -28,6 +28,8 @@ public class FinishScreen implements Screen {
 
     Preferences prefs;
 
+    private int fulltime, fullscore;
+
     public FinishScreen(Game game, int level) {
         this.game = game;
         this.level = level;
@@ -92,8 +94,8 @@ public class FinishScreen implements Screen {
             prefs = prefs.putInteger("level3score", Hud.score);
             prefs.flush();
 
-            int fulltime = prefs.getInteger("level1time") + prefs.getInteger("level2time") + prefs.getInteger("level3time");
-            int fullscore = prefs.getInteger("level1score") + prefs.getInteger("level2score") + prefs.getInteger("level3score");
+            fulltime = prefs.getInteger("level1time") + prefs.getInteger("level2time") + prefs.getInteger("level3time");
+            fullscore = prefs.getInteger("level1score") + prefs.getInteger("level2score") + prefs.getInteger("level3score");
 
             Label fullTimeLabel =  new Label(String.format("FULL TIME - %d", fulltime), font);
             Label fullScoreLabel =  new Label(String.format("FULL SCORE - %d", fullscore), font);
@@ -139,7 +141,7 @@ public class FinishScreen implements Screen {
         if (Gdx.input.justTouched()) {
             Alfred.alfredwon = false;
             if (level == 3) {
-                //game.setScreen(new GameFinishedScreen((AlfredMain) game));
+                game.setScreen(new GameFinishedScreen((AlfredMain) game, fulltime, fullscore));
             } else {
                 game.setScreen(new PlayScreen((AlfredMain) game, level + 1));
             }

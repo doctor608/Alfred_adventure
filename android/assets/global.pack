@@ -11,7 +11,7 @@ alfred
     index: -1
 knight
     rotate: false
-    xy: 136, 0
+    xy: 138, 0
     size: 138, 32
     orig: 138, 32
     offset: 0, 0

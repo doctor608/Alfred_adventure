@@ -86,12 +86,13 @@ public class Arrow extends Item {
         stateTime += dt;
 
         setPosition(body.getPosition().x - getWidth() / 2, body.getPosition().y - getHeight() / 2);
+
         if (Alfred.shotRight) {
-            velocity.x = /*body.getLinearVelocity().x*/ 3f;
-            velocity.y = /*body.getLinearVelocity().y*/ -0.2f;
+            velocity.x = 3f;
+            velocity.y = -0.2f;
         } else if (Alfred.shotLeft){
-            velocity.x = /*body.getLinearVelocity().x*/ -3f;
-            velocity.y = /*body.getLinearVelocity().y*/ -0.2f;
+            velocity.x =  -3f;
+            velocity.y =  -0.2f;
         } else if (Alfred.shotDownRight) {
             velocity.x = 3f;
             velocity.y = -3f;

@@ -51,7 +51,7 @@ public class SmallDeath extends Enemy{
         setToKill = false;
         runningRight = false;
 
-        enemyHp = 75;
+        enemyHp = 25;
 
         deathkillsound = AlfredMain.manager.get("audio/sounds/deathkill.wav", Sound.class);
         blackravensound = AlfredMain.manager.get("audio/sounds/blackraven.wav", Sound.class);

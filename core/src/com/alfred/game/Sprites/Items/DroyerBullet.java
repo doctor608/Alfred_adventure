@@ -60,7 +60,7 @@ public class DroyerBullet extends Item{
     public void update(float dt) {
         stateTime += dt;
 
-        if (stateTime > 120*dt) {
+        if (stateTime > 300*dt) {
             destroy();
         }
 
